@@ -1,6 +1,10 @@
 # meal-dash
 Capstone group 7
 
+
+backend-service
+swagger
+http://localhost:3000/api-docs/#/
 Commands:
 1. Go into app folder run >  npm install
 2. Open two terminals, run node server on one terminal and run typescript compiler on the other.

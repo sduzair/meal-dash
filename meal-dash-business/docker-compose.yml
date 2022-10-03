@@ -26,20 +26,19 @@ services:
     networks:
       - backend
     links:
-      - pg
+      - mysql-master
     depends_on:
-      - pg
-  pg:
-    image: bitnami/postgresql:11-debian-9
-    container_name: pg
-    environment:
-      POSTGRESQL_USERNAME: root
-      POSTGRESQL_PASSWORD: password
-      POSTGRESQL_DATABASE: test
+      - mysql-master
+  mysql-master:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
     ports:
-      - '5432:5432'
-    networks:
-      - backend
+     - 3306:3306
+    volumes:
+     - ./db:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root  
 
 networks:
   backend:

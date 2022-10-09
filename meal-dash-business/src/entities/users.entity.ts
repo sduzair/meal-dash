@@ -2,25 +2,30 @@ import { IsNotEmpty } from 'class-validator';
 import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, Unique, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { User } from '@interfaces/users.interface';
 
-@Entity()
+@Entity("users")
 export class UserEntity extends BaseEntity implements User {
   @PrimaryGeneratedColumn()
-  id: number;
+  user_id: number;
 
   @Column()
   @IsNotEmpty()
-  @Unique(['email'])
-  email: string;
+  @Unique(['user_login'])
+  user_login: string;
 
   @Column()
   @IsNotEmpty()
-  password: string;
+  @Unique(['user_email'])
+  user_email: string;
+
+  @Column()
+  @IsNotEmpty()
+  user_password: string;
 
   @Column()
   @CreateDateColumn()
-  createdAt: Date;
+  created_date: Date;
 
-  @Column()
-  @UpdateDateColumn()
-  updatedAt: Date;
+  // @Column()
+  // @UpdateDateColumn()
+  // updatedAt: Date;
 }

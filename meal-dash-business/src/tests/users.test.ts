@@ -28,9 +28,9 @@ describe('Testing Users', () => {
 
       userRepository.findOne = jest.fn().mockReturnValue(null);
       userRepository.save = jest.fn().mockReturnValue({
-        id: 1,
-        email: userData.email,
-        password: await bcrypt.hash(userData.password, 10),
+        user_id: 1,
+        user_email: userData.email,
+        user_password: await bcrypt.hash(userData.password, 10),
       });
 
       const app = new App([usersRoute]);
@@ -45,17 +45,17 @@ describe('Testing Users', () => {
 
       userRepository.find = jest.fn().mockReturnValue([
         {
-          id: 1,
-          email: 'a@email.com',
+          user_id: 1,
+          user_email: 'a@email.com',
           password: await bcrypt.hash('q1w2e3r4!', 10),
         },
         {
-          id: 2,
+          user_id: 2,
           email: 'b@email.com',
           password: await bcrypt.hash('a1s2d3f4!', 10),
         },
         {
-          id: 3,
+          user_id: 3,
           email: 'c@email.com',
           password: await bcrypt.hash('z1x2c3v4!', 10),
         },
@@ -74,9 +74,9 @@ describe('Testing Users', () => {
       const userRepository = new Repository<UserEntity>();
 
       userRepository.findOne = jest.fn().mockReturnValue({
-        id: userId,
-        email: 'a@email.com',
-        password: await bcrypt.hash('q1w2e3r4!', 10),
+        user_id: userId,
+        user_email: 'a@email.com',
+        user_password: await bcrypt.hash('q1w2e3r4!', 10),
       });
 
       const app = new App([usersRoute]);
@@ -88,17 +88,17 @@ describe('Testing Users', () => {
     it('response Update user', async () => {
       const userId = 1;
       const userData: CreateUserDto = {
-        email: 'test@email.com',
-        password: '1q2w3e4r!',
+        user_email: 'test@email.com',
+        user_password: '1q2w3e4r!',
       };
 
       const usersRoute = new UserRoute();
       const userRepository = new Repository<UserEntity>();
 
       userRepository.findOne = jest.fn().mockReturnValue({
-        id: userId,
-        email: userData.email,
-        password: await bcrypt.hash(userData.password, 10),
+        user_id: userId,
+        user_email: userData.email,
+        user_password: await bcrypt.hash(userData.password, 10),
       });
       userRepository.update = jest.fn().mockReturnValue({
         generatedMaps: [],
@@ -106,9 +106,9 @@ describe('Testing Users', () => {
         affected: 1,
       });
       userRepository.findOne = jest.fn().mockReturnValue({
-        id: userId,
-        email: userData.email,
-        password: await bcrypt.hash(userData.password, 10),
+        user_id: userId,
+        user_email: userData.email,
+        user_password: await bcrypt.hash(userData.password, 10),
       });
 
       const app = new App([usersRoute]);
@@ -124,9 +124,9 @@ describe('Testing Users', () => {
       const userRepository = new Repository<UserEntity>();
 
       userRepository.findOne = jest.fn().mockReturnValue({
-        id: userId,
-        email: 'a@email.com',
-        password: await bcrypt.hash('q1w2e3r4!', 10),
+        user_id: userId,
+        user_email: 'a@email.com',
+        user_password: await bcrypt.hash('q1w2e3r4!', 10),
       });
 
       const app = new App([usersRoute]);
@@ -134,3 +134,11 @@ describe('Testing Users', () => {
     });
   });
 });
+function beforeAll(arg0: () => Promise<void>) {
+  throw new Error('Function not implemented.');
+}
+
+function afterAll(arg0: () => Promise<void>) {
+  throw new Error('Function not implemented.');
+}
+

@@ -4,6 +4,27 @@ tags:
 
 paths:
 # [GET] users
+  /:
+    post:
+      tags:
+      - sigup
+      summary: sign-up
+      parameters:
+      - name: body
+        in: body
+        description: user Data
+        required: true
+        schema:
+          $ref: '#/definitions/users'
+      responses:
+        201:
+          description: 'Created'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
   /users:
     get:
       tags:
@@ -108,13 +129,17 @@ definitions:
   users:
     type: object
     required:
-        - email
-        - password
+        - user_login
+        - user_email
+        - user_password
     properties:
-      email:
+      user_login:
+        type: string
+        description: user login name
+      user_email:
         type: string
         description: user Email
-      password:
+      user_password:
         type: string
         description: user Password
 

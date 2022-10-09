@@ -14,21 +14,21 @@ class AuthService extends Repository<UserEntity> {
   public async signup(userData: CreateUserDto): Promise<User> {
     if (isEmpty(userData)) throw new HttpException(400, "userData is empty");
 
-    const findUser: User = await UserEntity.findOne({ where: { email: userData.email } });
-    if (findUser) throw new HttpException(409, `This email ${userData.email} already exists`);
+    const findUser: User = await UserEntity.findOne({ where: { user_email: userData.user_email } });
+    if (findUser) throw new HttpException(409, `This email ${userData.user_email} already exists`);
 
-    const hashedPassword = await hash(userData.password, 10);
-    const createUserData: User = await UserEntity.create({ ...userData, password: hashedPassword }).save();
+    const hashedPassword = await hash(userData.user_password, 10);
+    const createUserData: User = await UserEntity.create({ ...userData, user_password: hashedPassword }).save();
     return createUserData;
   }
 
   public async login(userData: CreateUserDto): Promise<{ cookie: string; findUser: User }> {
     if (isEmpty(userData)) throw new HttpException(400, "userData is empty");
 
-    const findUser: User = await UserEntity.findOne({ where: { email: userData.email } });
-    if (!findUser) throw new HttpException(409, `This email ${userData.email} was not found`);
+    const findUser: User = await UserEntity.findOne({ where: { email: userData.user_email } });
+    if (!findUser) throw new HttpException(409, `This email ${userData.user_email} was not found`);
 
-    const isPasswordMatching: boolean = await compare(userData.password, findUser.password);
+    const isPasswordMatching: boolean = await compare(userData.user_password, findUser.user_password);
     if (!isPasswordMatching) throw new HttpException(409, "Password not matching");
 
     const tokenData = this.createToken(findUser);
@@ -40,14 +40,14 @@ class AuthService extends Repository<UserEntity> {
   public async logout(userData: User): Promise<User> {
     if (isEmpty(userData)) throw new HttpException(400, "userData is empty");
 
-    const findUser: User = await UserEntity.findOne({ where: { email: userData.email, password: userData.password } });
+    const findUser: User = await UserEntity.findOne({ where: { email: userData.user_email, password: userData.user_password } });
     if (!findUser) throw new HttpException(409, "User doesn't exist");
 
     return findUser;
   }
 
   public createToken(user: User): TokenData {
-    const dataStoredInToken: DataStoredInToken = { id: user.id };
+    const dataStoredInToken: DataStoredInToken = { user_id: user.user_id };
     const secretKey: string = SECRET_KEY;
     const expiresIn: number = 60 * 60;
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../../../../utils/constants.dart';
+import 'package:mealdash_app/utils/constants.dart';
 
 class SocalIcon extends StatelessWidget {
   final String? iconSrc;

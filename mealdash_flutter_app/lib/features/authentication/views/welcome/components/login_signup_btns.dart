@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../../../../utils/constants.dart';
-import '../../Signup/signup_screen.dart';
-import '../../login/login_screen.dart';
+import 'package:mealdash_app/utils/constants.dart';
+import 'package:mealdash_app/features/authentication/views/Signup/signup_screen.dart';
+import 'package:mealdash_app/features/authentication/views/login/login_screen.dart';
 
 class LoginAndSignupBtn extends StatelessWidget {
   const LoginAndSignupBtn({

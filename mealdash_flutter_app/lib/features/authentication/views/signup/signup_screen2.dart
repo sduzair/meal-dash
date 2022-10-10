@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mealdash_app/components/background.dart';
 
-import '../../../../utils/constants.dart' as constants;
+import 'package:mealdash_app/utils/constants.dart' as constants;
 
 class SignUpScreen2 extends StatefulWidget {
   const SignUpScreen2({Key? key}) : super(key: key);

@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:mealdash_app/features/authentication/models/user_signup_model.dart';
-import '../../../utils/constants.dart' as constants;
+import 'package:mealdash_app/utils/constants.dart' as constants;
 
 class AuthService {
   static Future<http.Response> signUp(UserSignUpModel userSignUpModel) async {

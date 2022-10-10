@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'features/authentication/views/welcome/welcome_screen.dart';
-import 'utils/constants.dart' as constants;
+import 'package:mealdash_app/features/authentication/views/welcome/welcome_screen.dart';
+import 'package:mealdash_app/utils/constants.dart' as constants;
 
 void main() => runApp(const MyApp());
 

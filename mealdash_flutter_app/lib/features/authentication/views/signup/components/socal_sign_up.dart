@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mealdash_app/features/authentication/views/signup/components/or_divider.dart';
 
-import 'social_icon.dart';
+import 'package:mealdash_app/features/authentication/views/signup/components/social_icon.dart';
 
 
 

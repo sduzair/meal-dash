@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import '../../../../components/background.dart';
-import '../../../../utils/constants.dart';
-import '../../../../utils/responsive.dart';
-import 'components/sign_up_top_image.dart';
-import 'components/signup_form.dart';
-import 'signup_screen2.dart';
+import 'package:mealdash_app/components/background.dart';
+import 'package:mealdash_app/utils/constants.dart';
+import 'package:mealdash_app/utils/responsive.dart';
+import 'package:mealdash_app/features/authentication/views/signup/components/sign_up_top_image.dart';
+import 'package:mealdash_app/features/authentication/views/signup/components/signup_form.dart';
+import 'package:mealdash_app/features/authentication/views/signup/signup_screen2.dart';
 
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({Key? key}) : super(key: key);

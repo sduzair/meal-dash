@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../utils/constants.dart' as constants;
+import 'package:mealdash_app/utils/constants.dart' as constants;
 
 class WelcomeImage extends StatelessWidget {
   const WelcomeImage({

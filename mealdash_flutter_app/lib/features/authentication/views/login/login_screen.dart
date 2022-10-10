@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../../../components/background.dart';
-import '../../../../utils/responsive.dart';
-import 'components/login_form.dart';
-import 'components/login_screen_top_image.dart';
+import 'package:mealdash_app/components/background.dart';
+import 'package:mealdash_app/utils/responsive.dart';
+import 'package:mealdash_app/features/authentication/views/login/components/login_form.dart';
+import 'package:mealdash_app/features/authentication/views/login/components/login_screen_top_image.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);

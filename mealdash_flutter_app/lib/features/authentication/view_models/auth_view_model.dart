@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mealdash_app/features/authentication/models/user_signup_model.dart';
 
-import '../repository/auth_service.dart';
+import 'package:mealdash_app/features/authentication/repository/auth_service.dart';
 
 class UserAuthViewModel with ChangeNotifier {
   bool _isSigningUp = false;

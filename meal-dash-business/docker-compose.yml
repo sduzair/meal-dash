@@ -20,8 +20,8 @@ services:
     ports:
       - '3000:3000'
     volumes:
-      - ./:/app
-      - /app/node_modules
+      - ./:/meal-dash-business
+      - /meal-dash-business/node_modules
     restart: 'unless-stopped'
     networks:
       - backend

@@ -1,5 +1,5 @@
 import { IsEmail, IsObject, IsPhoneNumber, IsString } from 'class-validator';
-import { CreateUserDto } from './users.dto';
+import { CreateUserDto } from './createusers.dto';
 
 export class VenderDto {
 

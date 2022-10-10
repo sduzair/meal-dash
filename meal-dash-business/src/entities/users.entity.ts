@@ -25,6 +25,34 @@ export class UserEntity extends BaseEntity implements User {
   @CreateDateColumn()
   created_date: Date;
 
+  @Column()
+  @IsNotEmpty()
+  phone: string;
+
+  @Column()
+  @IsNotEmpty()
+  user_type: string;
+
+  @Column()
+  @IsNotEmpty()
+  address1: string;
+
+  @Column()
+  @IsNotEmpty()
+  address2: string;
+
+  @Column()
+  @IsNotEmpty()
+  city: string;
+
+  @Column()
+  @IsNotEmpty()
+  state: string;
+
+  @Column()
+  @IsNotEmpty()
+  postal: string;
+
   // @Column()
   // @UpdateDateColumn()
   // updatedAt: Date;

@@ -4,29 +4,7 @@ tags:
 
 paths:
 # [POST] sign up user
-  /signup2:
-    post:
-      tags:
-      - sigup2
-      summary: sign-up2
-      parameters:
-      - name: body
-        in: body
-        description: user Data
-        required: true
-        schema:
-          $ref: '#/definitions/vender'
-      responses:
-        201:
-          description: 'Created'
-        400:
-          description: 'Bad Request'
-        409:
-          description: 'Conflict'
-        500:
-          description: 'Server Error'
-# [POST] sign up user
-  /:
+  /signup:
     post:
       tags:
       - sigup
@@ -194,6 +172,13 @@ definitions:
         - user_login
         - user_email
         - user_password
+        - phone
+        - user_type
+        - address1
+        - address2
+        - city
+        - state
+        - postal
     properties:
       user_login:
         type: string
@@ -204,6 +189,28 @@ definitions:
       user_password:
         type: string
         description: user Password
+      phone:
+        type: string
+        description: user Phone
+      user_type:
+        type: string
+        description: user Type
+      address1:
+        type: string
+        description: user Address1
+      address2:
+        type: string
+        description: user Address2
+      city:
+        type: string
+        description: user City
+      state:
+        type: string
+        description: user State
+      postal:
+        type: string
+        description: user Postal
+
   user_login_dto:
     type: object
     required:

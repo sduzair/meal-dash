@@ -3,7 +3,7 @@ tags:
   description: users API
 
 paths:
-# [GET] users
+# [POST] sign up user
   /:
     post:
       tags:
@@ -25,6 +25,46 @@ paths:
           description: 'Conflict'
         500:
           description: 'Server Error'
+# [POST] sign in user
+  /login:
+    post:
+      tags:
+      - login
+      summary: login-in
+      parameters:
+      - name: body
+        in: body
+        description: user Data
+        required: true
+        schema:
+          $ref: '#/definitions/user_login_dto'
+      responses:
+        201:
+          description: 'Created'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'        
+  # [POST] sign in user
+  /logout:
+    post:
+      tags:
+      - logout
+      summary: logout
+      security:
+        - basicAuth: []
+      responses:
+        201:
+          description: 'Created'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'            
+# [GET] users          
   /users:
     get:
       tags:
@@ -142,6 +182,22 @@ definitions:
       user_password:
         type: string
         description: user Password
+  user_login_dto:
+    type: object
+    required:
+        # - user_login
+        - user_email
+        - user_password
+    properties:
+      # user_login:
+      #   type: string
+      #   description: user login name
+      user_email:
+        type: string
+        description: user Email
+      user_password:
+        type: string
+        description: user Password      
 
 schemes:
  - https

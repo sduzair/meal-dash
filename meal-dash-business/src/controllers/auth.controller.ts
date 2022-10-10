@@ -4,9 +4,26 @@ import { RequestWithUser } from '@interfaces/auth.interface';
 import { User } from '@interfaces/users.interface';
 import AuthService from '@services/auth.service';
 import { LoginUserDto } from '@/dtos/loginuser.dto';
+import { VenderDto } from '@/dtos/vender.dto';
+import { VendersEntity } from '@/entities/venders.entity';
+import VenderService from '@/services/vender.service';
 
 class AuthController {
   public authService = new AuthService();
+  public vendrService = new VenderService();
+
+  public signUp2 = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      console.log("req.body: ", req.body);
+      const userData: VenderDto = req.body;
+      console.log("userData: ", userData);
+      const signUpUserData: VendersEntity = await this.vendrService.signup2(userData);
+
+      res.status(201).json({ data: signUpUserData, message: 'signup' });
+    } catch (error) {
+      next(error);
+    }
+  };
 
   public signUp = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {

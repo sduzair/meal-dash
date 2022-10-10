@@ -4,6 +4,28 @@ tags:
 
 paths:
 # [POST] sign up user
+  /signup2:
+    post:
+      tags:
+      - sigup2
+      summary: sign-up2
+      parameters:
+      - name: body
+        in: body
+        description: user Data
+        required: true
+        schema:
+          $ref: '#/definitions/vender'
+      responses:
+        201:
+          description: 'Created'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+# [POST] sign up user
   /:
     post:
       tags:
@@ -197,7 +219,33 @@ definitions:
         description: user Email
       user_password:
         type: string
-        description: user Password      
+        description: user Password
+  vender:
+    type: object
+    required:
+        - user
+        - vender_phone
+        - vender_name
+    properties:
+      vender_phone:
+        type: string
+        description: user login name
+      vender_name:
+        type: string
+        description: user name
+      user:
+        type: "object"
+        properties:
+          user_login:
+            type: string
+            description: user login name
+          user_email:
+            type: string
+            description: user Email
+          user_password:
+            type: string
+            description: user Password  
+             
 
 schemes:
  - https

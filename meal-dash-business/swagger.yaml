@@ -164,6 +164,28 @@ paths:
         500:
           description: 'Server Error'
 
+# [POST] insert mean plan
+  /mealplan/add-mealplan:
+    post:
+      tags:
+      - add-mealplan
+      summary: add meal plan
+      parameters:
+      - name: body
+        in: body
+        description: meal Data
+        required: true
+        schema:
+          $ref: '#/definitions/createmealplan'
+      responses:
+        201:
+          description: 'Created'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
 # definitions
 definitions:
   users:
@@ -227,31 +249,27 @@ definitions:
       user_password:
         type: string
         description: user Password
-  vender:
+  createmealplan:
     type: object
     required:
-        - user
-        - vender_phone
-        - vender_name
+        - mealplan_recurrence
+        - mealplan_title
+        - mealplan_description
+        - is_active
     properties:
-      vender_phone:
+      mealplan_recurrence:
         type: string
-        description: user login name
-      vender_name:
+        description: meal plan recurrence
+      mealplan_title:
         type: string
-        description: user name
-      user:
-        type: "object"
-        properties:
-          user_login:
-            type: string
-            description: user login name
-          user_email:
-            type: string
-            description: user Email
-          user_password:
-            type: string
-            description: user Password  
+        description: meal plan title
+      mealplan_description:
+        type: string
+        description: meal plan description
+      is_active:
+        type: boolean
+        description: meal plan is active   
+              
              
 
 schemes:

@@ -28,18 +28,14 @@ class UserAuthViewModel with ChangeNotifier, DiagnosticableTreeMixin {
     notifyListeners();
     try {
       final response = await AuthService.signUp(userSignUpModel);
-      // await Future.delayed(const Duration(seconds: 5));
       if (response.statusCode == 201) {
-        // print(response.body);
         _isSigningUpError = false;
         return;
       } else {
-        // print(response.body);
         _isSigningUpError = true;
         return;
       }
     } catch (e) {
-      print(e);
       _isSigningUpError = true;
       return;
     } finally {

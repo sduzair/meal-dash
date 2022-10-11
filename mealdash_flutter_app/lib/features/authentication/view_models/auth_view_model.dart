@@ -1,30 +1,50 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:mealdash_app/features/authentication/models/user_signup_model.dart';
 
 import 'package:mealdash_app/features/authentication/repository/auth_service.dart';
 
-class UserAuthViewModel with ChangeNotifier {
+class UserAuthViewModel with ChangeNotifier, DiagnosticableTreeMixin {
+
   bool _isSigningUp = false;
   bool get isSigningUp => _isSigningUp;
 
-  void setIsSigningUp(bool isSigningUp) {
-    _isSigningUp = isSigningUp;
-    notifyListeners();
-  }
+  // set isSigningUp(bool value) {
+  //   _isSigningUp = value;
+  //   notifyListeners();
+  // }
 
-  Future<String> signUp(UserSignUpModel userSignUpModel) async {
-    setIsSigningUp(true);
+  bool _isSigningUpError = false;
+  bool get isSigningUpError => _isSigningUpError;
+
+  // set isSigningUpError(bool value) {
+  //   _isSigningUpError = value;
+  //   notifyListeners();
+  // }
+
+  Future<void> signUp(UserSignUpModel userSignUpModel) async {
+    print(userSignUpModel.toJson());
+    _isSigningUp = true;
+    _isSigningUpError = false;
+    notifyListeners();
     try {
       final response = await AuthService.signUp(userSignUpModel);
+      // await Future.delayed(const Duration(seconds: 5));
       if (response.statusCode == 201) {
-        return 'Signup successfull';
+        // print(response.body);
+        _isSigningUpError = false;
+        return;
       } else {
-        return 'Signup failed';
+        // print(response.body);
+        _isSigningUpError = true;
+        return;
       }
     } catch (e) {
-      return 'Network Error';
+      print(e);
+      _isSigningUpError = true;
+      return;
     } finally {
-      setIsSigningUp(false);
+      _isSigningUp = false;
+      notifyListeners();
     }
   }
 
@@ -42,5 +62,18 @@ class UserAuthViewModel with ChangeNotifier {
   void setIsSigningOut(bool isSigningOut) {
     _isSigningOut = isSigningOut;
     notifyListeners();
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(FlagProperty('isSigningUp',
+        value: isSigningUp, ifTrue: 'Signing Up', ifFalse: 'Not Signing Up'));
+    properties.add(FlagProperty('isSigningIn',
+        value: isSigningIn, ifTrue: 'Signing In', ifFalse: 'Not Signing In'));
+    properties.add(FlagProperty('isSigningOut',
+        value: isSigningOut,
+        ifTrue: 'Signing Out',
+        ifFalse: 'Not Signing Out'));
   }
 }

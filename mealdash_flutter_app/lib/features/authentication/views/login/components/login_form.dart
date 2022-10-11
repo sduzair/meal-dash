@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:mealdash_app/utils/constants.dart';
+import 'package:mealdash_app/utils/constants.dart' as constants;
 
 class LoginForm extends StatelessWidget {
   const LoginForm({
@@ -15,42 +15,47 @@ class LoginForm extends StatelessWidget {
           TextFormField(
             keyboardType: TextInputType.emailAddress,
             textInputAction: TextInputAction.next,
-            cursorColor: kPrimaryColor,
+            cursorColor: constants.kPrimaryColor,
             onSaved: (email) {},
             decoration: const InputDecoration(
               hintText: "Your email",
               prefixIcon: Padding(
-                padding: EdgeInsets.all(defaultPadding),
+                padding: EdgeInsets.all(constants.defaultPadding),
                 child: Icon(Icons.person),
               ),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: defaultPadding),
+            padding:
+                const EdgeInsets.symmetric(vertical: constants.defaultPadding),
             child: TextFormField(
               textInputAction: TextInputAction.done,
               obscureText: true,
-              cursorColor: kPrimaryColor,
+              cursorColor: constants.kPrimaryColor,
               decoration: const InputDecoration(
                 hintText: "Your password",
                 prefixIcon: Padding(
-                  padding: EdgeInsets.all(defaultPadding),
+                  padding: EdgeInsets.all(constants.defaultPadding),
                   child: Icon(Icons.lock),
                 ),
               ),
             ),
           ),
-          const SizedBox(height: defaultPadding),
+          const SizedBox(height: constants.defaultPadding),
           Hero(
             tag: "login_btn",
             child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: constants.kPrimaryColor,
+                  elevation: constants.defaultElevation),
               onPressed: () {},
               child: Text(
                 "Login".toUpperCase(),
               ),
+              
             ),
           ),
-          const SizedBox(height: defaultPadding),
+          const SizedBox(height: constants.defaultPadding),
           // AlreadyHaveAnAccountCheck(
           //   press: () {
           //     Navigator.push(

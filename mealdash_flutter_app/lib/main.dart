@@ -1,8 +1,10 @@
+import 'package:mealdash_app/features/mealplans/views/main_menu.dart';
+
+import 'package:mealdash_app/utils/constants.dart' as constants;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:mealdash_app/features/authentication/views/welcome/welcome_screen.dart';
-import 'package:mealdash_app/utils/constants.dart' as constants;
 
 import 'package:mealdash_app/features/authentication/view_models/auth_view_model.dart';
 
@@ -24,6 +26,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Auth',
       theme: ThemeData(
+          // useMaterial3: true,
           primaryColor: constants.kPrimaryColor,
           floatingActionButtonTheme: const FloatingActionButtonThemeData(
               backgroundColor: constants.kPrimaryColor),
@@ -42,14 +45,20 @@ class MyApp extends StatelessWidget {
             // fillColor: kPrimaryLightColor,
             iconColor: constants.kPrimaryColor,
             prefixIconColor: constants.kPrimaryColor,
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: constants.kPrimaryColor),
-              // borderRadius: BorderRadius.all(Radius.circular(50)),
-            ),
+            // focusedBorder: OutlineInputBorder(
+            //   borderSide: BorderSide(color: constants.kPrimaryColor),
+            //   // borderRadius: BorderRadius.all(Radius.circular(50)),
+            // ),
             // contentPadding: EdgeInsets.symmetric(
             //     horizontal: defaultPadding, vertical: defaultPadding),
+          ),
+          appBarTheme: const AppBarTheme(
+            elevation: constants.defaultElevationSmall,
+            backgroundColor: constants.kPrimaryColor,
           )),
-      home: const WelcomeScreen(),
+      home: constants.isLogginIn
+          ? const FoodVendorMainMenu()
+          : const WelcomeScreen(),
     );
   }
 }

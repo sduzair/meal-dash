@@ -153,13 +153,21 @@ class _SignupScreenState extends State<SignupScreen> {
                     _formKey.currentState!.validate()) {
                   // if (true) {
                   _formKey.currentState!.save();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            SignUpScreen2(userSignUpModel: _userSignUpModel)),
+                  );
+                } else if (constants.isTestingSignUp) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            SignUpScreen2(userSignUpModel: _userSignUpModel)),
+                  );
                 }
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          SignUpScreen2(userSignUpModel: _userSignUpModel)),
-                );
+                
               },
               icon: const Icon(Icons.navigate_next),
               label: const Text('NEXT'),

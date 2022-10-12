@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
 
-const bool isTestingSignUp = true;
+// DEV CONSTANTS
 
-const String apiUrl = 'http://10.0.2.2';
+const bool isLogginIn = true;
+
+const bool isTestingSignUp = true;
+const bool isTestingLogin = true;
+
+// const String apiUrl = 'http://10.0.2.2';
+const String apiUrl = 'http://localhost';
+
+// STYLING CONSTANTS
 
 const String appName = 'MealDash';
 const String appVersion = '1.0.0';

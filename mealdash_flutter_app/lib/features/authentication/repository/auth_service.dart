@@ -24,7 +24,7 @@ class AuthService {
 
   static Future<http.Response> login(UserLoginModel userLoginModel) async {
     final response = await http.post(
-      Uri.parse('${constants.apiUrl}/login'),
+      Uri.parse('${constants.apiUrl}/loginsdf'),
       headers: <String, String>{
         'Content-Type': 'application/json',
       },

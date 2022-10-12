@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mealdash_app/components/background.dart';
 import 'package:mealdash_app/features/authentication/models/user_signup_model.dart';
 import 'package:mealdash_app/features/authentication/view_models/auth_view_model.dart';
+import 'package:mealdash_app/features/authentication/views/login/login_screen.dart';
 
 import 'package:mealdash_app/utils/constants.dart' as constants;
 import 'package:provider/provider.dart';
@@ -198,7 +199,7 @@ class SubmitButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton.icon(
+    return ElevatedButton(
       onPressed: () {
         if (context.read<UserAuthViewModel>().isSigningUp) {
           return;
@@ -210,19 +211,62 @@ class SubmitButton extends StatelessWidget {
           // }));
         }
         context.read<UserAuthViewModel>().signUp(userSignUpModel);
+        if (context.read<UserAuthViewModel>().isSigningUpSuccess) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return const LoginScreen();
+              },
+            ),
+          );
+        }
       },
-      icon: const Icon(Icons.check_circle),
-      label: context.watch<UserAuthViewModel>().isSigningUp
-          ? const Text('SIGNING UP')
-          : context.watch<UserAuthViewModel>().isSigningUpError
-              ? const Text('SIGNUP FAILED TRY AGAIN')
-              : const Text('SIGN UP'),
+      // icon: const Icon(Icons.check_circle),
       style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(constants.borderRadiusExtraLarge),
         ),
         elevation: constants.defaultElevation,
-      ),
+      ), 
+      child: const TextSignUpButton(),
+    );
+  }
+}
+
+class TextSignUpButton extends StatelessWidget {
+  const TextSignUpButton({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<UserAuthViewModel>(
+      builder: (context, userAuthViewModel, child) {
+        if (userAuthViewModel.isSigningUp) {
+          return const SizedBox(
+            height: 20,
+            width: 20,
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+              color: Colors.white,
+            ),
+          );
+        } else if (userAuthViewModel.isSigningUpError) {
+          return const Text("SIGNUP ERROR TRY AGAIN");
+        } else if (userAuthViewModel.isSigningUpSuccess) {
+          return const SizedBox(
+            height: 20,
+            width: 20,
+            child: Icon(
+              Icons.check,
+              color: Colors.white,
+            ),
+          );
+        } else {
+          return const Text("SIGNUP");
+        }
+      },
     );
   }
 }

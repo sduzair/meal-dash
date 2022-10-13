@@ -3,6 +3,7 @@ import { validate, ValidationError } from 'class-validator';
 import { RequestHandler } from 'express';
 import { HttpException } from '@exceptions/HttpException';
 
+// ValidationMiddleware class to validate the request body
 const validationMiddleware = (
   type: any,
   value: string | 'body' | 'query' | 'params' = 'body',

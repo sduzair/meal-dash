@@ -1,13 +1,23 @@
 import 'package:flutter/material.dart';
 
-const String apiUrl = 'http://localhost:3000';
+// DEV CONSTANTS
+
+const bool isLogginIn = false;
+
+const bool isTestingSignUp = false;
+const bool isTestingLogin = false;
+
+// const String apiUrl = 'http://10.0.2.2';
+const String apiUrl = 'http://localhost';
+
+// STYLING CONSTANTS
 
 const String appName = 'MealDash';
 const String appVersion = '1.0.0';
 const String appDescription = 'MealDash is a food delivery app';
 
 const String backgroundTopLeftImage = "assets/images/big-flourish-topleft.png";
-const String backgroundBottomRightImage = "assets/images/bottom-right.png";
+const String backgroundBottomRightImage = "assets/images/bottom-right2.png";
 
 const kPrimaryColor = Color.fromRGBO(247, 63, 82, 1);
 const kPrimaryLightColor = Color.fromRGBO(255, 234, 133, 1);

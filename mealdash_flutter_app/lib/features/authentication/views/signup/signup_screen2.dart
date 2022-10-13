@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:mealdash_app/components/background.dart';
+import 'package:mealdash_app/features/authentication/models/user_signup_model.dart';
+import 'package:mealdash_app/features/authentication/view_models/auth_view_model.dart';
+import 'package:mealdash_app/features/authentication/views/login/login_screen.dart';
 
 import 'package:mealdash_app/utils/constants.dart' as constants;
+import 'package:provider/provider.dart';
 
 class SignUpScreen2 extends StatefulWidget {
-  const SignUpScreen2({Key? key}) : super(key: key);
+  final UserSignUpModel userSignUpModel;
+  const SignUpScreen2({required this.userSignUpModel, Key? key})
+      : super(key: key);
 
   @override
   SignUpScreen2State createState() => SignUpScreen2State();
@@ -12,7 +18,6 @@ class SignUpScreen2 extends StatefulWidget {
 
 class SignUpScreen2State extends State<SignUpScreen2> {
   final _formKey = GlobalKey<FormState>();
-  // late final UserSignUpModel _userSignUpModel = UserSignUpModel();
   @override
   Widget build(BuildContext context) {
     return Background(
@@ -36,7 +41,9 @@ class SignUpScreen2State extends State<SignUpScreen2> {
               children: <Widget>[
                 // const SizedBox(height: Constants.defaultPadding * 2),
                 TextFormField(
-                  // onSaved: (newValue) => {_userSignUpModel.email = newValue!},
+                  onSaved: (newValue) {
+                    // widget.userSignUpModel.firstName = newValue!;
+                  },
                   decoration: const InputDecoration(
                       labelText: "First Name",
                       hintText: "Enter your first name",
@@ -50,7 +57,9 @@ class SignUpScreen2State extends State<SignUpScreen2> {
                   },
                 ),
                 TextFormField(
-                  onSaved: (newValue) => {},
+                  onSaved: (newValue) {
+                    // widget.userSignUpModel.lastName = newValue!;
+                  },
                   decoration: const InputDecoration(
                       labelText: "Last Name",
                       hintText: "Enter your last name",
@@ -64,7 +73,9 @@ class SignUpScreen2State extends State<SignUpScreen2> {
                   },
                 ),
                 TextFormField(
-                  onSaved: (newValue) => {},
+                  onSaved: (newValue) {
+                    widget.userSignUpModel.phoneNumber = newValue!;
+                  },
                   decoration: const InputDecoration(
                       labelText: "Phone Number",
                       hintText: "Enter your phone number",
@@ -78,7 +89,9 @@ class SignUpScreen2State extends State<SignUpScreen2> {
                   },
                 ),
                 TextFormField(
-                  onSaved: (newValue) => {},
+                  onSaved: (newValue) {
+                    widget.userSignUpModel.addressLine1 = newValue!;
+                  },
                   decoration: const InputDecoration(
                       labelText: "Address",
                       hintText: "Address line 1",
@@ -92,7 +105,9 @@ class SignUpScreen2State extends State<SignUpScreen2> {
                   },
                 ),
                 TextFormField(
-                  onSaved: (newValue) => {},
+                  onSaved: (newValue) {
+                    widget.userSignUpModel.addressLine2 = newValue!;
+                  },
                   decoration: const InputDecoration(
                       labelText: "Address",
                       hintText: "Address line 2",
@@ -106,7 +121,9 @@ class SignUpScreen2State extends State<SignUpScreen2> {
                   // },
                 ),
                 TextFormField(
-                  onSaved: (newValue) => {},
+                  onSaved: (newValue) {
+                    widget.userSignUpModel.city = newValue!;
+                  },
                   decoration: const InputDecoration(
                       labelText: "City",
                       hintText: "Enter your city",
@@ -120,7 +137,9 @@ class SignUpScreen2State extends State<SignUpScreen2> {
                   },
                 ),
                 TextFormField(
-                  onSaved: (newValue) => {},
+                  onSaved: (newValue) {
+                    widget.userSignUpModel.state = newValue!;
+                  },
                   decoration: const InputDecoration(
                       labelText: "State",
                       hintText: "Enter your state",
@@ -134,7 +153,9 @@ class SignUpScreen2State extends State<SignUpScreen2> {
                   },
                 ),
                 TextFormField(
-                  onSaved: (newValue) => {},
+                  onSaved: (newValue) {
+                    widget.userSignUpModel.postalCode = newValue!;
+                  },
                   decoration: const InputDecoration(
                       labelText: "Postal Code",
                       hintText: "Enter your postal code",
@@ -155,30 +176,97 @@ class SignUpScreen2State extends State<SignUpScreen2> {
         persistentFooterButtons: [
           Hero(
             tag: "signup_btn",
-            child: ElevatedButton.icon(
-              onPressed: () {
-                // Validate returns true if the form is valid, or false otherwise.
-                if (_formKey.currentState!.validate()) {
-                  // If the form is valid, display a snackbar. In the real world,
-                  // you'd often call a server or save the information in a database.
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Processing Data')),
-                  );
-                }
-              },
-              icon: const Icon(Icons.check_circle),
-              label: const Text('SIGN UP'),
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius:
-                      BorderRadius.circular(constants.borderRadiusExtraLarge),
-                ),
-                elevation: constants.defaultElevation,
-              ),
-            ),
+            child: SubmitButton(
+                formKey: _formKey, userSignUpModel: widget.userSignUpModel),
           ),
         ],
       ),
+    );
+  }
+}
+
+class SubmitButton extends StatelessWidget {
+  final UserSignUpModel userSignUpModel;
+
+  const SubmitButton({
+    Key? key,
+    required GlobalKey<FormState> formKey,
+    required this.userSignUpModel,
+  })  : _formKey = formKey,
+        super(key: key);
+
+  final GlobalKey<FormState> _formKey;
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        if (context.read<UserAuthViewModel>().isSigningUp) {
+          return;
+        }
+        if (!constants.isTestingSignUp && _formKey.currentState!.validate()) {
+          _formKey.currentState!.save();
+          // Navigator.push(context, MaterialPageRoute(builder: (context) {
+          //   return ;
+          // }));
+        }
+        context.read<UserAuthViewModel>().signUp(userSignUpModel);
+        if (context.read<UserAuthViewModel>().isSigningUpSuccess) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return const LoginScreen();
+              },
+            ),
+          );
+        }
+      },
+      // icon: const Icon(Icons.check_circle),
+      style: ElevatedButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(constants.borderRadiusExtraLarge),
+        ),
+        elevation: constants.defaultElevation,
+      ), 
+      child: const TextSignUpButton(),
+    );
+  }
+}
+
+class TextSignUpButton extends StatelessWidget {
+  const TextSignUpButton({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<UserAuthViewModel>(
+      builder: (context, userAuthViewModel, child) {
+        if (userAuthViewModel.isSigningUp) {
+          return const SizedBox(
+            height: 20,
+            width: 20,
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+              color: Colors.white,
+            ),
+          );
+        } else if (userAuthViewModel.isSigningUpError) {
+          return const Text("SIGNUP ERROR TRY AGAIN");
+        } else if (userAuthViewModel.isSigningUpSuccess) {
+          return const SizedBox(
+            height: 20,
+            width: 20,
+            child: Icon(
+              Icons.check,
+              color: Colors.white,
+            ),
+          );
+        } else {
+          return const Text("SIGNUP");
+        }
+      },
     );
   }
 }

@@ -186,6 +186,29 @@ paths:
           description: 'Conflict'
         500:
           description: 'Server Error'
+# [POST] subscription
+  /subscription:
+    post:
+      tags:
+      - subscription
+      summary: Add subscription plan
+      parameters:
+      - name: body
+        in: body
+        description: subscription plan Data
+        required: true
+        schema:
+          $ref: '#/definitions/subscription'
+      responses:
+        201:
+          description: 'Created'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
 # definitions
 definitions:
   users:
@@ -270,6 +293,38 @@ definitions:
         type: boolean
         description: meal plan is active   
               
+  subscription:
+    type: object
+    required:
+        - ends_at
+        - starts_at
+        - created_at
+        - deleted_at
+        - is_deleted
+        - mealplan_id
+    properties:
+      ends_at:
+        type: string
+        format: date-time
+        description: subscription end date
+      starts_at:
+        type: string
+        format: date-time
+        description: subscription start date
+      created_at:
+        type: string
+        format: date-time
+        description: subscription created date
+      deleted_at:
+        type: string
+        format: date-time
+        description: subscription deleted date
+      is_deleted:
+        type: boolean
+        description: subscription is deleted
+      mealplan_id:
+        type: number
+        description: subscription meal plan id
              
 
 schemes:

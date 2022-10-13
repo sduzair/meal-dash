@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mealdash_app/utils/constants.dart';
 
 class SignUpForm extends StatelessWidget {
+
   const SignUpForm({
     Key? key,
   }) : super(key: key);

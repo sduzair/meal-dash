@@ -1,39 +1,91 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+import 'package:mealdash_app/features/authentication/models/user_login_model.dart';
 import 'package:mealdash_app/features/authentication/models/user_signup_model.dart';
 
 import 'package:mealdash_app/features/authentication/repository/auth_service.dart';
 
-class UserAuthViewModel with ChangeNotifier {
+class UserAuthViewModel with ChangeNotifier, DiagnosticableTreeMixin {
+  bool _isAuthenticated = false;
+  bool get isAuthenticated => _isAuthenticated;
+
   bool _isSigningUp = false;
   bool get isSigningUp => _isSigningUp;
 
-  void setIsSigningUp(bool isSigningUp) {
-    _isSigningUp = isSigningUp;
-    notifyListeners();
-  }
+  bool _isSigningUpError = false;
+  bool get isSigningUpError => _isSigningUpError;
 
-  Future<String> signUp(UserSignUpModel userSignUpModel) async {
-    setIsSigningUp(true);
+  bool _isSigningUpSuccess = false;
+  bool get isSigningUpSuccess => _isSigningUpSuccess;
+
+  Future<void> signUp(UserSignUpModel userSignUpModel) async {
+    print(userSignUpModel.toJson());
+    _isSigningUp = true;
+    _isSigningUpError = false;
+    notifyListeners();
     try {
       final response = await AuthService.signUp(userSignUpModel);
       if (response.statusCode == 201) {
-        return 'Signup successfull';
+        _isSigningUpSuccess = true;
+        return;
       } else {
-        return 'Signup failed';
+        _isSigningUpError = true;
+        return;
       }
     } catch (e) {
-      return 'Network Error';
+      _isSigningUpError = true;
+      return;
     } finally {
-      setIsSigningUp(false);
+      _isSigningUp = false;
+      notifyListeners();
     }
   }
 
-  bool _isSigningIn = false;
-  bool get isSigningIn => _isSigningIn;
+  bool _isLoggingIn = false;
+  bool get isLoggingIn => _isLoggingIn;
 
-  void setIsSigningIn(bool isSigningIn) {
-    _isSigningIn = isSigningIn;
+  bool _isLoggingInError = false;
+  bool get isLoggingInError => _isLoggingInError;
+
+  bool _isLoggingInErrorInvalidCredentials = false;
+  bool get isLoggingInErrorInvalidCredentials =>
+      _isLoggingInErrorInvalidCredentials;
+
+  bool _isLoggingInErrorNetwork = false;
+  bool get isLoggingInErrorNetwork => _isLoggingInErrorNetwork;
+
+  // bool _isLoggingInErrorTimeout = false;
+  // bool get isLoggingInErrorTimeout => _isLoggingInErrorTimeout;
+
+  Future<void> signIn(UserLoginModel userLoginModel) async {
+    print(userLoginModel.toJson());
+    _isLoggingIn = true;
+    _isLoggingInError = false;
+    _isLoggingInErrorInvalidCredentials = false;
+    _isLoggingInErrorNetwork = false;
+    // _isLoggingInErrorTimeout = false;
     notifyListeners();
+    try {
+      final response = await AuthService.login(userLoginModel);
+      if (response.statusCode == 200) {
+        _isAuthenticated = true;
+        return;
+        // } else if (response.statusCode == 408) {
+        //   _isLoggingInError = true;
+        //   _isLoggingInErrorTimeout = true;
+        //   return;
+      } else {
+        _isLoggingInError = true;
+        _isLoggingInErrorInvalidCredentials = true;
+        return;
+      }
+    } catch (e) {
+      _isLoggingInError = true;
+      _isLoggingInErrorNetwork = true;
+      return;
+    } finally {
+      _isLoggingIn = false;
+      notifyListeners();
+    }
   }
 
   bool _isSigningOut = false;
@@ -42,5 +94,18 @@ class UserAuthViewModel with ChangeNotifier {
   void setIsSigningOut(bool isSigningOut) {
     _isSigningOut = isSigningOut;
     notifyListeners();
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(FlagProperty('isSigningUp',
+        value: isSigningUp, ifTrue: 'Signing Up', ifFalse: 'Not Signing Up'));
+    properties.add(FlagProperty('isLoggingIn',
+        value: isLoggingIn, ifTrue: 'Signing In', ifFalse: 'Not Signing In'));
+    properties.add(FlagProperty('isSigningOut',
+        value: isSigningOut,
+        ifTrue: 'Signing Out',
+        ifFalse: 'Not Signing Out'));
   }
 }

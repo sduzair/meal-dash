@@ -4,13 +4,12 @@
 <br />
 <div align="center">
   <a href="https://github.com/azeez-ahmad/meal-dash">
-    <img src="ui-kit/HatchfulExport-All/twitter_header_photo_1.png" alt="Logo" width="auto" height="auto">
+    <img src="ui-kit/HatchfulExport-All/twitter_header_photo_1.png" alt="Logo" width="80%" height="auto">
   </a>
-
   <h3 align="center">Source code for Meal Dash</h3>
 </div>
 
-With our application we want to create a platform that offers tiffin/meal prep plans that are healthy and delivered to the doorstep of our customers. Customers would be able to select from a wide range of meal plans and subscribe to them. Food service vendors can advertise their meal plans that are composed of multiple containerized and portioned meals which are delivered on a weekly basis to their customers.
+With our application we want to create a platform that offers tiffin/meal prep plans that are healthy and delivered to the doorstep of our customers. Customers would be able to select from a wide range of meal plans and subscribe to them. Food service vendors can advertise their meal plans that are composed of multiple containerized and portioned meals which are delivered on a weekly basis to their customers. :tada:
 
 ### Built With
 

@@ -10,3 +10,10 @@
     "state": "ON",
     "postal": "n2t0b3"
   }
+  // meal plan add
+  {
+    "mealplan_recurrence": "23",
+    "mealplan_title": "gems4",
+    "mealplan_description": "tacgem3so",
+    "is_active": true
+  }

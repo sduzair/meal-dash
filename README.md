@@ -9,6 +9,8 @@
   <h3 align="center">Source code for Meal Dash</h3>
 </div>
 
+## About the project
+
 With our application we want to create a platform that offers tiffin/meal prep plans that are healthy and delivered to the doorstep of our customers. Customers would be able to select from a wide range of meal plans and subscribe to them. Food service vendors can advertise their meal plans that are composed of multiple containerized and portioned meals which are delivered on a weekly basis to their customers. :tada::confetti_ball::balloon::balloon:
 
 ### Built With
@@ -34,29 +36,40 @@ This section lists the major frameworks/libraries used to bootstrap the project.
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-# meal-dash
-Capstone group 7
+# Getting started
 
+### Prerequisites
+
+This is an example of how to list things you need to use the software and how to install them.
+* npm
+  ```sh
+  npm install npm@latest -g
+  ```
+  
+### Installation
 
 backend-service
 swagger
 http://localhost:3000/api-docs/#/
 Commands:
-1. Go into app folder run >  npm install
+1. Go into app folder run
+```sh
+npm install
+```
 2. Open two terminals, run node server on one terminal and run typescript compiler on the other.
-2. Command to compile Ts code to JS > npm run compile
-3. Command to run node > npm run nodemon	
+3. Command to compile Ts code to JS 
+```sh
+npm run compile
+```
+4. Command to run node server 
+```sh
+npm run nodemon	
+```
 
 
 #Sample .env

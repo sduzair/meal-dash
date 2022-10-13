@@ -1,0 +1,12 @@
+{
+    "user_login": "bossman",
+    "user_email": "bossman@meal-dash.com",
+    "user_password": "bossman",
+    "phone": "+12345678912",
+    "user_type": "string",
+    "address1": "address1",
+    "address2": "address2",
+    "city": "waterloo",
+    "state": "ON",
+    "postal": "n2t0b3"
+  }

@@ -1,5 +1,6 @@
 import { IsNotEmpty } from "class-validator";
 
+//MealPlanDto class to validate the request body
 export class CreateMealPlanDto {
   
     foodvenderuser_id?: number;

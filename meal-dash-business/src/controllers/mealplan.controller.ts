@@ -5,9 +5,11 @@ import { User } from "@/interfaces/users.interface";
 import { MealPlanService } from "@/services/mealplan.service";
 import { NextFunction, Request, Response } from "express";
 
+// MealPlanController class handles all the requests for meal plans
 export class MealPlanController {
     public mealPlanService = new MealPlanService();
   
+    // Create a new meal plan
     public addMealPlan = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
       try {
         const data: CreateMealPlanDto = req.body;

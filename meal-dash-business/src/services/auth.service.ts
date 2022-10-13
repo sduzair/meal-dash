@@ -11,6 +11,7 @@ import { LoginUserDto } from '@/dtos/loginuser.dto';
 import { VenderDto } from '@/dtos/vender.dto';
 import { CreateUserDto } from '@/dtos/createusers.dto';
 
+// AuthRepository class to handle all the database operations for authentication
 @EntityRepository()
 class AuthService extends Repository<UserEntity> {
 

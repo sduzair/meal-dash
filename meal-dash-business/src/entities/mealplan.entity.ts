@@ -1,6 +1,7 @@
 import { IsNotEmpty } from "class-validator";
 import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, Unique } from "typeorm";
 
+//MealPlanEntity represents the mealplan table in the database
 @Entity("mealplans")
 export class MealPlanEntity extends BaseEntity{
   @PrimaryGeneratedColumn()

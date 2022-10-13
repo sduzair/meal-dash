@@ -2,6 +2,7 @@ import { Router } from 'express';
 import IndexController from '@controllers/index.controller';
 import { Routes } from '@interfaces/routes.interface';
 
+// IndexRoute class to handle all the routes for index
 class IndexRoute implements Routes {
   public path = '/';
   public router = Router();

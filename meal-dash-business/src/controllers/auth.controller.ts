@@ -5,10 +5,11 @@ import AuthService from '@services/auth.service';
 import { LoginUserDto } from '@/dtos/loginuser.dto';
 import { CreateUserDto } from '@/dtos/createusers.dto';
 
-
+// AuthController class
 class AuthController {
   public authService = new AuthService();
 
+  //Signup method to create a new user
   public signUp = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const userData: CreateUserDto = req.body;
@@ -20,6 +21,7 @@ class AuthController {
     }
   };
 
+  //Login method to login a user
   public logIn = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const userData: LoginUserDto = req.body;
@@ -32,6 +34,7 @@ class AuthController {
     }
   };
 
+  //Logout method to logout a user
   public logOut = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
       const userData: User = req.user;

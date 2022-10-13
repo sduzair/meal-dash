@@ -5,6 +5,7 @@ import authMiddleware from "@/middlewares/auth.middleware";
 import validationMiddleware from "@/middlewares/validation.middleware";
 import { Router } from "express";
 
+// MealPlanRoute class to handle all the routes for meal plans
 export default class MealPlanRoute implements Routes {
     public path = '/mealplan';
     public router = Router();

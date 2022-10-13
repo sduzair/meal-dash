@@ -4,6 +4,7 @@ import { Routes } from '@interfaces/routes.interface';
 import validationMiddleware from '@middlewares/validation.middleware';
 import { CreateUserDto } from '@/dtos/createusers.dto';
 
+// UsersRoute class to handle all the routes for users
 class UsersRoute implements Routes {
   public path = '/users';
   public router = Router();

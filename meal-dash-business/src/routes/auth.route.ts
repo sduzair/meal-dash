@@ -6,6 +6,7 @@ import validationMiddleware from '@middlewares/validation.middleware';
 import { LoginUserDto } from '@/dtos/loginuser.dto';
 import { CreateUserDto } from '@/dtos/createusers.dto';
 
+// AuthRoute class to handle all the routes for authentication
 class AuthRoute implements Routes {
   public path = '/';
   public router = Router();

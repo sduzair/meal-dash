@@ -1,5 +1,6 @@
 import { IsEmail, IsPhoneNumber, IsPostalCode, IsString } from 'class-validator';
 
+//CreateUserDto class to validate the request body
 export class CreateUserDto {
 
   @IsString()

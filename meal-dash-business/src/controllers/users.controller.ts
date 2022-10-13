@@ -1,11 +1,14 @@
 import { NextFunction, Request, Response } from 'express';
-import { CreateUserDto } from '@dtos/users.dto';
 import { User } from '@interfaces/users.interface';
 import userService from '@services/users.service';
+import { CreateUserDto } from '@/dtos/createusers.dto';
 
+
+// UserController class
 class UsersController {
   public userService = new userService();
 
+  //getUsers method to get all users
   public getUsers = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const findAllUsersData: User[] = await this.userService.findAllUser();
@@ -16,6 +19,7 @@ class UsersController {
     }
   };
 
+  //getUserById method to get a user by id
   public getUserById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const userId = Number(req.params.user_id);
@@ -27,6 +31,7 @@ class UsersController {
     }
   };
 
+  //createUser method to create a new user
   public createUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const userData: CreateUserDto = req.body;
@@ -38,6 +43,7 @@ class UsersController {
     }
   };
 
+  //updateUser method to update a user by id
   public updateUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const userId = Number(req.params.user_id);
@@ -50,6 +56,7 @@ class UsersController {
     }
   };
 
+  //deleteUser method to delete a user by id
   public deleteUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const userId = Number(req.params.user_id);

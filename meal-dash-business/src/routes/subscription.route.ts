@@ -4,6 +4,7 @@ import { SubscriptionDto } from '@/dtos/subscriptions.dto';
 import { Routes } from '@interfaces/routes.interface';
 import validationMiddleware from '@middlewares/validation.middleware';
 
+// SubscriptionRoute class to handle all the routes for subscriptions
 class SubscriptionRoute implements Routes {
   public path = '/subscription';
   public router = Router();

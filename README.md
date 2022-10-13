@@ -55,8 +55,6 @@ This is an example of how to list things you need to use the software and how to
   
 ### Installation
 
-#### Backend service
-
 Commands:
 1. Go into app folder run `npm install`
 2. Open two terminals, run node server on one terminal and run typescript compiler on the other.

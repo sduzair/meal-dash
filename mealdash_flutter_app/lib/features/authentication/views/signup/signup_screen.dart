@@ -18,13 +18,21 @@ class _SignupScreenState extends State<SignupScreen> {
   final UserSignUpModel _userSignUpModel = constants.isTestingSignUp
       ? UserSignUpModel.initializeDummyVals()
       : UserSignUpModel.empty();
+  String _password1 = '';
+  String _password2 = '';
+  bool _isMatchPassword = true;
+  _checkIfPasswordsMatch() {
+    identical(_password1,_password2)
+        ? _isMatchPassword = true
+        : _isMatchPassword = false;
+  }
   @override
   Widget build(BuildContext context) {
     return Background(
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar:
-            AppBar(backgroundColor: Colors.transparent, elevation: 0, actions: [
+        AppBar(backgroundColor: Colors.transparent, elevation: 0, actions: [
           IconButton(
             icon: const Icon(Icons.arrow_back_ios),
             color: Colors.black,
@@ -91,7 +99,11 @@ class _SignupScreenState extends State<SignupScreen> {
                             padding: const EdgeInsets.symmetric(
                                 vertical: constants.defaultPadding),
                             child: TextFormField(
+                              onChanged: (pass1) {
+                                _password1 = pass1;
+                              },
                               onSaved: (newValue) {
+                                _password1 = newValue!;
                                 _userSignUpModel.password = newValue!;
                               },
                               validator: (value) {
@@ -110,6 +122,12 @@ class _SignupScreenState extends State<SignupScreen> {
                             ),
                           ),
                           TextFormField(
+                            onChanged: (pass2) {
+                              _password2 = pass2;
+                            },
+                            onSaved: (newValue) {
+                              _password2 = newValue!;
+                            },
                             textInputAction: TextInputAction.done,
                             obscureText: true,
                             cursorColor: constants.kPrimaryColor,
@@ -132,6 +150,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           //     );
                           //   },
                           // ),
+                          _isMatchPassword ? const Text("") : const Text("Passwords do not match")
                         ],
                       ),
                     ),
@@ -140,7 +159,7 @@ class _SignupScreenState extends State<SignupScreen> {
               ),
               // const SocalSignUp()
             ],
-            
+
           ),
         ),
         // resizeToAvoidBottomInset: false,
@@ -149,8 +168,9 @@ class _SignupScreenState extends State<SignupScreen> {
             tag: "signup_btn",
             child: ElevatedButton.icon(
               onPressed: () {
+                _checkIfPasswordsMatch();
                 if (!constants.isTestingSignUp &&
-                    _formKey.currentState!.validate()) {
+                    _formKey.currentState!.validate()  && _isMatchPassword) {
                   // if (true) {
                   _formKey.currentState!.save();
                   Navigator.push(
@@ -167,7 +187,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             SignUpScreen2(userSignUpModel: _userSignUpModel)),
                   );
                 }
-                
+
               },
               icon: const Icon(Icons.navigate_next),
               label: const Text('NEXT'),

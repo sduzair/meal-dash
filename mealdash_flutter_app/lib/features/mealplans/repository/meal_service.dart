@@ -11,6 +11,7 @@ class MealService {
       Uri.parse('${constants.apiUrl}/foodvendors/$foodVendorId/meals'),
       headers: <String, String>{
         'Content-Type': 'application/json',
+        // 'Authorization': 'Bearer ${constants.token}',
       },
       body: jsonEncode(mealModel.toJson()),
     );

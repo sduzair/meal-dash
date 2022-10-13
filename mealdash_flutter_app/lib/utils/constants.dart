@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 // DEV CONSTANTS
 
-const bool isLogginIn = true;
+const bool isLogginIn = false;
 
-const bool isTestingSignUp = true;
-const bool isTestingLogin = true;
+const bool isTestingSignUp = false;
+const bool isTestingLogin = false;
 
 // const String apiUrl = 'http://10.0.2.2';
 const String apiUrl = 'http://localhost';

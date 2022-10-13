@@ -58,45 +58,40 @@ backend-service
 swagger
 http://localhost:3000/api-docs/#/
 Commands:
-1. Go into app folder run
-```sh
-npm install
-```
+1. Go into app folder run `sh npm install`
 2. Open two terminals, run node server on one terminal and run typescript compiler on the other.
-3. Command to compile Ts code to JS 
-```sh
-npm run compile
-```
-4. Command to run node server 
-```sh
-npm run nodemon	
-```
+3. Command to compile Ts code to JS `sh npm run compile`
+4. Command to run node server `sh npm run nodemon	`
 
-
-#Sample .env
+- Sample .env
+```
 meal-dash-business/.env.development.local
 meal-dash-business/.env.production.local
 meal-dash-business/.env.development.local
 meal-dash-business/.env.test.local
-`
-# PORT
-PORT = 3000
+```
 
-# DATABASE
+- PORT `PORT = 3000`
+
+- DATABASE
+```
 DB_HOST = localhost
 DB_PORT = 3306
 DB_USER = YOUR_USER
 DB_PASSWORD = YOUR_USER
 DB_DATABASE = meal-dash
+```
 
-# TOKEN
-SECRET_KEY = secretKey
+- TOKEN `SECRET_KEY = secretKey`
 
-# LOG
+- LOG
+```
 LOG_FORMAT = dev
 LOG_DIR = ../../../logs
+```
 
-# CORS
+- CORS
+```
 ORIGIN = *
 CREDENTIALS = true
-`
+```

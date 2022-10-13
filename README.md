@@ -33,7 +33,7 @@ SECRET_KEY = secretKey
 
 # LOG
 LOG_FORMAT = dev
-LOG_DIR = ../logs
+LOG_DIR = ../../../logs
 
 # CORS
 ORIGIN = *

@@ -22,6 +22,7 @@ This section lists the major frameworks/libraries used to bootstrap the project.
 <!-- TABLE OF CONTENTS -->
 <details>
   <summary>Table of Contents</summary>
+  
   <ol>
     <li>
       <a href="#about-the-project">About The Project</a>

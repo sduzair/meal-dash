@@ -5,9 +5,12 @@ import { User } from "@/interfaces/users.interface";
 import { isEmpty } from "class-validator";
 import { EntityRepository, Repository } from "typeorm";
 
+
+// MealPlanRepository class to handle all the database operations for meal plans
 @EntityRepository()
 export class MealPlanService extends Repository<MealPlanEntity> {
 
+    // Create a new meal plan
     public async addMealPlan(data: CreateMealPlanDto): Promise<MealPlanEntity> {
         if (isEmpty(data)) throw new HttpException(400, "meal plan is empty");
 

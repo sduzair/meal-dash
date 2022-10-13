@@ -6,13 +6,16 @@ import { User } from '@interfaces/users.interface';
 import { isEmpty } from '@utils/util';
 import { CreateUserDto } from '@/dtos/createusers.dto';
 
+// UserService class to handle all the database operations for Users
 @EntityRepository()
 class UserService extends Repository<UserEntity> {
+  //find all users
   public async findAllUser(): Promise<User[]> {
     const users: User[] = await UserEntity.find();
     return users;
   }
 
+  //findUserById find user by id
   public async findUserById(userId: number): Promise<User> {
     if (isEmpty(userId)) throw new HttpException(400, "UserId is empty");
 
@@ -22,6 +25,7 @@ class UserService extends Repository<UserEntity> {
     return findUser;
   }
 
+  //findUserByEmail find user by email
   public async createUser(userData: CreateUserDto): Promise<User> {
     if (isEmpty(userData)) throw new HttpException(400, "userData is empty");
 
@@ -33,7 +37,7 @@ class UserService extends Repository<UserEntity> {
 
     return createUserData;
   }
-
+  //updateUser update user by id
   public async updateUser(user_id: number, userData: CreateUserDto): Promise<User> {
     if (isEmpty(userData)) throw new HttpException(400, "userData is empty");
 
@@ -47,6 +51,7 @@ class UserService extends Repository<UserEntity> {
     return updateUser;
   }
 
+  //findUserByEmail find user by email
   public async deleteUser(user_id: number): Promise<User> {
     if (isEmpty(user_id)) throw new HttpException(400, "user_id is empty");
 

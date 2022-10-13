@@ -34,7 +34,10 @@ This section lists the major frameworks/libraries used to bootstrap the project.
       <a href="#getting-started">Getting Started</a>
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
+        <li><a href="#installation">Installation</a></li>        
+        <ul>
+          <li><a href="#built-with">Built With</a></li>
+        </ul>
       </ul>
     </li>
   </ol>
@@ -52,14 +55,14 @@ This is an example of how to list things you need to use the software and how to
   
 ### Installation
 
-backend-service
-swagger
-http://localhost:3000/api-docs/#/
+### Backend service
+
 Commands:
 1. Go into app folder run `npm install`
 2. Open two terminals, run node server on one terminal and run typescript compiler on the other.
 3. Command to compile Ts code to JS `npm run compile`
 4. Command to run node server `npm run nodemon	`
+5. Swagger UI `http://localhost:3000/api-docs/#/`
 
 - Sample .env
 ```

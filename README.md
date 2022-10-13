@@ -4,7 +4,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/azeez-ahmad/meal-dash">
-    <img src="ui-kit/HatchfulExport-All/logo_transparent.png" alt="Logo" width="380" height="auto">
+    <img src="ui-kit/HatchfulExport-All/twitter_header_photo_1.png" alt="Logo" width="auto" height="auto">
   </a>
 
   <h3 align="center">Source code for Meal Dash</h3>

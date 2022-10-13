@@ -40,8 +40,6 @@ This section lists the major frameworks/libraries used to bootstrap the project.
   </ol>
 </details>
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 # Getting started
 
 ### Prerequisites
@@ -95,3 +93,5 @@ LOG_DIR = ../../../logs
 ORIGIN = *
 CREDENTIALS = true
 ```
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>

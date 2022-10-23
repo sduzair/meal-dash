@@ -160,7 +160,7 @@ class TextUserLoginButton extends StatelessWidget {
           //     "TIMEOUT ERROR TRY AGAIN",
           //     style: TextStyle(color: Colors.white),
           //   );
-        } else if (authViewModel.isAuthenticated) {
+        } else if (authViewModel.isLoggedIn) {
           return const SizedBox(
             height: 20,
             width: 20,

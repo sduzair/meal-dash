@@ -3,10 +3,27 @@ import 'package:mealdash_app/features/authentication/models/user_login_model.dar
 import 'package:mealdash_app/features/authentication/models/user_signup_model.dart';
 
 import 'package:mealdash_app/features/authentication/repository/auth_service.dart';
+import 'package:mealdash_app/utils/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserAuthViewModel with ChangeNotifier, DiagnosticableTreeMixin {
-  bool _isAuthenticated = false;
-  bool get isAuthenticated => _isAuthenticated;
+  final SharedPreferences prefs;
+  bool _isLoggedIn = false;
+  bool get isLoggedIn => _isLoggedIn;
+
+  UserAuthViewModel(this.prefs) {
+    _isLoggedIn = prefs.getBool(loggedInKey) ?? false;
+  }
+
+  _setIsLoggedIn(bool value) {
+    _isLoggedIn = value;
+    prefs.setBool(loggedInKey, value);
+    notifyListeners();
+  }
+
+  void checkLoggedIn() {
+    _isLoggedIn = prefs.getBool(loggedInKey) ?? false;
+  }
 
   bool _isSigningUp = false;
   bool get isSigningUp => _isSigningUp;
@@ -67,7 +84,8 @@ class UserAuthViewModel with ChangeNotifier, DiagnosticableTreeMixin {
     try {
       final response = await AuthService.login(userLoginModel);
       if (response.statusCode == 200) {
-        _isAuthenticated = true;
+        _isLoggedIn = true;
+        _setIsLoggedIn(true);
         return;
         // } else if (response.statusCode == 408) {
         //   _isLoggingInError = true;

@@ -7,6 +7,15 @@ const bool isLogginIn = false;
 const bool isTestingSignUp = false;
 const bool isTestingLogin = false;
 
+// KEY CONSTANTS
+const String loggedInKey = 'LoggedIn';
+
+// ROUTE CONSTANTS
+const String rootRouteName = 'root';
+const String welcomeRouteName = 'welcome';
+const String loginRouteName = 'login';
+const String signupRouteName = 'signup';
+
 // const String apiUrl = 'http://10.0.2.2';
 const String apiUrl = 'http://localhost';
 

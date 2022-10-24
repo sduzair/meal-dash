@@ -7,9 +7,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  var prefs = await SharedPreferences.getInstance();
+  constants.isTestUserLoggedIn
+      ? await prefs.setBool(constants.loggedInKey, true)
+      : await prefs.setBool(constants.loggedInKey, false);
   final userAuthViewModel =
-      UserAuthViewModel(await SharedPreferences.getInstance());
+      UserAuthViewModel(prefs);
+  // constants.isTestUserLoggedIn ? userAuthViewModel.loginTestUser() : null;
   userAuthViewModel.checkLoggedIn();
+
   runApp(MyApp(userAuthViewModel: userAuthViewModel));
 }
 

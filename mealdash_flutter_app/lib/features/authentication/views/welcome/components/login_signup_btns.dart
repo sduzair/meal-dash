@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mealdash_app/utils/constants.dart' as constants;
-import 'package:mealdash_app/features/authentication/views/Signup/signup_screen.dart';
-import 'package:mealdash_app/features/authentication/views/login/login_screen.dart';
 
 class LoginAndSignupBtn extends StatelessWidget {
   const LoginAndSignupBtn({
@@ -22,14 +21,15 @@ class LoginAndSignupBtn extends StatelessWidget {
               elevation: constants.defaultElevation,
             ),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return const LoginScreen();
-                  },
-                ),
-              );
+              context.pushNamed(constants.loginRouteName);
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (context) {
+              //       return const LoginScreen();
+              //     },
+              //   ),
+              // );
             },
             child: Text(
               "Login".toUpperCase(),
@@ -41,14 +41,15 @@ class LoginAndSignupBtn extends StatelessWidget {
           tag: "signup_btn",
           child: ElevatedButton(
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return const SignupScreen();
-                  },
-                ),
-              );
+              context.pushNamed(constants.signupRouteName);
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (context) {
+              //       return const SignupScreen();
+              //     },
+              //   ),
+              // );
             },
             style: ElevatedButton.styleFrom(
                 backgroundColor: constants.kPrimaryLightColor,

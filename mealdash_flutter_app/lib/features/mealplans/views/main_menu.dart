@@ -1,14 +1,14 @@
 import 'package:mealdash_app/utils/constants.dart' as constants;
 import 'package:flutter/material.dart';
 
-class FoodVendorMainMenu extends StatefulWidget {
-  const FoodVendorMainMenu({Key? key}) : super(key: key);
+class FoodVendorHome extends StatefulWidget {
+  const FoodVendorHome({Key? key}) : super(key: key);
 
   @override
-  State<FoodVendorMainMenu> createState() => _FoodVendorMainMenuState();
+  State<FoodVendorHome> createState() => _FoodVendorHomeState();
 }
 
-class _FoodVendorMainMenuState extends State<FoodVendorMainMenu> {
+class _FoodVendorHomeState extends State<FoodVendorHome> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);

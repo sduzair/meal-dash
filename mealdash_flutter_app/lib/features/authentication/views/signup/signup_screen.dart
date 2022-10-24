@@ -22,22 +22,24 @@ class _SignupScreenState extends State<SignupScreen> {
   String _password2 = '';
   bool _isMatchPassword = true;
   _checkIfPasswordsMatch() {
-    identical(_password1,_password2)
+    identical(_password1, _password2)
         ? _isMatchPassword = true
         : _isMatchPassword = false;
   }
+
   @override
   Widget build(BuildContext context) {
     return Background(
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar:
-        AppBar(backgroundColor: Colors.transparent, elevation: 0, actions: [
+            AppBar(backgroundColor: Colors.transparent, elevation: 0, actions: [
           IconButton(
             icon: const Icon(Icons.arrow_back_ios),
             color: Colors.black,
             onPressed: () {
               Navigator.pop(context);
+              // context.pop();
             },
           ),
         ]),
@@ -104,7 +106,7 @@ class _SignupScreenState extends State<SignupScreen> {
                               },
                               onSaved: (newValue) {
                                 _password1 = newValue!;
-                                _userSignUpModel.password = newValue!;
+                                _userSignUpModel.password = newValue;
                               },
                               validator: (value) {
                                 if (value!.isEmpty) {
@@ -150,7 +152,9 @@ class _SignupScreenState extends State<SignupScreen> {
                           //     );
                           //   },
                           // ),
-                          _isMatchPassword ? const Text("") : const Text("Passwords do not match")
+                          _isMatchPassword
+                              ? const Text("")
+                              : const Text("Passwords do not match")
                         ],
                       ),
                     ),
@@ -159,7 +163,6 @@ class _SignupScreenState extends State<SignupScreen> {
               ),
               // const SocalSignUp()
             ],
-
           ),
         ),
         // resizeToAvoidBottomInset: false,
@@ -170,7 +173,8 @@ class _SignupScreenState extends State<SignupScreen> {
               onPressed: () {
                 _checkIfPasswordsMatch();
                 if (!constants.isTestingSignUp &&
-                    _formKey.currentState!.validate()  && _isMatchPassword) {
+                    _formKey.currentState!.validate() &&
+                    _isMatchPassword) {
                   // if (true) {
                   _formKey.currentState!.save();
                   Navigator.push(
@@ -187,7 +191,6 @@ class _SignupScreenState extends State<SignupScreen> {
                             SignUpScreen2(userSignUpModel: _userSignUpModel)),
                   );
                 }
-
               },
               icon: const Icon(Icons.navigate_next),
               label: const Text('NEXT'),

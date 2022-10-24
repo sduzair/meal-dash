@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 
 // DEV CONSTANTS
 
-const bool isLogginIn = false;
 
-const bool isTestingSignUp = false;
-const bool isTestingLogin = false;
+const bool isTestingSignUp = true;
+const bool isTestingLogin = true;
+const bool isTestUserLoggedIn = false;
 
 // KEY CONSTANTS
 const String loggedInKey = 'LoggedIn';
 
 // ROUTE CONSTANTS
 const String rootRouteName = 'root';
+const String homeRouteName = 'home';
 const String welcomeRouteName = 'welcome';
 const String loginRouteName = 'login';
 const String signupRouteName = 'signup';

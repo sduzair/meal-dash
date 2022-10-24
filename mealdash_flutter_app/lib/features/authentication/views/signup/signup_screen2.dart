@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mealdash_app/components/background.dart';
 import 'package:mealdash_app/features/authentication/models/user_signup_model.dart';
 import 'package:mealdash_app/features/authentication/view_models/auth_view_model.dart';
-import 'package:mealdash_app/features/authentication/views/login/login_screen.dart';
 
 import 'package:mealdash_app/utils/constants.dart' as constants;
 import 'package:provider/provider.dart';
@@ -30,6 +30,7 @@ class SignUpScreen2State extends State<SignUpScreen2> {
             color: Colors.black,
             onPressed: () {
               Navigator.pop(context);
+              // context.pop();
             },
           ),
         ]),
@@ -211,16 +212,11 @@ class SubmitButton extends StatelessWidget {
           // }));
         }
         context.read<UserAuthViewModel>().signUp(userSignUpModel);
-        if (context.read<UserAuthViewModel>().isSigningUpSuccess) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) {
-                return const LoginScreen();
-              },
-            ),
-          );
-        }
+        // if (context.read<UserAuthViewModel>().isSigningUpSuccess) {
+        context.pop();
+        // context.goNamed(constants.loginRouteName);
+        context.pushNamed(constants.loginRouteName);
+        // }
       },
       // icon: const Icon(Icons.check_circle),
       style: ElevatedButton.styleFrom(
@@ -228,7 +224,7 @@ class SubmitButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(constants.borderRadiusExtraLarge),
         ),
         elevation: constants.defaultElevation,
-      ), 
+      ),
       child: const TextSignUpButton(),
     );
   }

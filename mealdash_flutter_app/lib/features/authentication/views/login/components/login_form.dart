@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mealdash_app/features/authentication/models/user_login_model.dart';
 import 'package:mealdash_app/features/authentication/view_models/auth_view_model.dart';
 
@@ -109,15 +110,10 @@ class UserLoginButton extends StatelessWidget {
           if (!constants.isTestingLogin && _formKey.currentState!.validate()) {
             _formKey.currentState!.save();
           }
-          context.read<UserAuthViewModel>().signIn(_userLoginModel);
-          // context.watch<UserAuthViewModel>().isAuthenticated
-          //     ? Navigator.push(
-          //         context,
-          //         MaterialPageRoute(
-          //           builder: (context) => const FoodVendorMainMenu(),
-          //         ),
-          //       )
-          //     : null;
+          // context.read<UserAuthViewModel>().signIn(_userLoginModel);
+          // if (context.read<UserAuthViewModel>().isLoggedIn) {
+          context.goNamed(constants.homeRouteName);
+          // }
         },
         child: const TextUserLoginButton(),
       ),
@@ -142,16 +138,14 @@ class TextUserLoginButton extends StatelessWidget {
               color: Colors.white,
             ),
           );
-        } else if (authViewModel.isLoggingInError &&
-            authViewModel.isLoggingInErrorInvalidCredentials) {
+        } else if (authViewModel.isLoggingInErrorInvalidCredentials) {
           return const Text(
             "INVALID CREDENTIALS TRY AGAIN",
             style: TextStyle(color: Colors.white),
           );
-        } else if (authViewModel.isLoggingInError &&
-            authViewModel.isLoggingInErrorNetwork) {
+        } else if (authViewModel.isLoggingInErrorUnknown) {
           return const Text(
-            "NETWORK ERROR TRY AGAIN",
+            "UNKNOWN ERROR TRY AGAIN",
             style: TextStyle(color: Colors.white),
           );
           // } else if (authViewModel.isLoggingInError &&

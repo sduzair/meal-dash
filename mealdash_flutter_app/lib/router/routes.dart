@@ -4,31 +4,29 @@ import 'package:mealdash_app/features/authentication/view_models/auth_view_model
 import 'package:mealdash_app/features/authentication/views/login/login_screen.dart';
 import 'package:mealdash_app/features/authentication/views/signup/signup_screen.dart';
 import 'package:mealdash_app/features/authentication/views/welcome/welcome_screen.dart';
-import 'package:mealdash_app/features/mealplans/views/main_menu.dart';
+import 'package:mealdash_app/features/mealplans/views/home_scaffold.dart';
+import 'package:mealdash_app/features/mealplans/views/mealplans/mealplans_screen.dart';
+import 'package:mealdash_app/features/mealplans/views/meals/meals_screen.dart';
+import 'package:mealdash_app/features/orders/views/orders_screen.dart';
 import 'package:mealdash_app/utils/constants.dart' as constants;
 
 class MyRouter {
-  // 1
+  final _rootNavigatorKey = GlobalKey<NavigatorState>();
+  final _shellNavigatorKey = GlobalKey<NavigatorState>();
+
   final UserAuthViewModel userAuthViewModel;
   MyRouter(this.userAuthViewModel);
 
-  // 2
   late final router = GoRouter(
-    // 3
+    navigatorKey: _rootNavigatorKey,
     refreshListenable: userAuthViewModel,
-    // 4
     debugLogDiagnostics: true,
-    // 5
-    // urlPathStrategy: UrlPathStrategy.path,
-    // initialLocation: '/home',
-
-    // 6
     routes: [
       GoRoute(
         name: constants.rootRouteName,
         path: '/',
         redirect: (context, state) =>
-            state.namedLocation(constants.homeRouteName),
+            state.namedLocation(constants.HomeNavTabRouteNames.meals.name),
       ),
       GoRoute(
         name: constants.welcomeRouteName,
@@ -54,13 +52,45 @@ class MyRouter {
           child: const SignupScreen(),
         ),
       ),
-      GoRoute(
-        name: constants.homeRouteName,
-        path: '/home',
-        pageBuilder: (context, state) => MaterialPage<void>(
-          key: state.pageKey,
-          child: const FoodVendorHome(),
-        ),
+      ShellRoute(
+          navigatorKey: _shellNavigatorKey,
+          builder: (context, state, child) => HomeScaffoldWithBottomNav(
+                key: state.pageKey,
+                child: child,
+              ),
+          routes: [
+            GoRoute(
+              name: constants.HomeNavTabRouteNames.orders.name,
+              path: '/orders',
+              pageBuilder: (context, state) => const MaterialPage<void>(
+                // key: state.pageKey,
+                child: OrdersScreen(),
+              ),
+              // routes: [
+              //   GoRoute(
+              //     path: 'details',
+              //     builder: (context, state) => const DetailsScreen(label: 'A'),
+              //   ),
+              // ],
+            ),
+            GoRoute(
+              name: constants.HomeNavTabRouteNames.mealplans.name,
+              path: '/mealplans',
+              pageBuilder: (context, state) => const MaterialPage<void>(
+                // key: state.pageKey,
+                child: MealPlansScreen(),
+              ),
+            ),
+            GoRoute(
+              name: constants.HomeNavTabRouteNames.meals.name,
+              path: '/meals',
+              pageBuilder: (context, state) => const MaterialPage<void>(
+                // key: state.pageKey,
+                child: MealsScreen(),
+              ),
+            ),
+          ]
+
       )
     ],
     // TODO: Add Error Handler
@@ -69,29 +99,11 @@ class MyRouter {
     //   child: ErrorPage(error: state.error),
     // ),
     redirect: (context, state) {
-      final welcomeLocation = state.namedLocation(constants.welcomeRouteName);
-      final isLoggingInOrSigningUp = state.subloc == welcomeLocation;
-
-      final loginLocation = state.namedLocation(constants.loginRouteName);
-      final isLoggingIn = state.subloc == loginLocation;
-
-      final signupLocation = state.namedLocation(constants.signupRouteName);
-      final isSigningUp = state.subloc == signupLocation;
-
-      final loggedIn = userAuthViewModel.isLoggedIn;
-      // final rootLocation = state.namedLocation(constants.rootRouteName);
-
-      if (!loggedIn &&
-          !isLoggingIn &&
-          !isSigningUp &&
-          !isLoggingInOrSigningUp) {
-        return welcomeLocation;
-        // } else if (loggedIn &&
-        //     !isLoggingIn &&
-        //     !isSigningUp &&
-        //     !isLoggingInOrSigningUp) {
-        //   print('redirecting to home');
-        //   return state.namedLocation(constants.homeRouteName);
+      if (!userAuthViewModel.isLoggedIn &&
+          !(state.subloc == state.namedLocation(constants.loginRouteName)) &&
+          !(state.subloc == state.namedLocation(constants.signupRouteName)) &&
+          !(state.subloc == state.namedLocation(constants.welcomeRouteName))) {
+        return state.namedLocation(constants.welcomeRouteName);
       } else {
         return null;
       }

@@ -112,7 +112,7 @@ class UserLoginButton extends StatelessWidget {
           }
           // context.read<UserAuthViewModel>().signIn(_userLoginModel);
           // if (context.read<UserAuthViewModel>().isLoggedIn) {
-          context.goNamed(constants.homeRouteName);
+          context.goNamed(constants.HomeNavTabRouteNames.meals.name);
           // }
         },
         child: const TextUserLoginButton(),

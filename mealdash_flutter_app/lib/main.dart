@@ -41,8 +41,7 @@ class MyApp extends StatelessWidget {
         builder: (BuildContext context) {
           final router = Provider.of<MyRouter>(context, listen: false).router;
           return MaterialApp.router(
-            routeInformationParser: router.routeInformationParser,
-            routerDelegate: router.routerDelegate,
+            routerConfig: router,
             debugShowCheckedModeBanner: false,
             title: 'Flutter Auth',
             theme: ThemeData(

@@ -1,47 +1,32 @@
+import 'package:go_router/go_router.dart';
 import 'package:mealdash_app/utils/constants.dart' as constants;
 import 'package:flutter/material.dart';
 
-class FoodVendorHome extends StatefulWidget {
-  const FoodVendorHome({Key? key}) : super(key: key);
+class HomeScaffoldWithBottomNav extends StatefulWidget {
+  final Widget child;
+  const HomeScaffoldWithBottomNav({Key? key, required this.child})
+      : super(key: key);
 
   @override
-  State<FoodVendorHome> createState() => _FoodVendorHomeState();
+  State<HomeScaffoldWithBottomNav> createState() =>
+      _HomeScaffoldWithBottomNavState();
 }
 
-class _FoodVendorHomeState extends State<FoodVendorHome> {
-  int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Orders',
-      style: optionStyle,
-    ),
-    Text(
-      'Meal Plans',
-      style: optionStyle,
-    ),
-    Text(
-      'Meals',
-      style: optionStyle,
-    ),
-  ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+class _HomeScaffoldWithBottomNavState extends State<HomeScaffoldWithBottomNav> {
+  int get _selectedIndex {
+    var indexWhere = constants.HomeNavTabRouteNames.values.indexWhere(
+        (element) => '/${element.name}' == GoRouter.of(context).location);
+    // print('indexWhere: $indexWhere');
+    return indexWhere;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      body: widget.child,
       appBar: AppBar(
         // leading: const Icon(Icons.menu),
-        title: const Text('Menu'),
-      ),
-      body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
+        title: const Text('Home'),
       ),
       drawer: Drawer(
         child: ListView(
@@ -91,7 +76,12 @@ class _FoodVendorHomeState extends State<FoodVendorHome> {
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: constants.kPrimaryColor,
-        onTap: _onItemTapped,
+        onTap: (index) {
+          _selectedIndex != index
+              ? context
+                  .goNamed(constants.HomeNavTabRouteNames.values[index].name)
+              : null;
+        },
       ),
     );
   }

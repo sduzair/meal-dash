@@ -5,17 +5,18 @@ import 'package:flutter/material.dart';
 
 const bool isTestingSignUp = true;
 const bool isTestingLogin = true;
-const bool isTestUserLoggedIn = false;
+const bool isTestUserLoggedIn = true;
 
 // KEY CONSTANTS
 const String loggedInKey = 'LoggedIn';
 
 // ROUTE CONSTANTS
 const String rootRouteName = 'root';
-const String homeRouteName = 'home';
 const String welcomeRouteName = 'welcome';
 const String loginRouteName = 'login';
 const String signupRouteName = 'signup';
+// maintain the order of the tabs in FoodVendorHome - Scaffold - IndexedStack and BottomNavigationBar
+enum HomeNavTabRouteNames { orders, mealplans, meals }
 
 // const String apiUrl = 'http://10.0.2.2';
 const String apiUrl = 'http://localhost';

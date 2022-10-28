@@ -221,7 +221,7 @@ class SubmitButton extends StatelessWidget {
       // icon: const Icon(Icons.check_circle),
       style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(constants.borderRadiusExtraLarge),
+          borderRadius: BorderRadius.circular(constants.borderRadiusXLarge),
         ),
         elevation: constants.defaultElevation,
       ),

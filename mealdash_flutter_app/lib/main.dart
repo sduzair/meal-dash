@@ -45,36 +45,71 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             title: 'Flutter Auth',
             theme: ThemeData(
-                // useMaterial3: true,
-                primaryColor: constants.kPrimaryColor,
-                floatingActionButtonTheme: const FloatingActionButtonThemeData(
-                    backgroundColor: constants.kPrimaryColor),
-                // scaffoldBackgroundColor: Colors.white,
-                elevatedButtonTheme: ElevatedButtonThemeData(
-                  style: ElevatedButton.styleFrom(
-                    elevation: constants.defaultElevation,
-                    backgroundColor: constants.kPrimaryColor,
-                    shape: const StadiumBorder(),
-                    maximumSize: const Size(double.infinity, 56),
-                    minimumSize: const Size(double.infinity, 56),
+              // useMaterial3: true,
+              primaryColor: constants.kPrimaryColor,
+              floatingActionButtonTheme: const FloatingActionButtonThemeData(
+                backgroundColor: constants.kPrimaryColor,
+              ),
+              // scaffoldBackgroundColor: Colors.white,
+              elevatedButtonTheme: ElevatedButtonThemeData(
+                style: ElevatedButton.styleFrom(
+                  elevation: constants.defaultElevation,
+                  backgroundColor: constants.kPrimaryColor,
+                  shape: const StadiumBorder(),
+                  maximumSize: const Size(double.infinity, 56),
+                  minimumSize: const Size(double.infinity, 56),
+                ),
+              ),
+              inputDecorationTheme: const InputDecorationTheme(
+                iconColor: constants.kPrimaryColor,
+                prefixIconColor: constants.kPrimaryColor,
+                // isDense: true,
+                // alignLabelWithHint: false,
+                // isCollapsed: true,
+                // contentPadding: EdgeInsets.all(0),
+              ),
+              appBarTheme: const AppBarTheme(
+                elevation: constants.defaultElevationSmall,
+                backgroundColor: constants.kPrimaryColor,
+              ),
+              bottomSheetTheme: const BottomSheetThemeData(
+                backgroundColor: Colors.white,
+                elevation: constants.defaultElevation,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(constants.borderRadius),
+                    topRight: Radius.circular(constants.borderRadius),
                   ),
                 ),
-                inputDecorationTheme: const InputDecorationTheme(
-                  // filled: true,
-                  // fillColor: kPrimaryLightColor,
-                  iconColor: constants.kPrimaryColor,
-                  prefixIconColor: constants.kPrimaryColor,
-                  // focusedBorder: OutlineInputBorder(
-                  //   borderSide: BorderSide(color: constants.kPrimaryColor),
-                  //   // borderRadius: BorderRadius.all(Radius.circular(50)),
-                  // ),
-                  // contentPadding: EdgeInsets.symmetric(
-                  //     horizontal: defaultPadding, vertical: defaultPadding),
+              ),
+              bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+                backgroundColor: Colors.white,
+                elevation: constants.defaultElevation,
+                selectedItemColor: constants.kPrimaryColor,
+                unselectedItemColor: Colors.grey,
+                showUnselectedLabels: true,
+              ),
+              chipTheme: ChipThemeData(
+                shape: const StadiumBorder(
+                  side: BorderSide(
+                    color: Colors.white,
+                    width: 2,
+                  ),
                 ),
-                appBarTheme: const AppBarTheme(
-                  elevation: constants.defaultElevationSmall,
-                  backgroundColor: constants.kPrimaryColor,
-                )),
+                backgroundColor: Colors.lightBlue.shade600,
+                // selectedColor: Colors.,
+                disabledColor: Colors.grey,
+                labelStyle: const TextStyle(color: Colors.white),
+              ),
+              fontFamily: 'Poppins',
+              dividerTheme: const DividerThemeData(
+                color: constants.kPrimaryColor,
+                thickness: 2,
+                space: 0,
+                indent: 0,
+                endIndent: 0,
+              ),
+            ),
           );
         },
       ),

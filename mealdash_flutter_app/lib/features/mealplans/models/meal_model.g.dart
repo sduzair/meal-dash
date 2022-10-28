@@ -7,52 +7,49 @@ part of 'meal_model.dart';
 // **************************************************************************
 
 MealModel _$MealModelFromJson(Map<String, dynamic> json) => MealModel(
-      mealName: json['mealName'] as String?,
-      mealDescription: json['mealDescription'] as String?,
+      mealTitle: json['mealTitle'] as String?,
+      mealShortDescription: json['mealShortDescription'] as String?,
+      mealLongDescription: json['mealLongDescription'] as String?,
       mealIngredients: (json['mealIngredients'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
-      mealCalories: json['mealCalories'] as String?,
-      mealWeight: json['mealWeight'] as String?,
-      mealTags: (json['mealTags'] as List<dynamic>?)
-          ?.map((e) => e as String)
-          .toList(),
-      mealImageUri: json['mealImageUri'] as String?,
+      mealCalories: json['mealCalories'] as int?,
+      mealQuantity: json['mealQuantity'] as int?,
+      mealQuantityUnit: json['mealQuantityUnit'] as String,
     );
 
 Map<String, dynamic> _$MealModelToJson(MealModel instance) => <String, dynamic>{
-      'mealName': instance.mealName,
-      'mealDescription': instance.mealDescription,
+      'mealTitle': instance.mealTitle,
+      'mealShortDescription': instance.mealShortDescription,
+      'mealLongDescription': instance.mealLongDescription,
       'mealIngredients': instance.mealIngredients,
       'mealCalories': instance.mealCalories,
-      'mealWeight': instance.mealWeight,
-      'mealTags': instance.mealTags,
-      'mealImageUri': instance.mealImageUri,
+      'mealQuantity': instance.mealQuantity,
+      'mealQuantityUnit': instance.mealQuantityUnit,
     };
 
 MealModelWithId _$MealModelWithIdFromJson(Map<String, dynamic> json) =>
     MealModelWithId(
-      id: json['id'] as String?,
-      mealName: json['mealName'] as String,
-      mealDescription: json['mealDescription'] as String,
-      mealIngredients: (json['mealIngredients'] as List<dynamic>)
-          .map((e) => e as String)
+      id: json['id'] as String,
+      mealTitle: json['mealTitle'] as String?,
+      mealShortDescription: json['mealShortDescription'] as String?,
+      mealLongDescription: json['mealLongDescription'] as String?,
+      mealIngredients: (json['mealIngredients'] as List<dynamic>?)
+          ?.map((e) => e as String)
           .toList(),
-      mealCalories: json['mealCalories'] as String,
-      mealWeight: json['mealWeight'] as String,
-      mealTags:
-          (json['mealTags'] as List<dynamic>).map((e) => e as String).toList(),
-      mealImageUri: json['mealImageUri'] as String,
+      mealCalories: json['mealCalories'] as int?,
+      mealQuantity: json['mealQuantity'] as int?,
+      mealQuantityUnit: json['mealQuantityUnit'] as String,
     );
 
 Map<String, dynamic> _$MealModelWithIdToJson(MealModelWithId instance) =>
     <String, dynamic>{
-      'mealName': instance.mealName,
-      'mealDescription': instance.mealDescription,
+      'mealTitle': instance.mealTitle,
+      'mealShortDescription': instance.mealShortDescription,
+      'mealLongDescription': instance.mealLongDescription,
       'mealIngredients': instance.mealIngredients,
       'mealCalories': instance.mealCalories,
-      'mealWeight': instance.mealWeight,
-      'mealTags': instance.mealTags,
-      'mealImageUri': instance.mealImageUri,
+      'mealQuantity': instance.mealQuantity,
+      'mealQuantityUnit': instance.mealQuantityUnit,
       'id': instance.id,
     };

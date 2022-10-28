@@ -9,6 +9,7 @@ class MealPlansScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Meal Plans'),
       ),
+      // drawer: const HomeDrawer(),
       body: const Center(
         child: Text('Meal Plans'),
       ),

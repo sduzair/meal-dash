@@ -99,9 +99,6 @@ class UserLoginButton extends StatelessWidget {
     return Hero(
       tag: "login_btn",
       child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-            backgroundColor: constants.kPrimaryColor,
-            elevation: constants.defaultElevation),
         onPressed: () {
           if (context.read<UserAuthViewModel>().isLoggingIn) {
             // print("Already logging in");

@@ -5,11 +5,12 @@ class OrdersScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      // appBar: AppBar(
-      //   title: const Text('Orders'),
-      // ),
-      body: Center(
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Orders'),
+      ),
+      // drawer: const HomeDrawer(),
+      body: const Center(
         child: Text('Orders'),
       ),
     );

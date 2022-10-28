@@ -1,3 +1,5 @@
+import 'package:mealdash_app/utils/constants.dart' as constants;
+import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 
 class MealsScreen extends StatelessWidget {
@@ -8,10 +10,30 @@ class MealsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Meals'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () =>
+                GoRouter.of(context).goNamed(constants.mealsAddRouteName),
+          ),
+        ],
       ),
+      // drawer: const HomeDrawer(),
       body: const Center(
         child: Text('Meals'),
       ),
     );
   }
 }
+
+// class MealsScaffold extends StatelessWidget {
+//   final Widget child;
+//   const MealsScaffold({Key? key, required this.child}) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       body: child,
+//     );
+//   }
+// }

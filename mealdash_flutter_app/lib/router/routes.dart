@@ -6,13 +6,15 @@ import 'package:mealdash_app/features/authentication/views/signup/signup_screen.
 import 'package:mealdash_app/features/authentication/views/welcome/welcome_screen.dart';
 import 'package:mealdash_app/features/mealplans/views/home_scaffold.dart';
 import 'package:mealdash_app/features/mealplans/views/mealplans/mealplans_screen.dart';
+import 'package:mealdash_app/features/mealplans/views/meals/add/meals_add_screen.dart';
 import 'package:mealdash_app/features/mealplans/views/meals/meals_screen.dart';
 import 'package:mealdash_app/features/orders/views/orders_screen.dart';
 import 'package:mealdash_app/utils/constants.dart' as constants;
 
 class MyRouter {
-  final _rootNavigatorKey = GlobalKey<NavigatorState>();
-  final _shellNavigatorKey = GlobalKey<NavigatorState>();
+  final _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
+  final _shellNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'shell');
+  final _mealsNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'meals');
 
   final UserAuthViewModel userAuthViewModel;
   MyRouter(this.userAuthViewModel);
@@ -21,7 +23,8 @@ class MyRouter {
     navigatorKey: _rootNavigatorKey,
     refreshListenable: userAuthViewModel,
     debugLogDiagnostics: true,
-    routes: [
+    restorationScopeId: 'sadfasf',
+    routes: <RouteBase>[
       GoRoute(
         name: constants.rootRouteName,
         path: '/',
@@ -32,66 +35,63 @@ class MyRouter {
         name: constants.welcomeRouteName,
         path: '/welcome',
         pageBuilder: (context, state) => MaterialPage<void>(
-          key: state.pageKey,
-          child: const WelcomeScreen(),
-        ),
+            key: state.pageKey, child: const WelcomeScreen()),
       ),
       GoRoute(
         name: constants.loginRouteName,
         path: '/login',
-        pageBuilder: (context, state) => MaterialPage<void>(
-          key: state.pageKey,
-          child: const LoginScreen(),
-        ),
+        pageBuilder: (context, state) =>
+            MaterialPage<void>(key: state.pageKey, child: const LoginScreen()),
       ),
       GoRoute(
         name: constants.signupRouteName,
         path: '/signup',
-        pageBuilder: (context, state) => MaterialPage<void>(
-          key: state.pageKey,
-          child: const SignupScreen(),
-        ),
+        pageBuilder: (context, state) =>
+            MaterialPage<void>(key: state.pageKey, child: const SignupScreen()),
       ),
-      ShellRoute(
-          navigatorKey: _shellNavigatorKey,
-          builder: (context, state, child) => HomeScaffoldWithBottomNav(
-                key: state.pageKey,
-                child: child,
-              ),
-          routes: [
-            GoRoute(
+      StatefulShellRoute(
+        branches: <ShellRouteBranch>[
+          ShellRouteBranch(
+            rootRoute: GoRoute(
+              name: constants.HomeNavTabRouteNames.home.name,
+              path: '/home',
+              builder: (context, state) => const HomeScreen(),
+            ),
+          ),
+          ShellRouteBranch(
+            rootRoute: GoRoute(
               name: constants.HomeNavTabRouteNames.orders.name,
               path: '/orders',
-              pageBuilder: (context, state) => const MaterialPage<void>(
-                // key: state.pageKey,
-                child: OrdersScreen(),
-              ),
-              // routes: [
-              //   GoRoute(
-              //     path: 'details',
-              //     builder: (context, state) => const DetailsScreen(label: 'A'),
-              //   ),
-              // ],
+              builder: (context, state) => const OrdersScreen(),
             ),
-            GoRoute(
+          ),
+          ShellRouteBranch(
+            rootRoute: GoRoute(
               name: constants.HomeNavTabRouteNames.mealplans.name,
               path: '/mealplans',
-              pageBuilder: (context, state) => const MaterialPage<void>(
-                // key: state.pageKey,
-                child: MealPlansScreen(),
-              ),
+              builder: (context, state) => const MealPlansScreen(),
             ),
-            GoRoute(
+          ),
+          ShellRouteBranch(
+            rootRoute: GoRoute(
               name: constants.HomeNavTabRouteNames.meals.name,
               path: '/meals',
-              pageBuilder: (context, state) => const MaterialPage<void>(
-                // key: state.pageKey,
-                child: MealsScreen(),
-              ),
+              builder: (context, state) => const MealsScreen(),
+              routes: <RouteBase>[
+                GoRoute(
+                  name: constants.mealsAddRouteName,
+                  path: 'add',
+                  builder: (context, state) => const MealsAddScreen(),
+                ),
+              ],
             ),
-          ]
-
-      )
+          ),
+        ],
+        builder: (context, state, child) => HomeScaffoldWithBottomNav(
+          key: _shellNavigatorKey,
+          child: child,
+        ),
+      ),
     ],
     // TODO: Add Error Handler
     // errorPageBuilder: (context, state) => MaterialPage<void>(

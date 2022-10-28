@@ -1,66 +1,21 @@
 import 'package:go_router/go_router.dart';
-import 'package:mealdash_app/utils/constants.dart' as constants;
 import 'package:flutter/material.dart';
 
-class HomeScaffoldWithBottomNav extends StatefulWidget {
+class HomeScaffoldWithBottomNav extends StatelessWidget {
   final Widget child;
   const HomeScaffoldWithBottomNav({Key? key, required this.child})
       : super(key: key);
 
   @override
-  State<HomeScaffoldWithBottomNav> createState() =>
-      _HomeScaffoldWithBottomNavState();
-}
-
-class _HomeScaffoldWithBottomNavState extends State<HomeScaffoldWithBottomNav> {
-  int get _selectedIndex {
-    var indexWhere = constants.HomeNavTabRouteNames.values.indexWhere(
-        (element) => '/${element.name}' == GoRouter.of(context).location);
-    // print('indexWhere: $indexWhere');
-    return indexWhere;
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final StatefulShellRouteState shellState = StatefulShellRoute.of(context);
     return Scaffold(
-      body: widget.child,
-      appBar: AppBar(
-        // leading: const Icon(Icons.menu),
-        title: const Text('Home'),
-      ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: const <Widget>[
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: constants.kPrimaryColor,
-              ),
-              child: Text(
-                'Drawer Header',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                ),
-              ),
-            ),
-            ListTile(
-              leading: Icon(Icons.message),
-              title: Text('Messages'),
-            ),
-            ListTile(
-              leading: Icon(Icons.account_circle),
-              title: Text('Profile'),
-            ),
-            ListTile(
-              leading: Icon(Icons.settings),
-              title: Text('Settings'),
-            ),
-          ],
-        ),
-      ),
+      body: child,
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),            label: 'Home',
+          ),
           BottomNavigationBarItem(
             icon: Icon(Icons.add_business),
             label: 'Orders',
@@ -74,15 +29,85 @@ class _HomeScaffoldWithBottomNavState extends State<HomeScaffoldWithBottomNav> {
             label: 'Meals',
           ),
         ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: constants.kPrimaryColor,
+        currentIndex: shellState.index,
         onTap: (index) {
-          _selectedIndex != index
-              ? context
-                  .goNamed(constants.HomeNavTabRouteNames.values[index].name)
-              : null;
+          shellState.goBranch(index);
         },
       ),
     );
   }
 }
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Home'),
+      ),
+      body: ListView(
+        children: const [
+          ListTile(
+            leading: Icon(Icons.person),
+            title: Text('Profile'),
+            // onTap: () =>
+            //     GoRouter.of(context).goNamed(constants.profileRouteName),
+          ),
+          ListTile(
+            leading: Icon(Icons.message),
+            title: Text('Messages'),
+            // onTap: () =>
+            //     GoRouter.of(context).goNamed(constants.messagesRouteName),
+          ),
+          ListTile(
+            leading: Icon(Icons.settings),
+            title: Text('Settings'),
+            // onTap: () =>
+            //     GoRouter.of(context).goNamed(constants.settingsRouteName),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+// class HomeDrawer extends StatelessWidget {
+//   const HomeDrawer({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Drawer(
+//       child: ListView(
+//         padding: EdgeInsets.zero,
+//         children: const <Widget>[
+//           DrawerHeader(
+//             decoration: BoxDecoration(
+//               color: constants.kPrimaryColor,
+//             ),
+//             child: Text(
+//               'Drawer Header',
+//               style: TextStyle(
+//                 color: Colors.white,
+//                 fontSize: 24,
+//               ),
+//             ),
+//           ),
+//           ListTile(
+//             leading: Icon(Icons.message),
+//             title: Text('Messages'),
+//           ),
+//           ListTile(
+//             leading: Icon(Icons.account_circle),
+//             title: Text('Profile'),
+//           ),
+//           ListTile(
+//             leading: Icon(Icons.settings),
+//             title: Text('Settings'),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }

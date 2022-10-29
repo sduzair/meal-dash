@@ -10,8 +10,8 @@ MealModel _$MealModelFromJson(Map<String, dynamic> json) => MealModel(
       mealTitle: json['mealTitle'] as String?,
       mealShortDescription: json['mealShortDescription'] as String?,
       mealLongDescription: json['mealLongDescription'] as String?,
-      mealIngredients: (json['mealIngredients'] as List<dynamic>?)
-          ?.map((e) => e as String)
+      mealIngredients: (json['mealIngredients'] as List<dynamic>)
+          .map((e) => e as String)
           .toList(),
       mealCalories: json['mealCalories'] as int?,
       mealQuantity: json['mealQuantity'] as int?,
@@ -34,8 +34,8 @@ MealModelWithId _$MealModelWithIdFromJson(Map<String, dynamic> json) =>
       mealTitle: json['mealTitle'] as String?,
       mealShortDescription: json['mealShortDescription'] as String?,
       mealLongDescription: json['mealLongDescription'] as String?,
-      mealIngredients: (json['mealIngredients'] as List<dynamic>?)
-          ?.map((e) => e as String)
+      mealIngredients: (json['mealIngredients'] as List<dynamic>)
+          .map((e) => e as String)
           .toList(),
       mealCalories: json['mealCalories'] as int?,
       mealQuantity: json['mealQuantity'] as int?,

@@ -4,12 +4,14 @@ import 'package:mealdash_app/features/authentication/view_models/auth_view_model
 import 'package:mealdash_app/features/authentication/views/login/login_screen.dart';
 import 'package:mealdash_app/features/authentication/views/signup/signup_screen.dart';
 import 'package:mealdash_app/features/authentication/views/welcome/welcome_screen.dart';
+import 'package:mealdash_app/features/mealplans/view_models/meal_view_model.dart';
 import 'package:mealdash_app/features/mealplans/views/home_scaffold.dart';
 import 'package:mealdash_app/features/mealplans/views/mealplans/mealplans_screen.dart';
 import 'package:mealdash_app/features/mealplans/views/meals/add/meals_add_screen.dart';
 import 'package:mealdash_app/features/mealplans/views/meals/meals_screen.dart';
 import 'package:mealdash_app/features/orders/views/orders_screen.dart';
 import 'package:mealdash_app/utils/constants.dart' as constants;
+import 'package:provider/provider.dart';
 
 class MyRouter {
   final _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
@@ -81,7 +83,16 @@ class MyRouter {
                 GoRoute(
                   name: constants.mealsAddRouteName,
                   path: 'add',
-                  builder: (context, state) => const MealsAddScreen(),
+                  builder: (context, state) => MultiProvider(
+                    providers: [
+                      ChangeNotifierProvider<MealViewModel>(
+                          create: (context) => MealViewModel()),
+                      ChangeNotifierProvider(
+                          create: (context) => IngredientsProvider())
+                    ],
+                    child: const MealsAddScreen(),
+                  ),
+                    
                 ),
               ],
             ),

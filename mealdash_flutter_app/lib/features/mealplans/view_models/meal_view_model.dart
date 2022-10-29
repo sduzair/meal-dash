@@ -1,15 +1,19 @@
+import 'package:mealdash_app/utils/constants.dart' as constants;
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:mealdash_app/features/mealplans/models/meal_model.dart';
 import 'package:mealdash_app/features/mealplans/repository/meal_service.dart';
-import 'package:mealdash_app/utils/constants.dart' as constants;
 
 class MealViewModel with ChangeNotifier, DiagnosticableTreeMixin {
-  
-  final MealModel _meal = constants.isTestingMealAdd
-      ? MealModel.initializeDummyVals()
-      : MealModel.empty();
+  File? image;
 
-  MealModel get meal => _meal;
+  MealViewModel()
+      : meal = constants.isTestingMealAdd
+            ? MealModel.initializeDummyVals()
+            : MealModel.empty();
+
+  MealModel meal;
 
   bool _isAddingMeal = false;
   bool get isAddingMeal => _isAddingMeal;
@@ -21,11 +25,13 @@ class MealViewModel with ChangeNotifier, DiagnosticableTreeMixin {
   bool get isAddingMealSuccess => _isAddingMealSuccess;
 
   Future<void> addMeal() async {
+    print('addMeal() called');
+    print(meal.toJson());
     _isAddingMeal = true;
     _isAddingMealError = false;
     notifyListeners();
     try {
-      final response = await MealService.addMeal(_meal);
+      final response = await MealService.addMeal(meal);
       if (response.statusCode == 201) {
         _isAddingMealSuccess = true;
         return;
@@ -42,13 +48,24 @@ class MealViewModel with ChangeNotifier, DiagnosticableTreeMixin {
     }
   }
 
-  removeIngredientAt({required int index}) {
-    meal.mealIngredients?.removeAt(index);
-    notifyListeners();
-  }
+  // removeIngredientAt({required MealModel meal, required int index}) {
+  //   meal.mealIngredients.removeAt(index);
+  //   notifyListeners();
+  // }
 
-  addIngredient({required String ingredient}) {
-    meal.mealIngredients?.add(ingredient);
-    notifyListeners();
+  // addIngredient({required MealModel meal, required String ingredient}) {
+  //   meal.mealIngredients.add(ingredient);
+  //   notifyListeners();
+  // }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(FlagProperty('isAddingMeal',
+        value: isAddingMeal, ifTrue: 'Adding Meal'));
+    properties.add(FlagProperty('isAddingMealError',
+        value: isAddingMealError, ifTrue: 'Adding Meal Error'));
+    properties.add(FlagProperty('isAddingMealSuccess',
+        value: isAddingMealSuccess, ifTrue: 'Adding Meal Success'));
   }
 }

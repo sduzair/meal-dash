@@ -19,51 +19,55 @@ class MealsAddScreen extends StatefulWidget {
 }
 
 class _MealsAddScreenState extends State<MealsAddScreen> {
-  File? _imageFile;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return ChangeNotifierProvider(
-      create: (context) => MealViewModel(),
-      builder: (context, child) {
-        print('MealsAddScreen build');
-        return Scaffold(
-          // drawer: const HomeDrawer(),
-          appBar: AppBar(
-            title: const Text('Add Meal'),
+    // print(context.read<MealViewModel>().meal.toJson());
+    return Scaffold(
+      // drawer: const HomeDrawer(),
+      appBar: AppBar(
+        title: const Text('Add Meal'),
+      ),
+      body: Theme(
+        data: theme.copyWith(
+          inputDecorationTheme: theme.inputDecorationTheme.copyWith(
+            border: const OutlineInputBorder(),
+            isDense: true,
           ),
-          body: Theme(
-            data: theme.copyWith(
-              inputDecorationTheme: theme.inputDecorationTheme.copyWith(
-                border: const OutlineInputBorder(),
-                isDense: true,
-              ),
+        ),
+        child: ListView(
+          padding: const EdgeInsets.all(constants.defaultPadding),
+          children: [
+            const Center(
+              child: ImageWidget(),
             ),
-            child: Form(
+            const SizedBox(height: constants.defaultMargin),
+            Form(
               key: _formKey,
-              child: ListView(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: constants.defaultPadding),
+              child: Column(
                 children: <Widget>[
                   const SizedBox(height: constants.defaultMargin),
                   TextFormField(
+                    restorationId: 'mealName',
                     decoration: const InputDecoration(
                       prefixIcon: Icon(Icons.fastfood),
                       hintText: 'What is the title of the meal?',
                       labelText: 'Meal Title *',
                     ),
+                    // onEditingComplete: () => ,
                     validator: (String? value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter the title of the meal';
                       }
                       return null;
                     },
-                    onSaved: (newValue) => context
-                        .read<MealViewModel>()
-                        .meal
-                        .mealTitle = newValue!,
+                    onSaved: (newValue) {
+                      context.read<MealViewModel>().meal.mealTitle = newValue!;
+                      print(
+                          'mealTitle: ${context.read<MealViewModel>().meal.mealTitle}');
+                    },
                   ),
                   const SizedBox(height: constants.defaultMargin),
                   TextFormField(
@@ -109,7 +113,7 @@ class _MealsAddScreenState extends State<MealsAddScreen> {
                         .meal
                         .mealLongDescription = newValue!,
                   ),
-                  const SizedBox(height: constants.defaultMargin),
+                  // const SizedBox(height: constants.defaultMargin),
                   // field for meal price input (double)
                   // TextFormField(
                   //   controller: _mealPriceController,
@@ -132,33 +136,6 @@ class _MealsAddScreenState extends State<MealsAddScreen> {
                   //     return null;
                   //   },
                   // ),
-                  // const SizedBox(height: constants.defaultMargin),
-                  Center(
-                    child: Material(
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(constants.borderRadius)),
-                      ),
-                      child: InkWell(
-                        onTap: () =>
-                            _showPhotoPickerOptionsBottomModal(context),
-                        child: _imageFile == null
-                            ? const ImagePlaceholderWidget()
-                            : Ink(
-                                height: 200,
-                                width: 200 * (6 / 5),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(
-                                      constants.borderRadius),
-                                  image: DecorationImage(
-                                    image: FileImage(_imageFile!),
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                      ),
-                    ),
-                  ),
                   const SizedBox(height: constants.defaultMargin),
                   // form for taking arrat of ingredients as input
                   const IngredientsChipsTextField(),
@@ -191,31 +168,8 @@ class _MealsAddScreenState extends State<MealsAddScreen> {
                         ),
                       ),
                       const SizedBox(width: constants.defaultMargin),
-                      Expanded(
-                        child: DropdownButtonFormField<String>(
-                          decoration: const InputDecoration(
-                            labelText: 'Unit *',
-                          ),
-                          value: context
-                              .watch<MealViewModel>()
-                              .meal
-                              .mealQuantityUnit,
-                          items: MealQuantityUnit.values
-                              .map((MealQuantityUnit unit) {
-                            return DropdownMenuItem<String>(
-                              value: unit.name,
-                              child: Text(unit.name),
-                            );
-                          }).toList(),
-                          onChanged: (String? newValue) => context
-                              .read<MealViewModel>()
-                              .meal
-                              .mealQuantityUnit = newValue!,
-                          onSaved: (newValue) => context
-                              .read<MealViewModel>()
-                              .meal
-                              .mealQuantityUnit = newValue!,
-                        ),
+                      const Expanded(
+                        child: MealQuantityUnitDropDown(),
                       ),
                     ],
                   ),
@@ -231,91 +185,194 @@ class _MealsAddScreenState extends State<MealsAddScreen> {
                     inputFormatters: [
                       FilteringTextInputFormatter.digitsOnly,
                     ],
-                    onSaved: (newValue) =>
+                    onSaved: (newValue) {
+                      if (newValue != null && newValue.isNotEmpty) {
                         context.read<MealViewModel>().meal.mealCalories =
-                            newValue != null ? int.parse(newValue) : null,
+                            int.parse(newValue);
+                      }
+                    },
                   ),
                   const SizedBox(height: constants.defaultMargin),
-                  AddMealSubmitButton(formKey: _formKey),
+                  const AddMealSubmitButton(),
                   const SizedBox(height: constants.defaultMargin),
                 ],
               ),
-            ),
-          ),
-        );
-      },
+            ),            
+          ],
+        ),
+      ),
     );
   }
 }
 
-class IngredientsChipsTextField extends StatelessWidget {
-  const IngredientsChipsTextField({
+class ImageWidget extends StatelessWidget {
+  const ImageWidget({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    print('ImageWidget build');
+    // final imageFile = context.watch<MealViewModel>().image;
+    File? imageFile;
+    return Material(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(constants.borderRadius)),
+      ),
+      child: InkWell(
+        onTap: () => _showPhotoPickerOptionsBottomModal(context),
+        child: imageFile == null
+            ? const ImagePlaceholderWidget()
+            : Ink(
+                height: 200,
+                width: 200 * (6 / 5),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(constants.borderRadius),
+                  image: DecorationImage(
+                    image: FileImage(imageFile),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+      ),
+    );
+  }
+}
+
+class MealQuantityUnitDropDown extends StatelessWidget {
+  const MealQuantityUnitDropDown({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    print('MealQuantityUnitDropDown build');
+    return DropdownButtonFormField<String>(
+      decoration: const InputDecoration(
+        labelText: 'Unit *',
+      ),
+      value: context.read<MealViewModel>().meal.mealQuantityUnit,
+      items: MealQuantityUnit.values
+          .map((MealQuantityUnit unit) => DropdownMenuItem<String>(
+                value: unit.name,
+                child: Text(unit.name),
+              ))
+          .toList(),
+      onChanged: (String? newValue) =>
+          context.read<MealViewModel>().meal.mealQuantityUnit = newValue!,
+      onSaved: (newValue) =>
+          context.read<MealViewModel>().meal.mealQuantityUnit = newValue!,
+    );
+  }
+}
+
+class IngredientsChipsTextField extends StatelessWidget {
+  const IngredientsChipsTextField({super.key});
+
+  @override
+  Widget build(BuildContext context) {
     print('IngredientsChipsTextField rebuild');
+    var ingredientsProviderWatch = context.watch<IngredientsProvider>();
     return TagEditor(
-      length: context.watch<MealViewModel>().meal.mealIngredients!.length,
+      length: ingredientsProviderWatch.ingredients.length,
       delimiters: const [',', ' '],
       hasAddButton: true,
-      inputDecoration: const InputDecoration(
+      inputDecoration: InputDecoration(
         hintText: 'Add ingredients*',
+        errorText: ingredientsProviderWatch.isAddingIngredients
+            ? null
+            : ingredientsProviderWatch.ingredients.isEmpty
+                ? 'Please add at least one ingredient'
+                : null,
       ),
-      onTagChanged: (newValue) {
-        // setState(() {
-        context.read<MealViewModel>().addIngredient(ingredient: newValue);
-        // });
-      },
+      onTagChanged: (newValue) =>
+          context.read<IngredientsProvider>().addIngredient(newValue),
       tagBuilder: (context, index) {
         print('IngredientsChipsTextField TagBuilder build');
         return Chip(
           // labelPaddin: const EdgeInsets.only(left: 8.0),
           label: Text(
-              context.watch<MealViewModel>().meal.mealIngredients![index],
-              textScaleFactor: 1.1),
+            context.read<IngredientsProvider>().ingredients[index],
+            textScaleFactor: 1.1,
+          ),
           deleteIcon: const Icon(
             Icons.close,
             // size: 18,
             size: constants.defaultIconSizeSmall,
           ),
           deleteButtonTooltipMessage:
-              'Remove ${context.watch<MealViewModel>().meal.mealIngredients![index]}',
-          onDeleted: () =>
-              context.read<MealViewModel>().removeIngredientAt(index: index),
+              'Remove ${context.read<IngredientsProvider>().ingredients[index]}',
+          onDeleted: () => context
+              .read<IngredientsProvider>()
+              .removeIngredient(index: index),
+          // setState(() => widget.meal.mealIngredients.removeAt(index)),
         );
       },
     );
   }
 }
 
-class AddMealSubmitButton extends StatelessWidget {
+class IngredientsProvider extends ChangeNotifier {
+  final List<String> _ingredients = [];
+  List<String> get ingredients => _ingredients;
+
+  void addIngredient(String ingredient) {
+    _ingredients.add(ingredient);
+    notifyListeners();
+  }
+
+  void removeIngredient({required int index}) {
+    _ingredients.removeAt(index);
+    notifyListeners();
+  }
+
+  bool _isAddingIngredients = true;
+  bool get isAddingIngredients => _isAddingIngredients;
+  set isAddingIngredients(bool value) {
+    _isAddingIngredients = value;
+    notifyListeners();
+  }
+}
+
+class AddMealSubmitButton extends StatefulWidget {
   const AddMealSubmitButton({
     Key? key,
-    required GlobalKey<FormState> formKey,
-  })  : _formKey = formKey,
-        super(key: key);
+  }) : super(key: key);
 
-  final GlobalKey<FormState> _formKey;
+  @override
+  State<AddMealSubmitButton> createState() => _AddMealSubmitButtonState();
+}
 
+class _AddMealSubmitButtonState extends State<AddMealSubmitButton> {
   @override
   Widget build(BuildContext context) {
     print('AddMealSubmitButton build');
+    final mealVMWatch = context.watch<MealViewModel>();
+    final ingredientsProviderWatch = context.watch<IngredientsProvider>();
+    final formKey = Form.of(context);
     return ElevatedButton(
       child: const AddMealSubmitButtonText(),
       onPressed: () {
-        if (context.read<MealViewModel>().isAddingMeal) {
+        print(mealVMWatch.meal.toJson());
+        if (mealVMWatch.isAddingMeal) {
           return;
         }
-        if (_formKey.currentState!.validate()) {
-          _formKey.currentState!.save();
+
+        ingredientsProviderWatch.isAddingIngredients = false;
+
+        if (!constants.isTestingMealAdd &&
+            formKey!.validate() &&
+            ingredientsProviderWatch.ingredients.isNotEmpty) {
+          print(
+              'formKey.validate() && ingredientsProviderWatch.ingredients.isNotEmpty');
+          context.read<MealViewModel>().meal.mealIngredients =
+              ingredientsProviderWatch.ingredients;
+          formKey.save();
         }
         context.read<MealViewModel>().addMeal();
-        if (context.read<MealViewModel>().isAddingMealSuccess) {
+        if (mealVMWatch.isAddingMealSuccess) {
           Navigator.of(context).pop();
         }
-        // Navigator.of(context).pop();
         // ScaffoldMessenger.of(context).showSnackBar(
         //   const SnackBar(content: Text('Processing Data')),
         // );
@@ -333,10 +390,10 @@ class AddMealSubmitButtonText extends StatelessWidget {
   Widget build(BuildContext context) {
     print('AddMealSubmitButtonText build');
     return Consumer<MealViewModel>(
-      builder: (context, mealViewModel, child) {
-        if (mealViewModel.isAddingMeal) {
+      builder: (context, meal, child) {
+        if (meal.isAddingMeal) {
           return const CircularProgressIndicator();
-        } else if (mealViewModel.isAddingMealSuccess) {
+        } else if (meal.isAddingMealSuccess) {
           return Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: const [
@@ -345,7 +402,7 @@ class AddMealSubmitButtonText extends StatelessWidget {
               Icon(Icons.check),
             ],
           );
-        } else if (mealViewModel.isAddingMealError) {
+        } else if (meal.isAddingMealError) {
           // return error message with icon button to retry adding meal
           return Row(
             mainAxisAlignment: MainAxisAlignment.center,

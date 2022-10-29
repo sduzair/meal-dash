@@ -1,44 +1,9 @@
 {
-  "files.exclude": {
-    "../meald-dash-business": true,
-  },
-  // FLUTTER.......................................................................................................
-  // Causes the debug view to automatically appear when a breakpoint is hit. This
-  // setting is global and not configurable per-language.
-  // "debug.openDebug": "openOnDebugBreak",
-  // // By default, VS Code will only switch to the Debug Console when you start
-  // // debugging the first time in a session. This setting tells VS Code to always
-  // // switch to the Debug Console when starting a session, so you can see the
-  // // programs output.
-  // "debug.internalConsoleOptions": "openOnSessionStart",
-  // "dart.devToolsBrowser": "default",
-  // // "dart.embedDevTools": false,
-  // // "[dart]": {
-  // "editor.formatOnSave": false,
-  // "editor.formatOnType": false,
-  // "editor.rulers": [
-  //   80
-  // ],
-  // "editor.selectionHighlight": false,
-  // "editor.suggest.snippetsPreventQuickSuggestions": false,
-  // "editor.suggestSelection": "first",
-  // "editor.tabCompletion": "onlySnippets",
-  // "editor.wordBasedSuggestions": false,
-  // // "editor.formatOnSaveMode": "modificationsIfAvailable",
-  // "editor.formatOnPaste": false,
-  // // },
-  // "dart.debugExternalPackageLibraries": true,
-  // "dart.debugSdkLibraries": true,
-  // "github.copilot.enable": {
-  //   "*": false,
-  //   "yaml": false,
-  //   "plaintext": false,
-  //   "markdown": false
-  // },
-  // "git.autofetch": true,
-  "editor.formatOnSave": false,
+  "editor.formatOnSave": true,
+  "editor.formatOnSaveMode": "modifications",
   "editor.codeActionsOnSave": {
     "source.fixAll": false,
     "source.fixAll.eslint": false
-  }
+  },
+  "git.autofetch": true,
 }

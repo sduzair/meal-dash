@@ -18,10 +18,10 @@ class HomeScaffoldWithBottomNav extends StatelessWidget {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.add_business),
-            label: 'Orders',
+            label: 'Orders',   
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_month_outlined),
+            icon: Icon(Icons.calendar_month_outlined), 
             label: 'Meal Plans',
           ),
           BottomNavigationBarItem(

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 // DEV CONSTANTS
 
-const bool isTestingMealAdd = true;
+const bool isTestingMealAdd = false;
 const bool isTestingSignUp = true;
 const bool isTestingLogin = true;
 const bool isTestUserLoggedIn = true;

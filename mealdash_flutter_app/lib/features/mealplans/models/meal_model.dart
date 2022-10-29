@@ -10,7 +10,7 @@ class MealModel {
   String? mealTitle;
   String? mealShortDescription;
   String? mealLongDescription;
-  List<String>? mealIngredients;
+  List<String> mealIngredients = <String>[];
   int? mealCalories;
   int? mealQuantity;
   String mealQuantityUnit = MealQuantityUnit.oz.name;
@@ -33,10 +33,12 @@ class MealModel {
         mealCalories = 765,
         mealQuantity = 10;
 
-  MealModel.empty() : mealIngredients = ['test'];
+  MealModel.empty();
 
   factory MealModel.fromJson(Map<String, dynamic> json) =>
       _$MealModelFromJson(json);
+
+  get mealImage => null;
 
   Map<String, dynamic> toJson() => _$MealModelToJson(this);
 }

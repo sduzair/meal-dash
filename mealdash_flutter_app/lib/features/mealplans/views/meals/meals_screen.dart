@@ -25,15 +25,3 @@ class MealsScreen extends StatelessWidget {
     );
   }
 }
-
-// class MealsScaffold extends StatelessWidget {
-//   final Widget child;
-//   const MealsScaffold({Key? key, required this.child}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: child,
-//     );
-//   }
-// }

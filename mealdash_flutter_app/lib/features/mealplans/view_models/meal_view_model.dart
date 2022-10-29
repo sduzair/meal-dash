@@ -48,15 +48,6 @@ class MealViewModel with ChangeNotifier, DiagnosticableTreeMixin {
     }
   }
 
-  // removeIngredientAt({required MealModel meal, required int index}) {
-  //   meal.mealIngredients.removeAt(index);
-  //   notifyListeners();
-  // }
-
-  // addIngredient({required MealModel meal, required String ingredient}) {
-  //   meal.mealIngredients.add(ingredient);
-  //   notifyListeners();
-  // }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {

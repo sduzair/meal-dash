@@ -75,24 +75,38 @@ class MyRouter {
             ),
           ),
           ShellRouteBranch(
-            rootRoute: GoRoute(
-              name: constants.HomeNavTabRouteNames.meals.name,
-              path: '/meals',
-              builder: (context, state) => const MealsScreen(),
+            defaultLocation: '/meals',
+            rootRoute: ShellRoute(
+              pageBuilder: (context, state, child) => MaterialPage<void>(
+                key: state.pageKey,
+                child: MultiProvider(
+                  providers: [
+                    ChangeNotifierProvider<MealViewModel>(
+                        create: (_) => MealViewModel()),
+                    ChangeNotifierProvider(
+                        create: (_) => IngredientsProvider()),
+                  ],
+                  child: child,
+                ),
+              ),
               routes: <RouteBase>[
                 GoRoute(
-                  name: constants.mealsAddRouteName,
-                  path: 'add',
-                  builder: (context, state) => MultiProvider(
-                    providers: [
-                      ChangeNotifierProvider<MealViewModel>(
-                          create: (context) => MealViewModel()),
-                      ChangeNotifierProvider(
-                          create: (context) => IngredientsProvider())
-                    ],
-                    child: const MealsAddScreen(),
-                  ),
-                    
+                  name: constants.HomeNavTabRouteNames.meals.name,
+                  path: '/meals',
+                  builder: (context, state) => const MealsScreen(),
+                  routes: <RouteBase>[
+                    GoRoute(
+                      name: constants.mealsAddRouteName,
+                      path: 'add',
+                      builder: (context, state) => MultiProvider(
+                        providers: [
+                          ChangeNotifierProvider(
+                              create: (context) => IngredientsProvider())
+                        ],
+                        child: const MealsAddScreen(),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

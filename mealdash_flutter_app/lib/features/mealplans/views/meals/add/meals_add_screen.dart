@@ -11,14 +11,14 @@ import 'package:mealdash_app/utils/constants.dart' as constants;
 import 'package:provider/provider.dart';
 import 'package:material_tag_editor/tag_editor.dart';
 
-class MealsAddScreen extends StatefulWidget {
-  const MealsAddScreen({Key? key}) : super(key: key);
+class MealAddScreen extends StatefulWidget {
+  const MealAddScreen({Key? key}) : super(key: key);
 
   @override
-  State<MealsAddScreen> createState() => _MealsAddScreenState();
+  State<MealAddScreen> createState() => _MealAddScreenState();
 }
 
-class _MealsAddScreenState extends State<MealsAddScreen> {
+class _MealAddScreenState extends State<MealAddScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override

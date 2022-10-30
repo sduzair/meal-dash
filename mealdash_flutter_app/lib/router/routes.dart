@@ -103,7 +103,7 @@ class MyRouter {
                           ChangeNotifierProvider(
                               create: (context) => IngredientsProvider())
                         ],
-                        child: const MealsAddScreen(),
+                        child: const MealAddScreen(),
                       ),
                     ),
                     GoRoute(

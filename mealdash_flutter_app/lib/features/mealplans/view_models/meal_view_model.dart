@@ -5,10 +5,10 @@ import 'package:flutter/foundation.dart';
 import 'package:mealdash_app/features/mealplans/models/meal_model.dart';
 import 'package:mealdash_app/features/mealplans/repository/meal_service.dart';
 
-class MealViewModel with ChangeNotifier, DiagnosticableTreeMixin {
+class MealAddViewModel with ChangeNotifier, DiagnosticableTreeMixin {
   File? image;
 
-  MealViewModel()
+  MealAddViewModel()
       : meal = constants.isTestingMealAdd
             ? MealModel.initializeDummyVals()
             : MealModel.empty();

@@ -64,9 +64,10 @@ class _MealsAddScreenState extends State<MealsAddScreen> {
                       return null;
                     },
                     onSaved: (newValue) {
-                      context.read<MealViewModel>().meal.mealTitle = newValue!;
+                      context.read<MealAddViewModel>().meal.mealTitle =
+                          newValue!;
                       print(
-                          'mealTitle: ${context.read<MealViewModel>().meal.mealTitle}');
+                          'mealTitle: ${context.read<MealAddViewModel>().meal.mealTitle}');
                     },
                   ),
                   const SizedBox(height: constants.defaultMargin),
@@ -87,7 +88,7 @@ class _MealsAddScreenState extends State<MealsAddScreen> {
                       return null;
                     },
                     onSaved: (newValue) => context
-                        .read<MealViewModel>()
+                        .read<MealAddViewModel>()
                         .meal
                         .mealShortDescription = newValue!,
                   ),
@@ -109,7 +110,7 @@ class _MealsAddScreenState extends State<MealsAddScreen> {
                       return null;
                     },
                     onSaved: (newValue) => context
-                        .read<MealViewModel>()
+                        .read<MealAddViewModel>()
                         .meal
                         .mealLongDescription = newValue!,
                   ),
@@ -162,7 +163,7 @@ class _MealsAddScreenState extends State<MealsAddScreen> {
                             return null;
                           },
                           onSaved: (newValue) => context
-                              .read<MealViewModel>()
+                              .read<MealAddViewModel>()
                               .meal
                               .mealQuantity = int.parse(newValue!),
                         ),
@@ -187,7 +188,7 @@ class _MealsAddScreenState extends State<MealsAddScreen> {
                     ],
                     onSaved: (newValue) {
                       if (newValue != null && newValue.isNotEmpty) {
-                        context.read<MealViewModel>().meal.mealCalories =
+                        context.read<MealAddViewModel>().meal.mealCalories =
                             int.parse(newValue);
                       }
                     },
@@ -251,7 +252,7 @@ class MealQuantityUnitDropDown extends StatelessWidget {
       decoration: const InputDecoration(
         labelText: 'Unit *',
       ),
-      value: context.read<MealViewModel>().meal.mealQuantityUnit,
+      value: context.read<MealAddViewModel>().meal.mealQuantityUnit,
       items: MealQuantityUnit.values
           .map((MealQuantityUnit unit) => DropdownMenuItem<String>(
                 value: unit.name,
@@ -259,9 +260,9 @@ class MealQuantityUnitDropDown extends StatelessWidget {
               ))
           .toList(),
       onChanged: (String? newValue) =>
-          context.read<MealViewModel>().meal.mealQuantityUnit = newValue!,
+          context.read<MealAddViewModel>().meal.mealQuantityUnit = newValue!,
       onSaved: (newValue) =>
-          context.read<MealViewModel>().meal.mealQuantityUnit = newValue!,
+          context.read<MealAddViewModel>().meal.mealQuantityUnit = newValue!,
     );
   }
 }
@@ -347,7 +348,7 @@ class _AddMealSubmitButtonState extends State<AddMealSubmitButton> {
   @override
   Widget build(BuildContext context) {
     print('AddMealSubmitButton build');
-    final mealVMWatch = context.watch<MealViewModel>();
+    final mealVMWatch = context.watch<MealAddViewModel>();
     final ingredientsProviderWatch = context.watch<IngredientsProvider>();
     final formKey = Form.of(context);
     return ElevatedButton(
@@ -365,11 +366,11 @@ class _AddMealSubmitButtonState extends State<AddMealSubmitButton> {
             ingredientsProviderWatch.ingredients.isNotEmpty) {
           print(
               'formKey.validate() && ingredientsProviderWatch.ingredients.isNotEmpty');
-          context.read<MealViewModel>().meal.mealIngredients =
+          context.read<MealAddViewModel>().meal.mealIngredients =
               ingredientsProviderWatch.ingredients;
           formKey.save();
         }
-        context.read<MealViewModel>().addMeal();
+        context.read<MealAddViewModel>().addMeal();
         if (mealVMWatch.isAddingMealSuccess) {
           Navigator.of(context).pop();
         }
@@ -389,7 +390,7 @@ class AddMealSubmitButtonText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print('AddMealSubmitButtonText build');
-    return Consumer<MealViewModel>(
+    return Consumer<MealAddViewModel>(
       builder: (context, meal, child) {
         if (meal.isAddingMeal) {
           return const CircularProgressIndicator();

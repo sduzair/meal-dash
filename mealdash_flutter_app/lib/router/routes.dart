@@ -83,8 +83,8 @@ class MyRouter {
                 key: state.pageKey,
                 child: MultiProvider(
                   providers: [
-                    ChangeNotifierProvider<MealViewModel>(
-                        create: (_) => MealViewModel()),
+                    ChangeNotifierProvider<MealAddViewModel>(
+                        create: (_) => MealAddViewModel()),
                   ],
                   child: child,
                 ),

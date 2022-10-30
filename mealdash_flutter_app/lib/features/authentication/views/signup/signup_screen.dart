@@ -22,9 +22,11 @@ class _SignupScreenState extends State<SignupScreen> {
   String _password2 = '';
   bool _isMatchPassword = true;
   _checkIfPasswordsMatch() {
-    identical(_password1, _password2)
-        ? _isMatchPassword = true
-        : _isMatchPassword = false;
+    setState(() {
+      identical(_password1, _password2)
+          ? _isMatchPassword = true
+          : _isMatchPassword = false;
+    });
   }
 
   @override
@@ -172,6 +174,9 @@ class _SignupScreenState extends State<SignupScreen> {
             child: ElevatedButton.icon(
               onPressed: () {
                 _checkIfPasswordsMatch();
+                if (!_isMatchPassword) {
+                  return;
+                }
                 if (!constants.isTestingSignUp &&
                     _formKey.currentState!.validate() &&
                     _isMatchPassword) {

@@ -157,6 +157,11 @@ class MealService {
     return meals;
   }
 
+  static Future<MealModelWithId> getMealById(String mealId) async {
+    await Future.delayed(const Duration(seconds: 1));
+    return meals.firstWhere((meal) => meal.mealId == mealId);
+  }
+
   static Future<http.Response> addMeal(MealModel mealModel) async {
     return http.post(
       Uri.parse('${constants.apiUrl}/foodvendors/$foodVendorId/meals'),
@@ -183,19 +188,19 @@ class MealService {
   //   }
   // }
 
-  static Future<MealModel> getMeal(String mealId) async {
-    final response = await http.get(
-      Uri.parse('${constants.apiUrl}/foodvendors/$foodVendorId/meals/$mealId'),
-      headers: <String, String>{
-        'Content-Type': 'application/json',
-      },
-    );
-    if (response.statusCode == 200) {
-      return MealModel.fromJson(jsonDecode(response.body));
-    } else {
-      throw Exception('Failed to load meal');
-    }
-  }
+  // static Future<MealModel> getMealById(String mealId) async {
+  //   final response = await http.get(
+  //     Uri.parse('${constants.apiUrl}/foodvendors/$foodVendorId/meals/$mealId'),
+  //     headers: <String, String>{
+  //       'Content-Type': 'application/json',
+  //     },
+  //   );
+  //   if (response.statusCode == 200) {
+  //     return MealModel.fromJson(jsonDecode(response.body));
+  //   } else {
+  //     throw Exception('Failed to load meal');
+  //   }
+  // }
 
   static Future<MealModel> updateMeal(
       String mealId, MealModel mealModel) async {

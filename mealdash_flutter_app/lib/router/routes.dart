@@ -8,6 +8,8 @@ import 'package:mealdash_app/features/mealplans/view_models/meal_view_model.dart
 import 'package:mealdash_app/features/mealplans/views/home_scaffold.dart';
 import 'package:mealdash_app/features/mealplans/views/mealplans/mealplans_screen.dart';
 import 'package:mealdash_app/features/mealplans/views/meals/add/meals_add_screen.dart';
+import 'package:mealdash_app/features/mealplans/views/meals/details/meals_details_screen.dart';
+import 'package:mealdash_app/features/mealplans/views/meals/edit/meals_edit_screen.dart';
 import 'package:mealdash_app/features/mealplans/views/meals/meals_screen.dart';
 import 'package:mealdash_app/features/orders/views/orders_screen.dart';
 import 'package:mealdash_app/utils/constants.dart' as constants;
@@ -83,8 +85,6 @@ class MyRouter {
                   providers: [
                     ChangeNotifierProvider<MealViewModel>(
                         create: (_) => MealViewModel()),
-                    ChangeNotifierProvider(
-                        create: (_) => IngredientsProvider()),
                   ],
                   child: child,
                 ),
@@ -106,6 +106,26 @@ class MyRouter {
                         child: const MealsAddScreen(),
                       ),
                     ),
+                    GoRoute(
+                      name: constants.mealsEditRouteName,
+                      path: 'edit/:id',
+                      builder: (context, state) {
+                        print('state.params: ${state.params['id']}');
+                        return MealsEditScreen(
+                          mealId: state.params['id'] as String,
+                        );
+                      },
+                    ),
+                    GoRoute(
+                      name: constants.mealsDetailRouteName,
+                      path: 'details/:id',
+                      builder: (context, state) {
+                        print('state.params: ${state.params['id']}');
+                        return MealsDetailScreen(
+                          mealId: state.params['id'] as String,
+                        );
+                      },
+                    )
                   ],
                 ),
               ],

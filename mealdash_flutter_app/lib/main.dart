@@ -109,6 +109,22 @@ class MyApp extends StatelessWidget {
                 indent: 0,
                 endIndent: 0,
               ),
+              popupMenuTheme: const PopupMenuThemeData(
+                // textStyle: TextStyle(
+                //   color: Colors.black,
+                //   fontSize: 16,
+                // ),
+                color: Colors.white,
+                elevation: constants.defaultElevation,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(constants.borderRadius),
+                  ),
+                ),
+              ),
+              iconTheme: const IconThemeData(
+                color: constants.kPrimaryColor,
+              ),
             ),
           );
         },

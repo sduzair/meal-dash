@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 const bool isTestingMealAdd = false;
 const bool isTestingSignUp = true;
 const bool isTestingLogin = true;
-const bool isTestUserLoggedIn = true;
+const bool isTestUserLoggedIn = false;
 
 // KEY CONSTANTS
 const String loggedInKey = 'LoggedIn';
@@ -21,7 +21,9 @@ enum HomeNavTabRouteNames { home, orders, mealplans, meals }
 const String profileRouteName = 'profile';
 const String settingsRouteName = 'settings';
 const String messagesRouteName = 'messages';
-const String mealsAddRouteName = 'meals/add';
+const String mealsAddRouteName = 'mealsAdd';
+const String mealsEditRouteName = 'mealsEdit';
+const String mealsDetailRouteName = 'mealsDetail';
 
 // const String apiUrl = 'http://10.0.2.2';
 const String apiUrl = 'http://localhost';

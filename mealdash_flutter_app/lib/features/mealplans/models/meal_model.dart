@@ -47,10 +47,10 @@ class MealModel {
 
 @JsonSerializable()
 class MealModelWithId extends MealModel {
-  String id;
+  String mealId;
 
   MealModelWithId({
-    required this.id,
+    required this.mealId,
     required super.mealTitle,
     required super.mealShortDescription,
     required super.mealLongDescription,

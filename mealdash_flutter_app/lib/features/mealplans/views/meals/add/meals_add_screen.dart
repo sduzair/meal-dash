@@ -483,7 +483,10 @@ void _showPhotoPickerOptionsBottomModal(BuildContext context) {
           padding: const EdgeInsets.all(constants.defaultPadding),
           child: Column(
             children: [
-              const Divider(),
+              const Divider(
+                indent: 50,
+                endIndent: 50,
+              ),
               const SizedBox(height: constants.defaultMargin),
               const Text(
                 'Select Photo',

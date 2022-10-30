@@ -65,11 +65,13 @@ const double borderRadiusXLarge = 64.0;
 
 const double defaultPadding = 16.0;
 const double defaultPaddingSmall = 8.0;
+const double defaultPaddingXSmall = 4.0;
 const double defaultPaddingLarge = 32.0;
 const double defaultPaddingXLarge = 64.0;
 
 const double defaultMargin = 16.0;
 const double defaultMarginSmall = 8.0;
+const double defaultMarginXSmall = 4.0;
 const double defaultMarginLarge = 32.0;
 const double defaultMarginXLarge = 64.0;
 

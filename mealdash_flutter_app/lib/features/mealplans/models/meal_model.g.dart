@@ -30,7 +30,7 @@ Map<String, dynamic> _$MealModelToJson(MealModel instance) => <String, dynamic>{
 
 MealModelWithId _$MealModelWithIdFromJson(Map<String, dynamic> json) =>
     MealModelWithId(
-      id: json['id'] as String,
+      mealId: json['mealId'] as String,
       mealTitle: json['mealTitle'] as String?,
       mealShortDescription: json['mealShortDescription'] as String?,
       mealLongDescription: json['mealLongDescription'] as String?,
@@ -51,5 +51,5 @@ Map<String, dynamic> _$MealModelWithIdToJson(MealModelWithId instance) =>
       'mealCalories': instance.mealCalories,
       'mealQuantity': instance.mealQuantity,
       'mealQuantityUnit': instance.mealQuantityUnit,
-      'id': instance.id,
+      'mealId': instance.mealId,
     };

@@ -48,23 +48,29 @@ class HomeScreen extends StatelessWidget {
       ),
       body: ListView(
         children: const [
-          ListTile(
-            leading: Icon(Icons.person),
-            title: Text('Profile'),
-            // onTap: () =>
-            //     GoRouter.of(context).goNamed(constants.profileRouteName),
+          Card(
+            child: ListTile(
+              leading: Icon(Icons.person),
+              title: Text('Profile'),
+              // onTap: () =>
+              //     GoRouter.of(context).goNamed(constants.profileRouteName),
+            ),
           ),
-          ListTile(
-            leading: Icon(Icons.message),
-            title: Text('Messages'),
-            // onTap: () =>
-            //     GoRouter.of(context).goNamed(constants.messagesRouteName),
+          Card(
+            child: ListTile(
+              leading: Icon(Icons.message),
+              title: Text('Messages'),
+              // onTap: () =>
+              //     GoRouter.of(context).goNamed(constants.messagesRouteName),
+            ),
           ),
-          ListTile(
-            leading: Icon(Icons.settings),
-            title: Text('Settings'),
-            // onTap: () =>
-            //     GoRouter.of(context).goNamed(constants.settingsRouteName),
+          Card(
+            child: ListTile(
+              leading: Icon(Icons.settings),
+              title: Text('Settings'),
+              // onTap: () =>
+              //     GoRouter.of(context).goNamed(constants.settingsRouteName),
+            ),
           ),
         ],
       ),

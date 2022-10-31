@@ -10,6 +10,7 @@ import { isEmpty } from '@utils/util';
 import { LoginUserDto } from '@/dtos/loginuser.dto';
 import { VenderDto } from '@/dtos/vender.dto';
 import { CreateUserDto } from '@/dtos/createusers.dto';
+import MailService from '@/helper/email.helper';
 
 // AuthRepository class to handle all the database operations for authentication
 @EntityRepository()
@@ -23,6 +24,7 @@ class AuthService extends Repository<UserEntity> {
 
     const hashedPassword = await hash(userData.user_password, 10);
     const createUserData: User = await UserEntity.create({ ...userData, user_password: hashedPassword }).save();
+    MailService.getInstance().sendMail(createUserData.user_email);
     return createUserData;
   }
 

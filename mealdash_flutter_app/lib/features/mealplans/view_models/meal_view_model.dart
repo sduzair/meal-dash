@@ -60,3 +60,47 @@ class MealAddViewModel with ChangeNotifier, DiagnosticableTreeMixin {
         value: isAddingMealSuccess, ifTrue: 'Adding Meal Success'));
   }
 }
+
+class IngredientsProviderAdd extends ChangeNotifier {
+  final List<String> _ingredients = [];
+  List<String> get ingredients => _ingredients;
+
+  void addIngredient(String ingredient) {
+    _ingredients.add(ingredient);
+    notifyListeners();
+  }
+
+  void removeIngredient({required int index}) {
+    _ingredients.removeAt(index);
+    notifyListeners();
+  }
+
+  bool _isAddingIngredients = true;
+  bool get isAddingIngredients => _isAddingIngredients;
+  set isAddingIngredients(bool value) {
+    _isAddingIngredients = value;
+    notifyListeners();
+  }
+}
+
+class IngredientsProviderEdit extends ChangeNotifier {
+  final List<String> _ingredients = [];
+  List<String> get ingredients => _ingredients;
+
+  void addIngredient(String ingredient) {
+    _ingredients.add(ingredient);
+    notifyListeners();
+  }
+
+  void removeIngredient({required int index}) {
+    _ingredients.removeAt(index);
+    notifyListeners();
+  }
+
+  bool _isAddingIngredients = true;
+  bool get isAddingIngredients => _isAddingIngredients;
+  set isAddingIngredients(bool value) {
+    _isAddingIngredients = value;
+    notifyListeners();
+  }
+}

@@ -160,8 +160,6 @@ class _SignupScreenState extends State<SignupScreen> {
                           //   },
                           // ),
                           Text(_passmatch),
-
-                          
                         ],
                       ),
                     ),

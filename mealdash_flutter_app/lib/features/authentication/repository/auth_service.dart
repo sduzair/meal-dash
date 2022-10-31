@@ -33,6 +33,9 @@ class AuthService {
     if (response.statusCode == 200) {
       _isLoggedIn = true;
     }
+    // response.headers.forEach((key, value) {
+    //   print('$key: $value');
+    // });
     return response;
   }
 }

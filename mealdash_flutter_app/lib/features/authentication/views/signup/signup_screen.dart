@@ -18,6 +18,22 @@ class _SignupScreenState extends State<SignupScreen> {
   final UserSignUpModel _userSignUpModel = constants.isTestingSignUp
       ? UserSignUpModel.initializeDummyVals()
       : UserSignUpModel.empty();
+  String _password1 = '';
+  String _password2 = '';
+  String _passmatch = '';
+  bool _isMatchPassword = true;
+  _checkIfPasswordsMatch() {
+    setState(() {
+      if(_password1 == _password2) {
+        _isMatchPassword = true;
+        _passmatch = '';
+      } else {
+        _isMatchPassword = false;
+        _passmatch = 'Passwords do not match';
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Background(
@@ -30,6 +46,7 @@ class _SignupScreenState extends State<SignupScreen> {
             color: Colors.black,
             onPressed: () {
               Navigator.pop(context);
+              // context.pop();
             },
           ),
         ]),
@@ -91,8 +108,12 @@ class _SignupScreenState extends State<SignupScreen> {
                             padding: const EdgeInsets.symmetric(
                                 vertical: constants.defaultPadding),
                             child: TextFormField(
+                              onChanged: (pass1) {
+                                  _password1 = pass1;
+                              },
                               onSaved: (newValue) {
-                                _userSignUpModel.password = newValue!;
+                                _password1 = newValue!;
+                                _userSignUpModel.password = newValue;
                               },
                               validator: (value) {
                                 if (value!.isEmpty) {
@@ -110,6 +131,12 @@ class _SignupScreenState extends State<SignupScreen> {
                             ),
                           ),
                           TextFormField(
+                            onChanged: (pass2) {
+                              _password2 = pass2;
+                            },
+                            onSaved: (newValue) {
+                              _password2 = newValue!;
+                            },
                             textInputAction: TextInputAction.done,
                             obscureText: true,
                             cursorColor: constants.kPrimaryColor,
@@ -117,7 +144,7 @@ class _SignupScreenState extends State<SignupScreen> {
                               hintText: "Re-enter your password",
                               prefixIcon: Icon(Icons.lock),
                             ),
-                          ),
+                            ),
                           const SizedBox(height: constants.defaultPadding),
                           // AlreadyHaveAnAccountCheck(
                           //   login: false,
@@ -132,6 +159,9 @@ class _SignupScreenState extends State<SignupScreen> {
                           //     );
                           //   },
                           // ),
+                          Text(_passmatch),
+
+                          
                         ],
                       ),
                     ),
@@ -140,7 +170,6 @@ class _SignupScreenState extends State<SignupScreen> {
               ),
               // const SocalSignUp()
             ],
-            
           ),
         ),
         // resizeToAvoidBottomInset: false,
@@ -149,8 +178,13 @@ class _SignupScreenState extends State<SignupScreen> {
             tag: "signup_btn",
             child: ElevatedButton.icon(
               onPressed: () {
+                _checkIfPasswordsMatch();
+                if (!_isMatchPassword) {
+                  return;
+                }
                 if (!constants.isTestingSignUp &&
-                    _formKey.currentState!.validate()) {
+                    _formKey.currentState!.validate() &&
+                    _isMatchPassword) {
                   // if (true) {
                   _formKey.currentState!.save();
                   Navigator.push(
@@ -167,7 +201,6 @@ class _SignupScreenState extends State<SignupScreen> {
                             SignUpScreen2(userSignUpModel: _userSignUpModel)),
                   );
                 }
-                
               },
               icon: const Icon(Icons.navigate_next),
               label: const Text('NEXT'),

@@ -1,41 +1,44 @@
 // ignore: depend_on_referenced_packages
+
+
 import 'package:json_annotation/json_annotation.dart';
 
 part 'meal_model.g.dart';
 
 @JsonSerializable()
 class MealModel {
-  String? mealName;
-  String? mealDescription;
-  List<String>? mealIngredients;
-  String? mealCalories;
-  String? mealWeight;
-  List<String>? mealTags;
-  String? mealImageUri;
+  String? mealTitle;
+  String? mealShortDescription;
+  String? mealLongDescription;
+  List<String> mealIngredients = <String>[];
+  int? mealCalories;
+  int? mealQuantity;
+  String mealQuantityUnit = MealQuantityUnit.oz.name;
 
   MealModel({
-    required this.mealName,
-    required this.mealDescription,
+    required this.mealTitle,
+    required this.mealShortDescription,
+    required this.mealLongDescription,
     required this.mealIngredients,
     required this.mealCalories,
-    required this.mealWeight,
-    required this.mealTags,
-    required this.mealImageUri,
+    required this.mealQuantity,
+    required this.mealQuantityUnit,
   });
 
   MealModel.initializeDummyVals()
-      : mealName = 'test',
-        mealDescription = 'test',
+      : mealTitle = 'test',
+        mealShortDescription = 'test',
+        mealLongDescription = 'test',
         mealIngredients = ['test'],
-        mealCalories = 'test',
-        mealWeight = 'test',
-        mealTags = ['test'],
-        mealImageUri = 'test';
+        mealCalories = 765,
+        mealQuantity = 10;
 
   MealModel.empty();
 
   factory MealModel.fromJson(Map<String, dynamic> json) =>
       _$MealModelFromJson(json);
+
+  get mealImage => null;
 
   Map<String, dynamic> toJson() => _$MealModelToJson(this);
 }
@@ -44,28 +47,18 @@ class MealModel {
 
 @JsonSerializable()
 class MealModelWithId extends MealModel {
-  String? id;
+  String mealId;
 
   MealModelWithId({
-    required this.id,
-    required String mealName,
-    required String mealDescription,
-    required List<String> mealIngredients,
-    required String mealCalories,
-    required String mealWeight,
-    required List<String> mealTags,
-    required String mealImageUri,
-  }) : super(
-          mealName: mealName,
-          mealDescription: mealDescription,
-          mealIngredients: mealIngredients,
-          mealCalories: mealCalories,
-          mealWeight: mealWeight,
-          mealTags: mealTags,
-          mealImageUri: mealImageUri,
-        );
-
-  MealModelWithId.empty() : super.empty();
+    required this.mealId,
+    required super.mealTitle,
+    required super.mealShortDescription,
+    required super.mealLongDescription,
+    required super.mealIngredients,
+    required super.mealCalories,
+    required super.mealQuantity,
+    required super.mealQuantityUnit,
+  });
 
   factory MealModelWithId.fromJson(Map<String, dynamic> json) =>
       _$MealModelWithIdFromJson(json);
@@ -73,3 +66,5 @@ class MealModelWithId extends MealModel {
   @override
   Map<String, dynamic> toJson() => _$MealModelWithIdToJson(this);
 }
+
+enum MealQuantityUnit { oz, ml }

@@ -1,8 +1,20 @@
+import 'package:mealdash_app/utils/constants.dart' as constants;
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:mealdash_app/features/mealplans/models/meal_model.dart';
 import 'package:mealdash_app/features/mealplans/repository/meal_service.dart';
 
-class MealViewModel with ChangeNotifier, DiagnosticableTreeMixin {
+class MealAddViewModel with ChangeNotifier, DiagnosticableTreeMixin {
+  File? image;
+
+  MealAddViewModel()
+      : meal = constants.isTestingMealAdd
+            ? MealModel.initializeDummyVals()
+            : MealModel.empty();
+
+  MealModel meal;
+
   bool _isAddingMeal = false;
   bool get isAddingMeal => _isAddingMeal;
 
@@ -12,12 +24,14 @@ class MealViewModel with ChangeNotifier, DiagnosticableTreeMixin {
   bool _isAddingMealSuccess = false;
   bool get isAddingMealSuccess => _isAddingMealSuccess;
 
-  Future<void> addMeal(MealModel mealModel) async {
+  Future<void> addMeal() async {
+    print('addMeal() called');
+    print(meal.toJson());
     _isAddingMeal = true;
     _isAddingMealError = false;
     notifyListeners();
     try {
-      final response = await MealService.addMeal(mealModel);
+      final response = await MealService.addMeal(meal);
       if (response.statusCode == 201) {
         _isAddingMealSuccess = true;
         return;
@@ -32,5 +46,17 @@ class MealViewModel with ChangeNotifier, DiagnosticableTreeMixin {
       _isAddingMeal = false;
       notifyListeners();
     }
+  }
+
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(FlagProperty('isAddingMeal',
+        value: isAddingMeal, ifTrue: 'Adding Meal'));
+    properties.add(FlagProperty('isAddingMealError',
+        value: isAddingMealError, ifTrue: 'Adding Meal Error'));
+    properties.add(FlagProperty('isAddingMealSuccess',
+        value: isAddingMealSuccess, ifTrue: 'Adding Meal Success'));
   }
 }

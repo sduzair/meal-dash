@@ -77,7 +77,9 @@ class _MealsFutureBuilderState extends State<MealsFutureBuilder> {
                             .goNamed(constants.mealsDetailRouteName);
                       } else if (value == 'Edit') {
                         GoRouter.of(context)
-                            .goNamed(constants.mealsEditRouteName);
+                            .goNamed(
+                            constants.mealsEditRouteName,
+                            params: {'id': snapshot.data![index].mealId});
                       } else if (value == 'Delete') {
                         // MealService.deleteMeal(snapshot.data![index].id!);
                         // setState(() {});

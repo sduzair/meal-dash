@@ -101,7 +101,7 @@ class MyRouter {
                       builder: (context, state) => MultiProvider(
                         providers: [
                           ChangeNotifierProvider(
-                              create: (context) => IngredientsProvider())
+                              create: (context) => IngredientsProviderAdd())
                         ],
                         child: const MealAddScreen(),
                       ),
@@ -109,12 +109,14 @@ class MyRouter {
                     GoRoute(
                       name: constants.mealsEditRouteName,
                       path: 'edit/:id',
-                      builder: (context, state) {
-                        print('state.params: ${state.params['id']}');
-                        return MealsEditScreen(
-                          mealId: state.params['id'] as String,
-                        );
-                      },
+                      builder: (context, state) => MultiProvider(
+                        providers: [
+                          ChangeNotifierProvider(create: (context) => IngredientsProviderEdit())
+                        ],
+                        child:  MealsEditScreen(
+                        mealId: state.params['id'] as String,
+                        ),
+                      )
                     ),
                     GoRoute(
                       name: constants.mealsDetailRouteName,

@@ -20,12 +20,17 @@ class _SignupScreenState extends State<SignupScreen> {
       : UserSignUpModel.empty();
   String _password1 = '';
   String _password2 = '';
+  String _passmatch = '';
   bool _isMatchPassword = true;
   _checkIfPasswordsMatch() {
     setState(() {
-      identical(_password1, _password2)
-          ? _isMatchPassword = true
-          : _isMatchPassword = false;
+      if(_password1 == _password2) {
+        _isMatchPassword = true;
+        _passmatch = '';
+      } else {
+        _isMatchPassword = false;
+        _passmatch = 'Passwords do not match';
+      }
     });
   }
 
@@ -104,7 +109,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                 vertical: constants.defaultPadding),
                             child: TextFormField(
                               onChanged: (pass1) {
-                                _password1 = pass1;
+                                  _password1 = pass1;
                               },
                               onSaved: (newValue) {
                                 _password1 = newValue!;
@@ -139,7 +144,7 @@ class _SignupScreenState extends State<SignupScreen> {
                               hintText: "Re-enter your password",
                               prefixIcon: Icon(Icons.lock),
                             ),
-                          ),
+                            ),
                           const SizedBox(height: constants.defaultPadding),
                           // AlreadyHaveAnAccountCheck(
                           //   login: false,
@@ -154,9 +159,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           //     );
                           //   },
                           // ),
-                          _isMatchPassword
-                              ? const Text("")
-                              : const Text("Passwords do not match")
+                          Text(_passmatch),
                         ],
                       ),
                     ),

@@ -273,7 +273,7 @@ class IngredientsChipsTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print('IngredientsChipsTextField rebuild');
-    var ingredientsProviderWatch = context.watch<IngredientsProvider>();
+    var ingredientsProviderWatch = context.watch<IngredientsProviderAdd>();
     return TagEditor(
       length: ingredientsProviderWatch.ingredients.length,
       delimiters: const [',', ' '],
@@ -287,13 +287,13 @@ class IngredientsChipsTextField extends StatelessWidget {
                 : null,
       ),
       onTagChanged: (newValue) =>
-          context.read<IngredientsProvider>().addIngredient(newValue),
+          context.read<IngredientsProviderAdd>().addIngredient(newValue),
       tagBuilder: (context, index) {
         print('IngredientsChipsTextField TagBuilder build');
         return Chip(
           // labelPaddin: const EdgeInsets.only(left: 8.0),
           label: Text(
-            context.read<IngredientsProvider>().ingredients[index],
+            context.read<IngredientsProviderAdd>().ingredients[index],
             textScaleFactor: 1.1,
           ),
           deleteIcon: const Icon(
@@ -302,36 +302,14 @@ class IngredientsChipsTextField extends StatelessWidget {
             size: constants.defaultIconSizeSmall,
           ),
           deleteButtonTooltipMessage:
-              'Remove ${context.read<IngredientsProvider>().ingredients[index]}',
+              'Remove ${context.read<IngredientsProviderAdd>().ingredients[index]}',
           onDeleted: () => context
-              .read<IngredientsProvider>()
+              .read<IngredientsProviderAdd>()
               .removeIngredient(index: index),
           // setState(() => widget.meal.mealIngredients.removeAt(index)),
         );
       },
     );
-  }
-}
-
-class IngredientsProvider extends ChangeNotifier {
-  final List<String> _ingredients = [];
-  List<String> get ingredients => _ingredients;
-
-  void addIngredient(String ingredient) {
-    _ingredients.add(ingredient);
-    notifyListeners();
-  }
-
-  void removeIngredient({required int index}) {
-    _ingredients.removeAt(index);
-    notifyListeners();
-  }
-
-  bool _isAddingIngredients = true;
-  bool get isAddingIngredients => _isAddingIngredients;
-  set isAddingIngredients(bool value) {
-    _isAddingIngredients = value;
-    notifyListeners();
   }
 }
 
@@ -349,7 +327,7 @@ class _AddMealSubmitButtonState extends State<AddMealSubmitButton> {
   Widget build(BuildContext context) {
     print('AddMealSubmitButton build');
     final mealVMWatch = context.watch<MealAddViewModel>();
-    final ingredientsProviderWatch = context.watch<IngredientsProvider>();
+    final ingredientsProviderWatch = context.watch<IngredientsProviderAdd>();
     final formKey = Form.of(context);
     return ElevatedButton(
       child: const AddMealSubmitButtonText(),

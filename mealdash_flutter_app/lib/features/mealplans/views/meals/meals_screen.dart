@@ -61,8 +61,8 @@ class _MealsFutureBuilderState extends State<MealsFutureBuilder> {
                       decoration: const BoxDecoration(
                         color: Color(0xff7c94b6),
                         image: DecorationImage(
-                        image: NetworkImage(
-                            'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl-2.jpg'),
+                          image: NetworkImage(
+                              'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl-2.jpg'),
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -76,8 +76,7 @@ class _MealsFutureBuilderState extends State<MealsFutureBuilder> {
                         GoRouter.of(context)
                             .goNamed(constants.mealsDetailRouteName);
                       } else if (value == 'Edit') {
-                        GoRouter.of(context)
-                            .goNamed(
+                        GoRouter.of(context).goNamed(
                             constants.mealsEditRouteName,
                             params: {'id': snapshot.data![index].mealId});
                       } else if (value == 'Delete') {

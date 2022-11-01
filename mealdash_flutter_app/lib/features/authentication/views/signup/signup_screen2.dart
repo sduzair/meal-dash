@@ -1,3 +1,4 @@
+import 'package:csc_picker/csc_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mealdash_app/components/background.dart';
@@ -18,6 +19,9 @@ class SignUpScreen2 extends StatefulWidget {
 
 class SignUpScreen2State extends State<SignUpScreen2> {
   final _formKey = GlobalKey<FormState>();
+  String countryValue = "";
+  String stateValue = "";
+  String cityValue = "";
   @override
   Widget build(BuildContext context) {
     return Background(
@@ -121,38 +125,58 @@ class SignUpScreen2State extends State<SignUpScreen2> {
                   //   return null;
                   // },
                 ),
-                TextFormField(
-                  onSaved: (newValue) {
-                    widget.userSignUpModel.city = newValue!;
-                  },
-                  decoration: const InputDecoration(
-                      labelText: "City",
-                      hintText: "Enter your city",
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                      icon: Icon(Icons.location_city)),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "Please enter your city";
-                    }
-                    return null;
-                  },
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(child: CSCPicker(
+                    onCountryChanged: (country){
+                      setState(() {
+                        widget.userSignUpModel.country = country;
+                      });
+                    },
+                    onStateChanged: (state){
+                      setState(() {
+                        widget.userSignUpModel.state = state;
+                      });
+                    },
+                    onCityChanged: (city){
+                      setState(() {
+                        widget.userSignUpModel.city = city;
+                      });
+                    },
+                  )),
                 ),
-                TextFormField(
-                  onSaved: (newValue) {
-                    widget.userSignUpModel.state = newValue!;
-                  },
-                  decoration: const InputDecoration(
-                      labelText: "State",
-                      hintText: "Enter your state",
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                      icon: Icon(Icons.location_city)),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "Please enter your state";
-                    }
-                    return null;
-                  },
-                ),
+                // TextFormField(
+                //   onSaved: (newValue) {
+                //     widget.userSignUpModel.city = newValue!;
+                //   },
+                //   decoration: const InputDecoration(
+                //       labelText: "City",
+                //       hintText: "Enter your city",
+                //       floatingLabelBehavior: FloatingLabelBehavior.always,
+                //       icon: Icon(Icons.location_city)),
+                //   validator: (value) {
+                //     if (value!.isEmpty) {
+                //       return "Please enter your city";
+                //     }
+                //     return null;
+                //   },
+                // ),
+                // TextFormField(
+                //   onSaved: (newValue) {
+                //     widget.userSignUpModel.state = newValue!;
+                //   },
+                //   decoration: const InputDecoration(
+                //       labelText: "State",
+                //       hintText: "Enter your state",
+                //       floatingLabelBehavior: FloatingLabelBehavior.always,
+                //       icon: Icon(Icons.location_city)),
+                //   validator: (value) {
+                //     if (value!.isEmpty) {
+                //       return "Please enter your state";
+                //     }
+                //     return null;
+                //   },
+                // ),
                 TextFormField(
                   onSaved: (newValue) {
                     widget.userSignUpModel.postalCode = newValue!;

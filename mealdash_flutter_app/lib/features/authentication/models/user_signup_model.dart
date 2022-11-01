@@ -21,6 +21,7 @@ class UserSignUpModel {
   String? addressLine2;
   String? city;
   String? state;
+  String? country;
   @JsonKey(name: 'postal')
   String? postalCode;
   @JsonKey(name: 'user_type')

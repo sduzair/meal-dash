@@ -227,3 +227,27 @@ class MealService {
     );
   }
 }
+
+// get meals body
+// body: [
+//   {
+//     mealId: '1',
+//     mealTitle: 'sadf',
+//     mealShortDescription: 'asdf',
+//     mealLongDescription: 'afds',
+//     mealIngredients: ['34sdf', 'sadf'],
+//     mealCalories: 345,
+//     mealQuantity: 234,
+//     mealQuantityUnit: 'oz',
+//   },
+//   {
+//     mealId: '2',
+//     mealTitle: 'sadf',
+//     mealShortDescription: 'asdf',
+//     mealLongDescription: 'afds',
+//     mealIngredients: ['34sdf', 'sadf'],
+//     mealCalories: null,
+//     mealQuantity: 234,
+//     mealQuantityUnit: 'oz',
+//   },
+// ];

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mealdash_app/components/background.dart';
-import 'package:mealdash_app/features/authentication/models/user_signup_model.dart';
+import 'package:mealdash_app/features/authentication/view_models/auth_view_model.dart';
 
 import 'package:mealdash_app/features/authentication/views/signup/components/sign_up_top_image.dart';
-import 'package:mealdash_app/features/authentication/views/signup/signup_screen2.dart';
 import 'package:mealdash_app/utils/constants.dart' as constants;
+import 'package:provider/provider.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
@@ -15,9 +16,6 @@ class SignupScreen extends StatefulWidget {
 
 class _SignupScreenState extends State<SignupScreen> {
   final _formKey = GlobalKey<FormState>();
-  final UserSignUpModel _userSignUpModel = constants.isTestingSignUp
-      ? UserSignUpModel.initializeDummyVals()
-      : UserSignUpModel.empty();
   String _password1 = '';
   String _password2 = '';
   String _passmatch = '';
@@ -39,17 +37,21 @@ class _SignupScreenState extends State<SignupScreen> {
     return Background(
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        appBar:
-            AppBar(backgroundColor: Colors.transparent, elevation: 0, actions: [
-          IconButton(
-            icon: const Icon(Icons.arrow_back_ios),
-            color: Colors.black,
-            onPressed: () {
-              Navigator.pop(context);
-              // context.pop();
-            },
-          ),
-        ]),
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.arrow_back_ios),
+              color: Colors.black,
+              onPressed: () {
+                context.goNamed(constants.welcomeRouteName);
+                // GoRouter.of(context).navigator?.pop();
+                // Navigator.maybePop(context);
+              },
+            ),
+          ],
+        ),
         body: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -70,7 +72,10 @@ class _SignupScreenState extends State<SignupScreen> {
                             textInputAction: TextInputAction.next,
                             cursorColor: constants.kPrimaryColor,
                             onSaved: (email) {
-                              _userSignUpModel.email = email!;
+                              context
+                                  .read<UserAuthViewModel>()
+                                  .userSignUpModel
+                                  .email = email;
                             },
                             validator: (email) {
                               if (email!.isEmpty) {
@@ -90,7 +95,10 @@ class _SignupScreenState extends State<SignupScreen> {
                               textInputAction: TextInputAction.next,
                               cursorColor: constants.kPrimaryColor,
                               onSaved: (username) {
-                                _userSignUpModel.username = username!;
+                                context
+                                    .read<UserAuthViewModel>()
+                                    .userSignUpModel
+                                    .username = username;
                               },
                               validator: (username) {
                                 if (username!.isEmpty) {
@@ -111,9 +119,11 @@ class _SignupScreenState extends State<SignupScreen> {
                               onChanged: (pass1) {
                                   _password1 = pass1;
                               },
-                              onSaved: (newValue) {
-                                _password1 = newValue!;
-                                _userSignUpModel.password = newValue;
+                              onSaved: (password) {
+                                context
+                                    .read<UserAuthViewModel>()
+                                    .userSignUpModel
+                                    .password = password;
                               },
                               validator: (value) {
                                 if (value!.isEmpty) {
@@ -183,22 +193,9 @@ class _SignupScreenState extends State<SignupScreen> {
                 if (!constants.isTestingSignUp &&
                     _formKey.currentState!.validate() &&
                     _isMatchPassword) {
-                  // if (true) {
                   _formKey.currentState!.save();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            SignUpScreen2(userSignUpModel: _userSignUpModel)),
-                  );
-                } else if (constants.isTestingSignUp) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            SignUpScreen2(userSignUpModel: _userSignUpModel)),
-                  );
                 }
+                GoRouter.of(context).goNamed(constants.signupStep2RouteName); 
               },
               icon: const Icon(Icons.navigate_next),
               label: const Text('NEXT'),

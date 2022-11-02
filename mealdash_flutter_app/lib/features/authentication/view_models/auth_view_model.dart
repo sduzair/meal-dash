@@ -11,6 +11,12 @@ class UserAuthViewModel with ChangeNotifier, DiagnosticableTreeMixin {
   bool _isLoggedIn = false;
   bool get isLoggedIn => _isLoggedIn;
 
+  final UserSignUpModel _userSignUpModel = constants.isTestingSignUp
+      ? UserSignUpModel.initializeDummyVals()
+      : UserSignUpModel.empty();
+
+  UserSignUpModel get userSignUpModel => _userSignUpModel;
+
   UserAuthViewModel(this.prefs) {
     _isLoggedIn = prefs.getBool(constants.loggedInKey) ?? false;
   }
@@ -35,13 +41,13 @@ class UserAuthViewModel with ChangeNotifier, DiagnosticableTreeMixin {
   bool _isSigningUpSuccess = false;
   bool get isSigningUpSuccess => _isSigningUpSuccess;
 
-  Future<void> signUp(UserSignUpModel userSignUpModel) async {
-    print(userSignUpModel.toJson());
+  Future<void> signUp() async {
+    print(_userSignUpModel.toJson());
     _isSigningUp = true;
     _isSigningUpError = false;
     notifyListeners();
     try {
-      final response = await AuthService.signUp(userSignUpModel);
+      final response = await AuthService.signUp(_userSignUpModel);
       if (response.statusCode == 201) {
         _isSigningUpSuccess = true;
         return;

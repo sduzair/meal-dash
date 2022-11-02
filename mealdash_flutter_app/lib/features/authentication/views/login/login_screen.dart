@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mealdash_app/utils/constants.dart' as constants;
 import 'package:go_router/go_router.dart';
 
 import 'package:mealdash_app/components/background.dart';
@@ -55,7 +56,8 @@ class MobileLoginScreen extends StatelessWidget {
             color: Colors.black,
             onPressed: () {
               // Navigator.pop(context);
-              context.pop();
+              // context.pop();
+              context.goNamed(constants.welcomeRouteName);
             },
           ),
         ],

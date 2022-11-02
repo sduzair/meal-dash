@@ -2,16 +2,13 @@ import 'package:csc_picker/csc_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mealdash_app/components/background.dart';
-import 'package:mealdash_app/features/authentication/models/user_signup_model.dart';
 import 'package:mealdash_app/features/authentication/view_models/auth_view_model.dart';
 
 import 'package:mealdash_app/utils/constants.dart' as constants;
 import 'package:provider/provider.dart';
 
 class SignUpScreen2 extends StatefulWidget {
-  final UserSignUpModel userSignUpModel;
-  const SignUpScreen2({required this.userSignUpModel, Key? key})
-      : super(key: key);
+  const SignUpScreen2({Key? key}) : super(key: key);
 
   @override
   SignUpScreen2State createState() => SignUpScreen2State();
@@ -19,25 +16,25 @@ class SignUpScreen2 extends StatefulWidget {
 
 class SignUpScreen2State extends State<SignUpScreen2> {
   final _formKey = GlobalKey<FormState>();
-  String countryValue = "";
-  String stateValue = "";
-  String cityValue = "";
   @override
   Widget build(BuildContext context) {
     return Background(
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        appBar:
-            AppBar(backgroundColor: Colors.transparent, elevation: 0, actions: [
-          IconButton(
-            icon: const Icon(Icons.arrow_back_ios),
-            color: Colors.black,
-            onPressed: () {
-              Navigator.pop(context);
-              // context.pop();
-            },
-          ),
-        ]),
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.arrow_back_ios),
+              color: Colors.black,
+              onPressed: () {
+                context.goNamed(constants.signupRouteName);
+                // GoRouter.of(context).pop();
+              },
+            ),
+          ],
+        ),
         body: Container(
           padding: const EdgeInsets.all(constants.defaultPadding),
           child: Form(
@@ -47,7 +44,7 @@ class SignUpScreen2State extends State<SignUpScreen2> {
                 // const SizedBox(height: Constants.defaultPadding * 2),
                 TextFormField(
                   onSaved: (newValue) {
-                    // widget.userSignUpModel.firstName = newValue!;
+                    // context.read<UserAuthViewModel>().userSignUpModel.firstName = newValue!;
                   },
                   decoration: const InputDecoration(
                       labelText: "First Name",
@@ -63,7 +60,7 @@ class SignUpScreen2State extends State<SignUpScreen2> {
                 ),
                 TextFormField(
                   onSaved: (newValue) {
-                    // widget.userSignUpModel.lastName = newValue!;
+                    // context.read<UserAuthViewModel>().userSignUpModel.lastName = newValue!;
                   },
                   decoration: const InputDecoration(
                       labelText: "Last Name",
@@ -79,7 +76,10 @@ class SignUpScreen2State extends State<SignUpScreen2> {
                 ),
                 TextFormField(
                   onSaved: (newValue) {
-                    widget.userSignUpModel.phoneNumber = newValue!;
+                    context
+                        .read<UserAuthViewModel>()
+                        .userSignUpModel
+                        .phoneNumber = newValue!;
                   },
                   decoration: const InputDecoration(
                       labelText: "Phone Number",
@@ -95,7 +95,10 @@ class SignUpScreen2State extends State<SignUpScreen2> {
                 ),
                 TextFormField(
                   onSaved: (newValue) {
-                    widget.userSignUpModel.addressLine1 = newValue!;
+                    context
+                        .read<UserAuthViewModel>()
+                        .userSignUpModel
+                        .addressLine1 = newValue!;
                   },
                   decoration: const InputDecoration(
                       labelText: "Address",
@@ -111,7 +114,10 @@ class SignUpScreen2State extends State<SignUpScreen2> {
                 ),
                 TextFormField(
                   onSaved: (newValue) {
-                    widget.userSignUpModel.addressLine2 = newValue!;
+                    context
+                        .read<UserAuthViewModel>()
+                        .userSignUpModel
+                        .addressLine2 = newValue!;
                   },
                   decoration: const InputDecoration(
                       labelText: "Address",
@@ -138,25 +144,27 @@ class SignUpScreen2State extends State<SignUpScreen2> {
                           layout: Layout.vertical,
                           defaultCountry: DefaultCountry.Canada,
                           disableCountry: true,
-                          // dropdownDecoration: BoxDecoration(
-                          //   borderRadius: BorderRadius.circular(0),
-                          //   border: Border.all(color: Colors.grey),
-                          //   shape: BoxShape.rectangle,
-                          // ),
-                          onCountryChanged: (country) {
-                            // setState(() {
-                            widget.userSignUpModel.country = country;
-                            // });
-                          },
+                          dropdownDecoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(0),
+                            border: Border.all(color: Colors.grey),
+                            shape: BoxShape.rectangle,
+                          ),
+                          onCountryChanged: (badRequiredField) {},
                           onStateChanged: (state) {
-                            // setState(() {
-                            widget.userSignUpModel.state = state;
-                            // });
+                            if (state != null && state.isNotEmpty) {
+                              context
+                                  .read<UserAuthViewModel>()
+                                  .userSignUpModel
+                                  .state = state;
+                            }
                           },
                           onCityChanged: (city) {
-                            // setState(() {
-                            widget.userSignUpModel.city = city;
-                            // });
+                            if (city != null && city.isNotEmpty) {
+                              context
+                                  .read<UserAuthViewModel>()
+                                  .userSignUpModel
+                                  .city = city;
+                            }
                           },
                         ),
                       ),
@@ -165,7 +173,7 @@ class SignUpScreen2State extends State<SignUpScreen2> {
                 ),
                 // TextFormField(
                 //   onSaved: (newValue) {
-                //     widget.userSignUpModel.city = newValue!;
+                //     context.read<UserAuthViewModel>().userSignUpModel.city = newValue!;
                 //   },
                 //   decoration: const InputDecoration(
                 //       labelText: "City",
@@ -181,7 +189,7 @@ class SignUpScreen2State extends State<SignUpScreen2> {
                 // ),
                 // TextFormField(
                 //   onSaved: (newValue) {
-                //     widget.userSignUpModel.state = newValue!;
+                //     context.read<UserAuthViewModel>().userSignUpModel.state = newValue!;
                 //   },
                 //   decoration: const InputDecoration(
                 //       labelText: "State",
@@ -197,7 +205,10 @@ class SignUpScreen2State extends State<SignUpScreen2> {
                 // ),
                 TextFormField(
                   onSaved: (newValue) {
-                    widget.userSignUpModel.postalCode = newValue!;
+                    context
+                        .read<UserAuthViewModel>()
+                        .userSignUpModel
+                        .postalCode = newValue!;
                   },
                   decoration: const InputDecoration(
                       labelText: "Postal Code",
@@ -217,11 +228,7 @@ class SignUpScreen2State extends State<SignUpScreen2> {
         ),
         // resizeToAvoidBottomInset: false,
         persistentFooterButtons: [
-          Hero(
-            tag: "signup_btn",
-            child: SubmitButton(
-                formKey: _formKey, userSignUpModel: widget.userSignUpModel),
-          ),
+          SubmitButton(formKey: _formKey),
         ],
       ),
     );
@@ -229,12 +236,9 @@ class SignUpScreen2State extends State<SignUpScreen2> {
 }
 
 class SubmitButton extends StatelessWidget {
-  final UserSignUpModel userSignUpModel;
-
   const SubmitButton({
     Key? key,
     required GlobalKey<FormState> formKey,
-    required this.userSignUpModel,
   })  : _formKey = formKey,
         super(key: key);
 
@@ -242,7 +246,9 @@ class SubmitButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
+    return Hero(
+      tag: "signup_btn",
+      child: ElevatedButton(
       onPressed: () {
         if (context.read<UserAuthViewModel>().isSigningUp) {
           return;
@@ -253,11 +259,11 @@ class SubmitButton extends StatelessWidget {
           //   return ;
           // }));
         }
-        context.read<UserAuthViewModel>().signUp(userSignUpModel);
+          context.read<UserAuthViewModel>().signUp();
         // if (context.read<UserAuthViewModel>().isSigningUpSuccess) {
-        context.pop();
+          // context.pop();
         // context.goNamed(constants.loginRouteName);
-        context.pushNamed(constants.loginRouteName);
+          // context.pushNamed(constants.loginRouteName);
         // }
       },
       // icon: const Icon(Icons.check_circle),
@@ -268,6 +274,8 @@ class SubmitButton extends StatelessWidget {
         elevation: constants.defaultElevation,
       ),
       child: const TextSignUpButton(),
+        // ),
+      ),
     );
   }
 }
@@ -279,32 +287,29 @@ class TextSignUpButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<UserAuthViewModel>(
-      builder: (context, userAuthViewModel, child) {
-        if (userAuthViewModel.isSigningUp) {
-          return const SizedBox(
-            height: 20,
-            width: 20,
-            child: CircularProgressIndicator(
-              strokeWidth: 2,
-              color: Colors.white,
-            ),
-          );
-        } else if (userAuthViewModel.isSigningUpError) {
-          return const Text("SIGNUP ERROR TRY AGAIN");
-        } else if (userAuthViewModel.isSigningUpSuccess) {
-          return const SizedBox(
-            height: 20,
-            width: 20,
-            child: Icon(
-              Icons.check,
-              color: Colors.white,
-            ),
-          );
-        } else {
-          return const Text("SIGNUP");
-        }
-      },
-    );
+    final authVMWatch = context.watch<UserAuthViewModel>();
+    if (authVMWatch.isSigningUp) {
+      return const SizedBox(
+        height: 20,
+        width: 20,
+        child: CircularProgressIndicator(
+          strokeWidth: 2,
+          color: Colors.white,
+        ),
+      );
+    } else if (authVMWatch.isSigningUpError) {
+      return const Text("SIGNUP ERROR TRY AGAIN");
+    } else if (authVMWatch.isSigningUpSuccess) {
+      return const SizedBox(
+        height: 20,
+        width: 20,
+        child: Icon(
+          Icons.check,
+          color: Colors.white,
+        ),
+      );
+    } else {
+      return const Text("SIGNUP");
+    }
   }
 }

@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:mealdash_app/features/authentication/view_models/auth_view_model.dart';
 import 'package:mealdash_app/features/authentication/views/login/login_screen.dart';
 import 'package:mealdash_app/features/authentication/views/signup/signup_screen.dart';
+import 'package:mealdash_app/features/authentication/views/signup/signup_screen2.dart';
 import 'package:mealdash_app/features/authentication/views/welcome/welcome_screen.dart';
 import 'package:mealdash_app/features/mealplans/view_models/meal_view_model.dart';
 import 'package:mealdash_app/features/mealplans/views/home_scaffold.dart';
@@ -50,9 +51,35 @@ class MyRouter {
       GoRoute(
         name: constants.signupRouteName,
         path: '/signup',
-        pageBuilder: (context, state) =>
-            MaterialPage<void>(key: state.pageKey, child: const SignupScreen()),
+        pageBuilder: (context, state) => MaterialPage<void>(
+          key: state.pageKey,
+          child: const SignupScreen(),
+        ),
+        routes: [
+          GoRoute(
+            name: constants.signupStep2RouteName,
+            path: 'step2',
+            pageBuilder: (context, state) => MaterialPage<void>(
+              key: state.pageKey,
+              child: const SignUpScreen2(),
+            ),
+          ),
+        ],
       ),
+      // GoRoute(
+      //   name: constants.signupRouteName,
+      //   path: '/signup',
+      //   pageBuilder: (context, state) =>
+      //       MaterialPage<void>(key: state.pageKey, child: const SignupScreen()),
+      //   routes: [
+      //     GoRoute(
+      //       name: constants.signupStep2RouteName,
+      //       path: 'step2',
+      //       pageBuilder: (context, state) => MaterialPage<void>(
+      //           key: state.pageKey, child: const SignupScreen()),
+      //     ),
+      //   ],
+      // ),
       StatefulShellRoute(
         branches: <ShellRouteBranch>[
           ShellRouteBranch(
@@ -149,6 +176,8 @@ class MyRouter {
       if (!userAuthViewModel.isLoggedIn &&
           !(state.subloc == state.namedLocation(constants.loginRouteName)) &&
           !(state.subloc == state.namedLocation(constants.signupRouteName)) &&
+          !(state.subloc ==
+              state.namedLocation(constants.signupStep2RouteName)) &&
           !(state.subloc == state.namedLocation(constants.welcomeRouteName))) {
         return state.namedLocation(constants.welcomeRouteName);
       } else {

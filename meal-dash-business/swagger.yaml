@@ -46,7 +46,7 @@ paths:
         409:
           description: 'Conflict'
         500:
-          description: 'Server Error'        
+          description: 'Server Error'
   # [POST] sign in user
   /logout:
     post:
@@ -63,8 +63,8 @@ paths:
         409:
           description: 'Conflict'
         500:
-          description: 'Server Error'            
-# [GET] users          
+          description: 'Server Error'
+# [GET] users
   /users:
     get:
       tags:
@@ -163,7 +163,6 @@ paths:
           description: 'Conflict'
         500:
           description: 'Server Error'
-
 # [POST] insert mean plan
   /mealplan/add-mealplan:
     post:
@@ -208,6 +207,61 @@ paths:
           description: 'Conflict'
         500:
           description: 'Server Error'
+
+# [GET] meals
+  /meal:
+    get:
+      tags:
+      - meal
+      summary: Find All Meals
+      responses:
+        200:
+          description: 'OK'
+        500:
+          description: 'Server Error'
+
+# [POST] meal
+    post:
+      tags:
+      - meal
+      summary: Add meal
+      parameters:
+      - name: body
+        in: body
+        description: meal Data
+        required: true
+        schema:
+          $ref: '#/definitions/meal'
+      responses:
+        201:
+          description: 'Created'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+# [GET] meal/id
+  /meal/{id}:
+    get:
+      tags:
+      - meal
+      summary: Find Meal By Id
+      parameters:
+      - name: id
+        in: path
+        description: Meal Id
+        required: true
+        type: integer
+      responses:
+        200:
+          description: 'OK'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
 
 # definitions
 definitions:
@@ -272,6 +326,7 @@ definitions:
       user_password:
         type: string
         description: user Password
+
   createmealplan:
     type: object
     required:
@@ -291,8 +346,8 @@ definitions:
         description: meal plan description
       is_active:
         type: boolean
-        description: meal plan is active   
-              
+        description: meal plan is active
+
   subscription:
     type: object
     required:
@@ -325,7 +380,49 @@ definitions:
       mealplan_id:
         type: number
         description: subscription meal plan id
-             
+
+  meal:
+    type: object
+    required:
+          - vendor_id
+          - mealTitle
+          - mealShortDescription
+          - mealLongDescription
+          - mealIngredients
+          - mealCalories
+          - mealQuantity
+          - mealQuantityUnit
+          - timeStamp
+    properties:
+      vendor_id:
+        type: number
+        description: Food Vendor id
+      mealTitle:
+        type: string
+        description: Meal item title
+      mealShortDescription:
+        type: string
+        description: Meal item short Description
+      mealLongDescription:
+        type: string
+        description: Meal item long Description
+      mealIngredients:
+        type: string
+        description: Meal item ingredients
+      mealCalories:
+        type: number
+        description: Meal item calories
+      mealQuantity:
+        type: number
+        description: Meal item quantity
+      mealQuantityUnit:
+        type: string
+        description: Meal item quantity unit
+      timeStamp:
+        type: string
+        format: date-time
+        description: Meal item timestamp
+
 
 schemes:
  - https

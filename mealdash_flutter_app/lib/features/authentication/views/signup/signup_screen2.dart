@@ -126,24 +126,42 @@ class SignUpScreen2State extends State<SignUpScreen2> {
                   // },
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(child: CSCPicker(
-                    onCountryChanged: (country){
-                      setState(() {
-                        widget.userSignUpModel.country = country;
-                      });
-                    },
-                    onStateChanged: (state){
-                      setState(() {
-                        widget.userSignUpModel.state = state;
-                      });
-                    },
-                    onCityChanged: (city){
-                      setState(() {
-                        widget.userSignUpModel.city = city;
-                      });
-                    },
-                  )),
+                  padding:
+                      const EdgeInsets.only(top: constants.defaultPaddingSmall),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      const Icon(Icons.location_on),
+                      const SizedBox(width: constants.defaultPadding),
+                      Expanded(
+                        child: CSCPicker(
+                          layout: Layout.vertical,
+                          defaultCountry: DefaultCountry.Canada,
+                          disableCountry: true,
+                          // dropdownDecoration: BoxDecoration(
+                          //   borderRadius: BorderRadius.circular(0),
+                          //   border: Border.all(color: Colors.grey),
+                          //   shape: BoxShape.rectangle,
+                          // ),
+                          onCountryChanged: (country) {
+                            // setState(() {
+                            widget.userSignUpModel.country = country;
+                            // });
+                          },
+                          onStateChanged: (state) {
+                            // setState(() {
+                            widget.userSignUpModel.state = state;
+                            // });
+                          },
+                          onCityChanged: (city) {
+                            // setState(() {
+                            widget.userSignUpModel.city = city;
+                            // });
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 // TextFormField(
                 //   onSaved: (newValue) {

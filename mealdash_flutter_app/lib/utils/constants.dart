@@ -15,6 +15,7 @@ const String rootRouteName = 'root';
 const String welcomeRouteName = 'welcome';
 const String loginRouteName = 'login';
 const String signupRouteName = 'signup';
+const String signupStep2RouteName = 'signupStep2';
 // maintain the order of the tabs in FoodVendorHome - Scaffold - IndexedStack and BottomNavigationBar
 enum HomeNavTabRouteNames { home, orders, mealplans, meals }
 

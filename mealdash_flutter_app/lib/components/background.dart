@@ -11,6 +11,7 @@ class Background extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // backgroundColor: Colors.transparent,
       // resizeToAvoidBottomInset: false,
       body: SizedBox(
         width: double.infinity,

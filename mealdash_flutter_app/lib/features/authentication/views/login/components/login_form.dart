@@ -39,7 +39,7 @@ class _LoginFormState extends State<LoginForm> {
             },
             keyboardType: TextInputType.emailAddress,
             textInputAction: TextInputAction.next,
-            cursorColor: constants.kPrimaryColor,
+            // cursorColor: constants.kPrimaryColor,
             decoration: const InputDecoration(
               hintText: "Your email",
               prefixIcon: Padding(
@@ -63,7 +63,6 @@ class _LoginFormState extends State<LoginForm> {
               },
               textInputAction: TextInputAction.done,
               obscureText: true,
-              cursorColor: constants.kPrimaryColor,
               decoration: const InputDecoration(
                 hintText: "Your password",
                 prefixIcon: Padding(
@@ -99,6 +98,13 @@ class UserLoginButton extends StatelessWidget {
     return Hero(
       tag: "login_btn",
       child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          minimumSize: const Size(double.infinity, 50),
+          visualDensity: VisualDensity.comfortable,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+        ),
         onPressed: () {
           if (context.read<UserAuthViewModel>().isLoggingIn) {
             // print("Already logging in");

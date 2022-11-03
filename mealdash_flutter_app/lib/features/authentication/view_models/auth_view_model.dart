@@ -1,13 +1,21 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:mealdash_app/features/authentication/models/user_login_model.dart';
 import 'package:mealdash_app/features/authentication/models/user_signup_model.dart';
 
 import 'package:mealdash_app/features/authentication/repository/auth_service.dart';
+import 'package:mealdash_app/service_locator.dart';
 import 'package:mealdash_app/utils/constants.dart' as constants;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserAuthViewModel with ChangeNotifier, DiagnosticableTreeMixin {
+
+  final AuthService authService;
   final SharedPreferences prefs;
+
+  UserAuthViewModel({required this.prefs, required this.authService}) {
+    _isLoggedIn = prefs.getBool(constants.loggedInKey) ?? false;
+  }
+
   bool _isLoggedIn = false;
   bool get isLoggedIn => _isLoggedIn;
 
@@ -16,10 +24,6 @@ class UserAuthViewModel with ChangeNotifier, DiagnosticableTreeMixin {
       : UserSignUpModel.empty();
 
   UserSignUpModel get userSignUpModel => _userSignUpModel;
-
-  UserAuthViewModel(this.prefs) {
-    _isLoggedIn = prefs.getBool(constants.loggedInKey) ?? false;
-  }
 
   _setIsLoggedIn(bool value) async {
     _isLoggedIn = value;
@@ -38,6 +42,9 @@ class UserAuthViewModel with ChangeNotifier, DiagnosticableTreeMixin {
   bool _isSigningUpError = false;
   bool get isSigningUpError => _isSigningUpError;
 
+  String? _signUpErrorMessage;
+  String? get signUpErrorMessage => _signUpErrorMessage;
+
   bool _isSigningUpSuccess = false;
   bool get isSigningUpSuccess => _isSigningUpSuccess;
 
@@ -45,67 +52,63 @@ class UserAuthViewModel with ChangeNotifier, DiagnosticableTreeMixin {
     print(_userSignUpModel.toJson());
     _isSigningUp = true;
     _isSigningUpError = false;
+    _isSigningUpSuccess = false;
     notifyListeners();
+
     try {
-      final response = await AuthService.signUp(_userSignUpModel);
-      if (response.statusCode == 201) {
-        _isSigningUpSuccess = true;
-        return;
-      } else {
-        _isSigningUpError = true;
-        return;
-      }
-    } catch (e) {
+      await authService.signUp(_userSignUpModel);
+      _isSigningUpSuccess = true;
+    } on DioError catch (e) {
       _isSigningUpError = true;
-      return;
+      _signUpErrorMessage = DioExceptions.fromDioError(e).toString();
     } finally {
       _isSigningUp = false;
       notifyListeners();
     }
   }
 
-  bool _isLoggingIn = false;
+  final bool _isLoggingIn = false;
   bool get isLoggingIn => _isLoggingIn;
 
-  bool _isLoggingInErrorInvalidCredentials = false;
+  final bool _isLoggingInErrorInvalidCredentials = false;
   bool get isLoggingInErrorInvalidCredentials =>
       _isLoggingInErrorInvalidCredentials;
 
-  bool _isLoggingInErrorUnknown = false;
+  final bool _isLoggingInErrorUnknown = false;
   bool get isLoggingInErrorUnknown => _isLoggingInErrorUnknown;
 
   // bool _isLoggingInErrorTimeout = false;
   // bool get isLoggingInErrorTimeout => _isLoggingInErrorTimeout;
 
-  Future<void> signIn(UserLoginModel userLoginModel) async {
-    print(userLoginModel.toJson());
-    _isLoggingIn = true;
-    _isLoggingInErrorInvalidCredentials = false;
-    _isLoggingInErrorUnknown = false;
-    // _isLoggingInErrorTimeout = false;
-    notifyListeners();
-    try {
-      final response = await AuthService.login(userLoginModel);
-      if (response.statusCode == 200) {
-        _isLoggedIn = true;
-        _setIsLoggedIn(true);
-        return;
-        // } else if (response.statusCode == 408) {
-        //   _isLoggingInError = true;
-        //   _isLoggingInErrorTimeout = true;
-        //   return;
-      } else {
-        _isLoggingInErrorInvalidCredentials = true;
-        return;
-      }
-    } catch (e) {
-      _isLoggingInErrorUnknown = true;
-      return;
-    } finally {
-      _isLoggingIn = false;
-      notifyListeners();
-    }
-  }
+  // Future<void> signIn(UserLoginModel userLoginModel) async {
+  //   print(userLoginModel.toJson());
+  //   _isLoggingIn = true;
+  //   _isLoggingInErrorInvalidCredentials = false;
+  //   _isLoggingInErrorUnknown = false;
+  //   // _isLoggingInErrorTimeout = false;
+  //   notifyListeners();
+  //   try {
+  //     final response = await authService.login(userLoginModel);
+  //     if (response.statusCode == 200) {
+  //       _isLoggedIn = true;
+  //       _setIsLoggedIn(true);
+  //       return;
+  //       // } else if (response.statusCode == 408) {
+  //       //   _isLoggingInError = true;
+  //       //   _isLoggingInErrorTimeout = true;
+  //       //   return;
+  //     } else {
+  //       _isLoggingInErrorInvalidCredentials = true;
+  //       return;
+  //     }
+  //   } catch (e) {
+  //     _isLoggingInErrorUnknown = true;
+  //     return;
+  //   } finally {
+  //     _isLoggingIn = false;
+  //     notifyListeners();
+  //   }
+  // }
 
   // Future<void> loginTestUser() {
   //   final userLoginModel = UserLoginModel(
@@ -123,6 +126,14 @@ class UserAuthViewModel with ChangeNotifier, DiagnosticableTreeMixin {
     notifyListeners();
   }
 
+  void resetSignUp() {
+    _isSigningUp = false;
+    _isSigningUpError = false;
+    _isSigningUpSuccess = false;
+    _signUpErrorMessage = null;
+    notifyListeners();
+  }
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
@@ -135,6 +146,4 @@ class UserAuthViewModel with ChangeNotifier, DiagnosticableTreeMixin {
         ifTrue: 'Signing Out',
         ifFalse: 'Not Signing Out'));
   }
-
-  
 }

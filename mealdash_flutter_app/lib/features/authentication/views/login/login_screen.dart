@@ -3,7 +3,6 @@ import 'package:mealdash_app/utils/constants.dart' as constants;
 import 'package:go_router/go_router.dart';
 
 import 'package:mealdash_app/components/background.dart';
-import 'package:mealdash_app/utils/responsive.dart';
 import 'package:mealdash_app/features/authentication/views/login/components/login_form.dart';
 import 'package:mealdash_app/features/authentication/views/login/components/login_screen_top_image.dart';
 
@@ -12,28 +11,8 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Background(
-        child: Responsive(
-          mobile: const MobileLoginScreen(),
-          desktop: Row(
-            children: [
-              const Expanded(
-                child: LoginScreenTopImage(),
-              ),
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    SizedBox(
-                      width: 450,
-                      child: LoginForm(),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-      ),
+    return const Background(
+      child: MobileLoginScreen(),
     );
   }
 }
@@ -62,23 +41,19 @@ class MobileLoginScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const LoginScreenTopImage(),
-            Row(
-              children: const [
-                Spacer(),
-                Expanded(
-                  flex: 8,
-                  child: LoginForm(),
-                ),
-                Spacer(),
-              ],
+      body: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: const [
+          LoginScreenTopImage(),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: constants.defaultPaddingLarge,
+              ),
+              child: LoginForm(),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

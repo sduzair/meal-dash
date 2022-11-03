@@ -26,10 +26,10 @@ Map<String, dynamic> _$UserSignUpModelToJson(UserSignUpModel instance) =>
       'user_email': instance.email,
       'user_password': instance.password,
       'phone': instance.phoneNumber,
+      'user_type': instance.userType,
       'address1': instance.addressLine1,
       'address2': instance.addressLine2,
       'city': instance.city,
       'state': instance.state,
       'postal': instance.postalCode,
-      'user_type': instance.userType,
     };

@@ -15,16 +15,18 @@ class UserSignUpModel {
   // String? lastName;
   @JsonKey(name: 'phone')
   String? phoneNumber;
+  @JsonKey(name: 'user_type')
+  String userType = 'foodvendor';
   @JsonKey(name: 'address1')
   String? addressLine1;
   @JsonKey(name: 'address2')
   String? addressLine2;
+  @JsonKey(name: 'city')
   String? city;
+  @JsonKey(name: 'state') 
   String? state;
   @JsonKey(name: 'postal')
   String? postalCode;
-  @JsonKey(name: 'user_type')
-  String userType = 'foodvendor';
 
   UserSignUpModel({
     required this.email,
@@ -40,12 +42,12 @@ class UserSignUpModel {
   });
 
   UserSignUpModel.initializeDummyVals()
-      : username = 'test',
-        email = 'asdf@sdf.com',
+      : username = 'test4',
+        email = 'text4@example.com',
         password = 'asdf',
         // firstName = 'asdf',
         // lastName = 'asdf',
-        phoneNumber = '1234567890',
+        phoneNumber = '+12234567890',
         addressLine1 = 'asdf',
         addressLine2 = 'asdf',
         city = 'asdf',

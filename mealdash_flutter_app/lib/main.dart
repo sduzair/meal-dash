@@ -1,27 +1,48 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
+import 'package:flutter/services.dart';
+import 'package:get_it/get_it.dart';
+import 'package:json_theme/json_theme.dart';
+import 'package:mealdash_app/features/authentication/repository/auth_service.dart';
 import 'package:mealdash_app/router/routes.dart';
+import 'package:mealdash_app/service_locator.dart';
 import 'package:mealdash_app/utils/constants.dart' as constants;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:mealdash_app/features/authentication/view_models/auth_view_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+final getIt = GetIt.instance;
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  var prefs = await SharedPreferences.getInstance();
+  getIt.registerSingleton<SharedPreferences>(
+      await SharedPreferences.getInstance());
   constants.isTestUserLoggedIn
-      ? await prefs.setBool(constants.loggedInKey, true)
-      : await prefs.setBool(constants.loggedInKey, false);
-  final userAuthViewModel =
-      UserAuthViewModel(prefs);
-  // constants.isTestUserLoggedIn ? userAuthViewModel.loginTestUser() : null;
-  userAuthViewModel.checkLoggedIn();
+      ? await getIt<SharedPreferences>().setBool(constants.loggedInKey, true)
+      : await getIt<SharedPreferences>().setBool(constants.loggedInKey, false);
+  getIt.registerSingleton<Dio>(Dio());
+  getIt.registerSingleton(DioClient(dio: getIt<Dio>()));
+  getIt.registerSingleton<AuthService>(
+      AuthService(dioClient: getIt<DioClient>()));
+  getIt.registerSingleton<UserAuthViewModel>(UserAuthViewModel(
+      prefs: getIt<SharedPreferences>(), authService: getIt<AuthService>()));
+  getIt.get<UserAuthViewModel>().checkLoggedIn();
 
-  runApp(MyApp(userAuthViewModel: userAuthViewModel));
+  // load the theme data
+  final themeStr = await rootBundle.loadString('assets/appainter_theme.json');
+  final themeJson = jsonDecode(themeStr);
+  final theme = ThemeDecoder.decodeThemeData(themeJson)!;
+
+  runApp(MyApp(theme: theme, userAuthViewModel: getIt<UserAuthViewModel>()));
 }
 
 class MyApp extends StatelessWidget {
+  final ThemeData theme;
   final UserAuthViewModel userAuthViewModel;
-  const MyApp({Key? key, required this.userAuthViewModel}) : super(key: key);
+  const MyApp({Key? key, required this.theme, required this.userAuthViewModel})
+      : super(key: key);
 
   // This widget is the root of your application.
   @override
@@ -44,86 +65,9 @@ class MyApp extends StatelessWidget {
             routerConfig: router,
             debugShowCheckedModeBanner: false,
             title: 'Flutter Auth',
-            theme: ThemeData(
-              // useMaterial3: true,
-              primaryColor: constants.kPrimaryColor,
-              floatingActionButtonTheme: const FloatingActionButtonThemeData(
-                backgroundColor: constants.kPrimaryColor,
-              ),
-              // scaffoldBackgroundColor: Colors.white,
-              elevatedButtonTheme: ElevatedButtonThemeData(
-                style: ElevatedButton.styleFrom(
-                  elevation: constants.defaultElevation,
-                  backgroundColor: constants.kPrimaryColor,
-                  shape: const StadiumBorder(),
-                  maximumSize: const Size(double.infinity, 56),
-                  minimumSize: const Size(double.infinity, 56),
-                ),
-              ),
-              inputDecorationTheme: const InputDecorationTheme(
-                iconColor: constants.kPrimaryColor,
-                prefixIconColor: constants.kPrimaryColor,
-                // isDense: true,
-                // alignLabelWithHint: false,
-                // isCollapsed: true,
-                // contentPadding: EdgeInsets.all(0),
-              ),
-              appBarTheme: const AppBarTheme(
-                elevation: constants.defaultElevationSmall,
-                backgroundColor: constants.kPrimaryColor,
-              ),
-              bottomSheetTheme: const BottomSheetThemeData(
-                backgroundColor: Colors.white,
+            theme: theme.copyWith(
+              bannerTheme: theme.bannerTheme.copyWith(
                 elevation: constants.defaultElevation,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(constants.borderRadius),
-                    topRight: Radius.circular(constants.borderRadius),
-                  ),
-                ),
-              ),
-              bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-                backgroundColor: Colors.white,
-                elevation: constants.defaultElevation,
-                selectedItemColor: constants.kPrimaryColor,
-                unselectedItemColor: Colors.grey,
-                showUnselectedLabels: true,
-              ),
-              chipTheme: ChipThemeData(
-                shape: const StadiumBorder(
-                  side: BorderSide(
-                    color: Colors.white,
-                    width: 2,
-                  ),
-                ),
-                backgroundColor: Colors.lightBlue.shade600,
-                // selectedColor: Colors.,
-                disabledColor: Colors.grey,
-                labelStyle: const TextStyle(color: Colors.white),
-              ),
-              fontFamily: 'Poppins',
-              dividerTheme: const DividerThemeData(
-                color: constants.kPrimaryColor,
-                thickness: 2,
-                space: 0,
-                indent: 0,
-                endIndent: 0,
-              ),
-              popupMenuTheme: const PopupMenuThemeData(
-                // textStyle: TextStyle(
-                //   color: Colors.black,
-                //   fontSize: 16,
-                // ),
-                color: Colors.white,
-                elevation: constants.defaultElevation,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(constants.borderRadius),
-                  ),
-                ),
-              ),
-              iconTheme: const IconThemeData(
-                color: constants.kPrimaryColor,
               ),
             ),
           );

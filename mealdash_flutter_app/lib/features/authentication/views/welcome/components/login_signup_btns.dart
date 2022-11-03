@@ -9,42 +9,50 @@ class LoginAndSignupBtn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Hero(
-          tag: "login_btn",
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(50),
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+          horizontal: constants.defaultPaddingXLarge),
+      child: Column(
+        children: [
+          Hero(
+            tag: "login_btn",
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                minimumSize: const Size(double.infinity, 50),
+                visualDensity: VisualDensity.comfortable,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
               ),
-              elevation: constants.defaultElevation,
-            ),
-            onPressed: () {
-              GoRouter.of(context).goNamed(constants.loginRouteName);
-            },
-            child: Text(
-              "Login".toUpperCase(),
-            ),
-          ),
-        ),
-        const SizedBox(height: 16),
-        Hero(
-          tag: "signup_btn",
-          child: ElevatedButton(
-            onPressed: () {
-              GoRouter.of(context).goNamed(constants.signupRouteName);
-            },
-            style: ElevatedButton.styleFrom(
-                backgroundColor: constants.kPrimaryLightColor,
-                elevation: constants.defaultElevation),
-            child: Text(
-              "Sign Up".toUpperCase(),
-              style: const TextStyle(color: Colors.black),
+              onPressed: () {
+                GoRouter.of(context).goNamed(constants.loginRouteName);
+              },
+              child: Text(
+                "Login".toUpperCase(),
+              ),
             ),
           ),
-        ),
-      ],
+          const SizedBox(height: constants.defaultPadding),
+          Hero(
+            tag: "signup_btn",
+            child: OutlinedButton(
+              style: OutlinedButton.styleFrom(
+                minimumSize: const Size(double.infinity, 50),
+                visualDensity: VisualDensity.comfortable,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+              ),
+              onPressed: () {
+                GoRouter.of(context).goNamed(constants.signupRouteName);
+              },
+              child: Text(
+                "Sign Up".toUpperCase(),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

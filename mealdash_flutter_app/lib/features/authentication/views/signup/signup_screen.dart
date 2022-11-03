@@ -18,16 +18,28 @@ class _SignupScreenState extends State<SignupScreen> {
   final _formKey = GlobalKey<FormState>();
   String _password1 = '';
   String _password2 = '';
-  String _passmatch = '';
   bool _isMatchPassword = true;
   _checkIfPasswordsMatch() {
     setState(() {
       if(_password1 == _password2) {
         _isMatchPassword = true;
-        _passmatch = '';
       } else {
         _isMatchPassword = false;
-        _passmatch = 'Passwords do not match';
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            margin: const EdgeInsets.all(70),
+            behavior: SnackBarBehavior.floating,
+            shape:  const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(80)),
+            ),
+            content: Container(
+               padding: const EdgeInsets.all(6),
+              child:
+              const Text("Passwords do not match",),
+            ),
+            ),
+        );
+        return;
       }
     });
   }
@@ -165,14 +177,14 @@ class _SignupScreenState extends State<SignupScreen> {
                           //     );
                           //   },
                           // ),
-                          Text(_passmatch),
+
                         ],
                       ),
                     ),
                   ),
                 ),
               ),
-              // const SocalSignUp()
+              // const SocialSignUp()
             ],
           ),
         ),

@@ -31,7 +31,9 @@ class SignUpScreen2State extends State<SignUpScreen2> {
               icon: const Icon(Icons.arrow_back_ios),
               color: Colors.black,
               onPressed: () {
-                context.read<UserAuthViewModel>().resetSignUp();
+                context
+                    .read<UserAuthViewModel>()
+                    .resetSignUpAndNotifyListeners();
                 context.goNamed(constants.signupRouteName);
                 // GoRouter.of(context).pop();
               },
@@ -274,9 +276,6 @@ class SubmitButton extends StatelessWidget {
           }
           if (!constants.isTestingSignUp && _formKey.currentState!.validate()) {
             _formKey.currentState!.save();
-            // Navigator.push(context, MaterialPageRoute(builder: (context) {
-            //   return ;
-            // }));
           }
           context.read<UserAuthViewModel>().signUp();
         },
@@ -315,7 +314,9 @@ class TextSignUpButton extends StatelessWidget {
               TextButton(
                 onPressed: () {
                   ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
-                  context.read<UserAuthViewModel>().resetSignUp();
+                  context
+                      .read<UserAuthViewModel>()
+                      .resetSignUpAndNotifyListeners();
                   GoRouter.of(context).goNamed(constants.loginRouteName);
                 },
                 child: const Text("SIGN IN"),
@@ -323,7 +324,9 @@ class TextSignUpButton extends StatelessWidget {
               TextButton(
                 onPressed: () {
                   ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
-                  context.read<UserAuthViewModel>().resetSignUp();
+                  context
+                      .read<UserAuthViewModel>()
+                      .resetSignUpAndNotifyListeners();
                 },
                 child: const Text("CLOSE"),
               ),

@@ -75,7 +75,8 @@ class DioExceptions implements Exception {
       case 404:
         return error['message'];
       case 409:
-        return error['message'];
+        return error[
+            'message']; // LOIGN PAGE: INCORRECT PASSWORD OR EMAIL NOT FOUND
       case 500:
         return 'Internal server error';
       case 502:

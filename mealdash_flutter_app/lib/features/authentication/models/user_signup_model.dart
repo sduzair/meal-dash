@@ -42,8 +42,8 @@ class UserSignUpModel {
   });
 
   UserSignUpModel.initializeDummyVals()
-      : username = 'test4',
-        email = 'text4@example.com',
+      : username = 'uzDasdfsdsfgsdfgFGHr',
+        email = 'captasdf65sdfgsdfg4sh1@gmail.com',
         password = 'asdf',
         // firstName = 'asdf',
         // lastName = 'asdf',

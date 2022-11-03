@@ -69,6 +69,26 @@ class MyApp extends StatelessWidget {
               bannerTheme: theme.bannerTheme.copyWith(
                 elevation: constants.defaultElevation,
               ),
+              bottomNavigationBarTheme: theme.bottomNavigationBarTheme.copyWith(
+                // elevation: constants.defaultElevation,
+                showSelectedLabels: true,
+                showUnselectedLabels: false,
+                selectedItemColor: theme.colorScheme.primary,
+                unselectedItemColor: theme.colorScheme.onSurface,
+                // selectedIconTheme: theme.iconTheme.copyWith(
+                //   color: theme.colorScheme.primary,
+                // ),
+                // selectedLabelStyle: theme.textTheme.bodyText2!.copyWith(
+                //   color: theme.colorScheme.primary,
+                // ),
+                // unselectedIconTheme: theme.iconTheme.copyWith(
+                //   color: theme.colorScheme.primaryContainer,
+                // ),
+                // unselectedLabelStyle: theme.textTheme.bodyText2!.copyWith(
+                //   color: theme.colorScheme.primaryContainer,
+                // ),
+
+              ),
             ),
           );
         },

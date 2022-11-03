@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mealdash_app/features/authentication/models/user_login_model.dart';
 import 'package:mealdash_app/features/authentication/view_models/auth_view_model.dart';
 
 import 'package:mealdash_app/utils/constants.dart' as constants;
@@ -16,9 +16,6 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
-  final UserLoginModel _userLoginModel = constants.isTestingLogin
-      ? UserLoginModel.initializeDummyVals()
-      : UserLoginModel.empty();
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -29,7 +26,7 @@ class _LoginFormState extends State<LoginForm> {
         children: [
           TextFormField(
             onSaved: (email) {
-              _userLoginModel.email = email!;
+              context.read<UserAuthViewModel>().userLoginModel.email = email!;
             },
             validator: (value) {
               if (value!.isEmpty) {
@@ -53,7 +50,8 @@ class _LoginFormState extends State<LoginForm> {
                 const EdgeInsets.symmetric(vertical: constants.defaultPadding),
             child: TextFormField(
               onSaved: (newValue) {
-                _userLoginModel.password = newValue!;
+                context.read<UserAuthViewModel>().userLoginModel.password =
+                    newValue!;
               },
               validator: (value) {
                 if (value!.isEmpty) {
@@ -73,7 +71,7 @@ class _LoginFormState extends State<LoginForm> {
             ),
           ),
           const SizedBox(height: constants.defaultPadding),
-          UserLoginButton(formKey: _formKey, userLoginModel: _userLoginModel),
+          UserLoginButton(formKey: _formKey),
           const SizedBox(height: constants.defaultPadding),
         ],
       ),
@@ -85,13 +83,10 @@ class UserLoginButton extends StatelessWidget {
   const UserLoginButton({
     Key? key,
     required GlobalKey<FormState> formKey,
-    required UserLoginModel userLoginModel,
   })  : _formKey = formKey,
-        _userLoginModel = userLoginModel,
         super(key: key);
 
   final GlobalKey<FormState> _formKey;
-  final UserLoginModel _userLoginModel;
 
   @override
   Widget build(BuildContext context) {
@@ -106,16 +101,18 @@ class UserLoginButton extends StatelessWidget {
           ),
         ),
         onPressed: () {
-          if (context.read<UserAuthViewModel>().isLoggingIn) {
+          if (context.read<UserAuthViewModel>().isLoggingIn ||
+              context.read<UserAuthViewModel>().isLoggingInSuccess) {
             // print("Already logging in");
             return;
           }
           if (!constants.isTestingLogin && _formKey.currentState!.validate()) {
             _formKey.currentState!.save();
           }
+          context.read<UserAuthViewModel>().login();
           // context.read<UserAuthViewModel>().signIn(_userLoginModel);
           // if (context.read<UserAuthViewModel>().isLoggedIn) {
-          context.goNamed(constants.HomeNavTabRouteNames.meals.name);
+          // context.goNamed(constants.HomeNavTabRouteNames.meals.name);
           // }
         },
         child: const TextUserLoginButton(),
@@ -131,48 +128,55 @@ class TextUserLoginButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<UserAuthViewModel>(
-      builder: (context, authViewModel, child) {
-        if (authViewModel.isLoggingIn) {
-          return const SizedBox(
-            height: 20,
-            width: 20,
-            child: CircularProgressIndicator(
-              color: Colors.white,
+    final authVMWatch = context.watch<UserAuthViewModel>();
+    if (authVMWatch.isLoggingIn) {
+      return const SizedBox(
+        height: 20,
+        width: 20,
+        child: CircularProgressIndicator(
+          strokeWidth: 2,
+          color: Colors.white,
+        ),
+      );
+    } else if (authVMWatch.isLoggingInError) {
+      SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+        ScaffoldMessenger.of(context).clearMaterialBanners();
+        ScaffoldMessenger.of(context).showMaterialBanner(
+          MaterialBanner(
+            content: Text(authVMWatch.loginErrorMessage!),
+            leading: const CircleAvatar(
+              backgroundColor: Colors.red,
+              child: Icon(Icons.error),
             ),
-          );
-        } else if (authViewModel.isLoggingInErrorInvalidCredentials) {
-          return const Text(
-            "INVALID CREDENTIALS TRY AGAIN",
-            style: TextStyle(color: Colors.white),
-          );
-        } else if (authViewModel.isLoggingInErrorUnknown) {
-          return const Text(
-            "UNKNOWN ERROR TRY AGAIN",
-            style: TextStyle(color: Colors.white),
-          );
-          // } else if (authViewModel.isLoggingInError &&
-          //     authViewModel.isLoggingInErrorTimeout) {
-          //   return const Text(
-          //     "TIMEOUT ERROR TRY AGAIN",
-          //     style: TextStyle(color: Colors.white),
-          //   );
-        } else if (authViewModel.isLoggedIn) {
-          return const SizedBox(
-            height: 20,
-            width: 20,
-            child: Icon(
-              Icons.check,
-              color: Colors.white,
-            ),
-          );
-        } else {
-          return const Text(
-            "LOGIN",
-            style: TextStyle(color: Colors.white),
-          );
-        }
-      },
-    );
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
+                    context
+                        .read<UserAuthViewModel>()
+                        .resetLoginAndNotifyListeners();
+                  },
+                  child: const Text("OK"))
+            ],
+          ),
+        );
+      });
+      return const Text("LOGIN");
+    } else if (authVMWatch.isLoggingInSuccess) {
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        GoRouter.of(context).goNamed(constants.HomeNavTabRouteNames.meals.name);
+      });
+
+      return const SizedBox(
+        height: 20,
+        width: 20,
+        child: Icon(
+          Icons.check,
+          color: Colors.white,
+        ),
+      );
+    } else {
+      return const Text("LOGIN");
+    }
   }
 }

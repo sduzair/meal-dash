@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:mealdash_app/features/authentication/models/user_login_model.dart';
 import 'package:mealdash_app/features/authentication/models/user_signup_model.dart';
 
 import 'package:mealdash_app/features/authentication/repository/auth_service.dart';
@@ -8,7 +9,6 @@ import 'package:mealdash_app/utils/constants.dart' as constants;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserAuthViewModel with ChangeNotifier, DiagnosticableTreeMixin {
-
   final AuthService authService;
   final SharedPreferences prefs;
 
@@ -16,16 +16,12 @@ class UserAuthViewModel with ChangeNotifier, DiagnosticableTreeMixin {
     _isLoggedIn = prefs.getBool(constants.loggedInKey) ?? false;
   }
 
+  // LOGIN METHODS
+
   bool _isLoggedIn = false;
   bool get isLoggedIn => _isLoggedIn;
 
-  final UserSignUpModel _userSignUpModel = constants.isTestingSignUp
-      ? UserSignUpModel.initializeDummyVals()
-      : UserSignUpModel.empty();
-
-  UserSignUpModel get userSignUpModel => _userSignUpModel;
-
-  _setIsLoggedIn(bool value) async {
+  _setIsLoggedInSharedPrefs(bool value) async {
     _isLoggedIn = value;
     await prefs.setBool(constants.loggedInKey, value);
     notifyListeners();
@@ -35,6 +31,70 @@ class UserAuthViewModel with ChangeNotifier, DiagnosticableTreeMixin {
     _isLoggedIn = prefs.getBool(constants.loggedInKey) ?? false;
     notifyListeners();
   }
+
+  final UserLoginModel _userLoginModel = constants.isTestingLogin
+      ? UserLoginModel.initializeDummyVals()
+      : UserLoginModel.empty();
+
+  UserLoginModel get userLoginModel => _userLoginModel;
+
+  bool _isLoggingIn = false;
+  bool get isLoggingIn => _isLoggingIn;
+
+  bool _isLoggingInError = false;
+  bool get isLoggingInError => _isLoggingInError;
+
+  String? _loginErrorMessage;
+  String? get loginErrorMessage => _loginErrorMessage;
+
+  bool _isLoggingInSuccess = false;
+  bool get isLoggingInSuccess => _isLoggingInSuccess;
+
+  bool _isShowLoggingInSuccessPopup = false;
+  bool get isShowLoggingInSuccessPopup => _isShowLoggingInSuccessPopup;
+
+  Future<void> login() async {
+    print('login() called');
+    print(_userLoginModel.toJson());
+    resetLoginAndNotifyListeners();
+    try {
+      await authService.login(_userLoginModel);
+      _isLoggingInSuccess = true;
+      _isShowLoggingInSuccessPopup = true;
+      _isLoggedIn = true;
+      _setIsLoggedInSharedPrefs(true);
+    } on DioError catch (e) {
+      _isLoggingInError = true;
+      _loginErrorMessage = DioExceptions.fromDioError(e).message;
+    } finally {
+      _isLoggingIn = false;
+      notifyListeners();
+    }
+  }
+
+  void resetLoginAndNotifyListeners() {
+    _isLoggingIn = false;
+    _isLoggingInSuccess = false;
+    _isLoggingInError = false;
+    _loginErrorMessage = null;
+    notifyListeners();
+  }
+
+  // TODO: WHEN DOCKER INITS DATABASE WITH TEST USER USE THIS TO TEST LOGIN
+  // Future<void> loginTestUser() {
+  //   final userLoginModel = UserLoginModel(
+  //     email: 'test@sdf.com',
+  //     password: '123456',
+  //   );
+  //   return signIn(userLoginModel);
+  // }
+
+  // SIGN UP METHODS
+  final UserSignUpModel _userSignUpModel = constants.isTestingSignUp
+      ? UserSignUpModel.initializeDummyVals()
+      : UserSignUpModel.empty();
+
+  UserSignUpModel get userSignUpModel => _userSignUpModel;
 
   bool _isSigningUp = false;
   bool get isSigningUp => _isSigningUp;
@@ -48,16 +108,19 @@ class UserAuthViewModel with ChangeNotifier, DiagnosticableTreeMixin {
   bool _isSigningUpSuccess = false;
   bool get isSigningUpSuccess => _isSigningUpSuccess;
 
+  
+  bool _isShowSignupSuccessPopup = false;
+  bool get isShowSignupSuccessPopup => _isShowSignupSuccessPopup;
+
   Future<void> signUp() async {
+    print('signUp() called');
     print(_userSignUpModel.toJson());
-    _isSigningUp = true;
-    _isSigningUpError = false;
-    _isSigningUpSuccess = false;
-    notifyListeners();
+    resetSignUpAndNotifyListeners();
 
     try {
       await authService.signUp(_userSignUpModel);
       _isSigningUpSuccess = true;
+      _isShowSignupSuccessPopup = true;
     } on DioError catch (e) {
       _isSigningUpError = true;
       _signUpErrorMessage = DioExceptions.fromDioError(e).toString();
@@ -67,70 +130,21 @@ class UserAuthViewModel with ChangeNotifier, DiagnosticableTreeMixin {
     }
   }
 
-  final bool _isLoggingIn = false;
-  bool get isLoggingIn => _isLoggingIn;
+  void resetSignUpAndNotifyListeners() {
+    _isSigningUp = false;
+    _isSigningUpError = false;
+    _isSigningUpSuccess = false;
+    _signUpErrorMessage = null;
+    notifyListeners();
+  }
 
-  final bool _isLoggingInErrorInvalidCredentials = false;
-  bool get isLoggingInErrorInvalidCredentials =>
-      _isLoggingInErrorInvalidCredentials;
-
-  final bool _isLoggingInErrorUnknown = false;
-  bool get isLoggingInErrorUnknown => _isLoggingInErrorUnknown;
-
-  // bool _isLoggingInErrorTimeout = false;
-  // bool get isLoggingInErrorTimeout => _isLoggingInErrorTimeout;
-
-  // Future<void> signIn(UserLoginModel userLoginModel) async {
-  //   print(userLoginModel.toJson());
-  //   _isLoggingIn = true;
-  //   _isLoggingInErrorInvalidCredentials = false;
-  //   _isLoggingInErrorUnknown = false;
-  //   // _isLoggingInErrorTimeout = false;
-  //   notifyListeners();
-  //   try {
-  //     final response = await authService.login(userLoginModel);
-  //     if (response.statusCode == 200) {
-  //       _isLoggedIn = true;
-  //       _setIsLoggedIn(true);
-  //       return;
-  //       // } else if (response.statusCode == 408) {
-  //       //   _isLoggingInError = true;
-  //       //   _isLoggingInErrorTimeout = true;
-  //       //   return;
-  //     } else {
-  //       _isLoggingInErrorInvalidCredentials = true;
-  //       return;
-  //     }
-  //   } catch (e) {
-  //     _isLoggingInErrorUnknown = true;
-  //     return;
-  //   } finally {
-  //     _isLoggingIn = false;
-  //     notifyListeners();
-  //   }
-  // }
-
-  // Future<void> loginTestUser() {
-  //   final userLoginModel = UserLoginModel(
-  //     email: 'test@sdf.com',
-  //     password: '123456',
-  //   );
-  //   return signIn(userLoginModel);
-  // }
+  // SIGNOUT METHODS
 
   bool _isSigningOut = false;
   bool get isSigningOut => _isSigningOut;
 
   void setIsSigningOut(bool isSigningOut) {
     _isSigningOut = isSigningOut;
-    notifyListeners();
-  }
-
-  void resetSignUp() {
-    _isSigningUp = false;
-    _isSigningUpError = false;
-    _isSigningUpSuccess = false;
-    _signUpErrorMessage = null;
     notifyListeners();
   }
 

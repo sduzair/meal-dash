@@ -165,6 +165,10 @@ class MyRouter {
           key: _shellNavigatorKey,
           child: child,
         ),
+        pageBuilder: (context, state, child) => NoTransitionPage<void>(
+          key: state.pageKey,
+          child: child,
+        ),
       ),
     ],
     // TODO: Add Error Handler

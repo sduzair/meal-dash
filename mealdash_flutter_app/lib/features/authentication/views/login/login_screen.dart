@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:mealdash_app/features/authentication/view_models/auth_view_model.dart';
 import 'package:mealdash_app/utils/constants.dart' as constants;
 import 'package:go_router/go_router.dart';
 
 import 'package:mealdash_app/components/background.dart';
 import 'package:mealdash_app/features/authentication/views/login/components/login_form.dart';
 import 'package:mealdash_app/features/authentication/views/login/components/login_screen_top_image.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -24,6 +26,17 @@ class MobileLoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (context.read<UserAuthViewModel>().isShowSignupSuccessPopup) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+                'Signup successful for ${context.read<UserAuthViewModel>().userSignUpModel.email}!'),
+          ),
+        );
+      });
+    }
     return Scaffold(
       backgroundColor: Colors.transparent,
       appBar: AppBar(
@@ -34,8 +47,7 @@ class MobileLoginScreen extends StatelessWidget {
             icon: const Icon(Icons.arrow_back_ios),
             color: Colors.black,
             onPressed: () {
-              // Navigator.pop(context);
-              // context.pop();
+              context.read<UserAuthViewModel>().resetLoginAndNotifyListeners();
               context.goNamed(constants.welcomeRouteName);
             },
           ),

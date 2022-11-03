@@ -5,8 +5,10 @@ part 'user_login_model.g.dart';
 
 @JsonSerializable()
 class UserLoginModel {
-  String? username;
+  // String? username;
+  @JsonKey(name: 'user_email')
   String? email;
+  @JsonKey(name: 'user_password')
   String? password;
 
   UserLoginModel({
@@ -15,8 +17,8 @@ class UserLoginModel {
   });
 
   UserLoginModel.initializeDummyVals()
-      : username = 'test',
-        email = 'skaldjf@asdfklj.com',
+      : email = 'captainuzair+mealdash1@gmail.com',
+        // username = 'uzair',
         password = 'asdf';
 
   UserLoginModel.empty();
@@ -26,3 +28,9 @@ class UserLoginModel {
 
   Map<String, dynamic> toJson() => _$UserLoginModelToJson(this);
 }
+
+
+// {
+//   "user_email": "captainuzair+mealdash1@gmail.com",
+//   "user_password": "asdf"
+// }

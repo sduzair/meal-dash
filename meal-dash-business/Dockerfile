@@ -14,4 +14,4 @@ COPY . .
 RUN npm install --production --silent 
 COPY --from=initlocaldevelopement /app/dist ./dist
 EXPOSE 3000
-CMD ["node", "dist/server.js"]
+CMD npm run dev

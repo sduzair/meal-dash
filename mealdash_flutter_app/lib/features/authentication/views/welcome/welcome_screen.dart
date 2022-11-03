@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mealdash_app/utils/constants.dart' as constants;
 
 import 'package:mealdash_app/components/background.dart';
-import 'package:mealdash_app/utils/responsive.dart';
 import 'package:mealdash_app/features/authentication/views/welcome/components/login_signup_btns.dart';
 import 'package:mealdash_app/features/authentication/views/welcome/components/welcome_image.dart';
 
@@ -10,32 +10,10 @@ class WelcomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Background(
-      child: SingleChildScrollView(
-        child: SafeArea(
-          child: Responsive(
-            desktop: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                const Expanded(
-                  child: WelcomeImage(),
-                ),
-                Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      SizedBox(
-                        width: 450,
-                        child: LoginAndSignupBtn(),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            mobile: const MobileWelcomeScreen(),
-          ),
-        ),
+    return const Background(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: MobileWelcomeScreen(),
       ),
     );
   }
@@ -49,19 +27,12 @@ class MobileWelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        const WelcomeImage(),
-        Row(
-          children: const [
-            Spacer(),
-            Expanded(
-              flex: 8,
-              child: LoginAndSignupBtn(),
-            ),
-            Spacer(),
-          ],
-        ),
+      mainAxisSize: MainAxisSize.min,
+      // crossAxisAlignment: CrossAxisAlignment.center,
+      children: const [
+        WelcomeImage(),
+        SizedBox(height: constants.defaultPaddingXLarge),
+        Expanded(child: LoginAndSignupBtn()),
       ],
     );
   }

@@ -1,5 +1,6 @@
 import 'package:csc_picker/csc_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mealdash_app/components/background.dart';
 import 'package:mealdash_app/features/authentication/view_models/auth_view_model.dart';
@@ -16,6 +17,7 @@ class SignUpScreen2 extends StatefulWidget {
 
 class SignUpScreen2State extends State<SignUpScreen2> {
   final _formKey = GlobalKey<FormState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Background(
@@ -29,6 +31,7 @@ class SignUpScreen2State extends State<SignUpScreen2> {
               icon: const Icon(Icons.arrow_back_ios),
               color: Colors.black,
               onPressed: () {
+                context.read<UserAuthViewModel>().resetSignUp();
                 context.goNamed(constants.signupRouteName);
                 // GoRouter.of(context).pop();
               },
@@ -137,7 +140,10 @@ class SignUpScreen2State extends State<SignUpScreen2> {
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
                     children: [
-                      const Icon(Icons.location_on),
+                      Icon(
+                        Icons.location_on,
+                        color: IconTheme.of(context).color,
+                      ),
                       const SizedBox(width: constants.defaultPadding),
                       Expanded(
                         child: CSCPicker(
@@ -246,34 +252,35 @@ class SubmitButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userAuthVMWatch = context.watch<UserAuthViewModel>();
+    if (userAuthVMWatch.isSigningUpSuccess) {
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        GoRouter.of(context).goNamed(constants.loginRouteName);
+      });
+    }
     return Hero(
       tag: "signup_btn",
       child: ElevatedButton(
-      onPressed: () {
-        if (context.read<UserAuthViewModel>().isSigningUp) {
-          return;
-        }
-        if (!constants.isTestingSignUp && _formKey.currentState!.validate()) {
-          _formKey.currentState!.save();
-          // Navigator.push(context, MaterialPageRoute(builder: (context) {
-          //   return ;
-          // }));
-        }
-          context.read<UserAuthViewModel>().signUp();
-        // if (context.read<UserAuthViewModel>().isSigningUpSuccess) {
-          // context.pop();
-        // context.goNamed(constants.loginRouteName);
-          // context.pushNamed(constants.loginRouteName);
-        // }
-      },
-      // icon: const Icon(Icons.check_circle),
-      style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(constants.borderRadiusXLarge),
+        style: ElevatedButton.styleFrom(
+          minimumSize: const Size(double.infinity, 50),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
         ),
-        elevation: constants.defaultElevation,
-      ),
-      child: const TextSignUpButton(),
+        onPressed: () {
+          if (context.read<UserAuthViewModel>().isSigningUp ||
+              context.read<UserAuthViewModel>().isSigningUpSuccess) {
+            return;
+          }
+          if (!constants.isTestingSignUp && _formKey.currentState!.validate()) {
+            _formKey.currentState!.save();
+            // Navigator.push(context, MaterialPageRoute(builder: (context) {
+            //   return ;
+            // }));
+          }
+          context.read<UserAuthViewModel>().signUp();
+        },
+        child: const TextSignUpButton(),
         // ),
       ),
     );
@@ -298,6 +305,37 @@ class TextSignUpButton extends StatelessWidget {
         ),
       );
     } else if (authVMWatch.isSigningUpError) {
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
+        ScaffoldMessenger.of(context).showMaterialBanner(
+          MaterialBanner(
+            content: Text(authVMWatch.signUpErrorMessage!),
+            leading: const CircleAvatar(child: Icon(Icons.error)),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
+                  context.read<UserAuthViewModel>().resetSignUp();
+                  GoRouter.of(context).goNamed(constants.loginRouteName);
+                },
+                child: const Text("SIGN IN"),
+              ),
+              TextButton(
+                onPressed: () {
+                  ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
+                  context.read<UserAuthViewModel>().resetSignUp();
+                },
+                child: const Text("CLOSE"),
+              ),
+            ],
+            // onVisible: () {
+            //   Future.delayed(const Duration(seconds: 5), () {
+            //     ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
+            //   });
+            // },
+          ),
+        );
+      });
       return const Text("SIGNUP ERROR TRY AGAIN");
     } else if (authVMWatch.isSigningUpSuccess) {
       return const SizedBox(
@@ -309,7 +347,7 @@ class TextSignUpButton extends StatelessWidget {
         ),
       );
     } else {
-      return const Text("SIGNUP");
+      return const Text("SIGN UP");
     }
   }
 }

@@ -18,9 +18,9 @@ class SignUpScreenTopImage extends StatelessWidget {
           margin: const EdgeInsets.all(defaultPadding),
           child: DefaultTextStyle(
             style: GoogleFonts.satisfy(
-              color: kPrimaryColor,
               fontSize: 60.0,
               fontWeight: FontWeight.w200,
+              color: Theme.of(context).primaryColor,
             ),
             child: AnimatedTextKit(
               animatedTexts: [

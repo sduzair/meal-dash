@@ -70,7 +70,6 @@ class _SignupScreenState extends State<SignupScreen> {
                           TextFormField(
                             keyboardType: TextInputType.emailAddress,
                             textInputAction: TextInputAction.next,
-                            cursorColor: constants.kPrimaryColor,
                             onSaved: (email) {
                               context
                                   .read<UserAuthViewModel>()
@@ -93,7 +92,6 @@ class _SignupScreenState extends State<SignupScreen> {
                                 top: constants.defaultPadding),
                             child: TextFormField(
                               textInputAction: TextInputAction.next,
-                              cursorColor: constants.kPrimaryColor,
                               onSaved: (username) {
                                 context
                                     .read<UserAuthViewModel>()
@@ -133,7 +131,6 @@ class _SignupScreenState extends State<SignupScreen> {
                               },
                               textInputAction: TextInputAction.done,
                               obscureText: true,
-                              cursorColor: constants.kPrimaryColor,
                               decoration: const InputDecoration(
                                 hintText: "Your password",
                                 prefixIcon: Icon(Icons.lock),
@@ -149,7 +146,6 @@ class _SignupScreenState extends State<SignupScreen> {
                             },
                             textInputAction: TextInputAction.done,
                             obscureText: true,
-                            cursorColor: constants.kPrimaryColor,
                             decoration: const InputDecoration(
                               hintText: "Re-enter your password",
                               prefixIcon: Icon(Icons.lock),
@@ -185,6 +181,12 @@ class _SignupScreenState extends State<SignupScreen> {
           Hero(
             tag: "signup_btn",
             child: ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                minimumSize: const Size(double.infinity, 50),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+              ),
               onPressed: () {
                 _checkIfPasswordsMatch();
                 if (!_isMatchPassword) {

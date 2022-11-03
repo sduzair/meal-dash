@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:mealdash_app/utils/constants.dart';
 
 class OrDivider extends StatelessWidget {
   const OrDivider({Key? key}) : super(key: key);
@@ -19,7 +18,6 @@ class OrDivider extends StatelessWidget {
             child: Text(
               "OR",
               style: TextStyle(
-                color: kPrimaryColor,
                 fontWeight: FontWeight.w600,
               ),
             ),

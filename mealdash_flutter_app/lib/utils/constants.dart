@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 
 // DEV CONSTANTS
 
@@ -26,8 +25,9 @@ const String mealsAddRouteName = 'mealsAdd';
 const String mealsEditRouteName = 'mealsEdit';
 const String mealsDetailRouteName = 'mealsDetail';
 
-// const String apiUrl = 'http://10.0.2.2';
-const String apiUrl = 'http://localhost';
+const String apiUrl = 'http://10.0.2.2';
+// const String apiUrl = 'http://localhost';
+const String apiPort = '3000';
 
 // STYLING CONSTANTS
 
@@ -37,15 +37,6 @@ const String appDescription = 'MealDash is a food delivery app';
 
 const String backgroundTopLeftImage = "assets/images/big-flourish-topleft.png";
 const String backgroundBottomRightImage = "assets/images/bottom-right2.png";
-
-const kPrimaryColor = Color.fromRGBO(247, 63, 82, 1);
-const kPrimaryLightColor = Color.fromRGBO(255, 234, 133, 1);
-
-const kPrimaryGradientColor = LinearGradient(
-  begin: Alignment.topLeft,
-  end: Alignment.bottomRight,
-  colors: [Color.fromRGBO(247, 63, 82, 1), Color.fromRGBO(255, 234, 133, 1)],
-);
 
 const double defaultFontSize = 16.0;
 const double defaultFontSizeSmall = 14.0;

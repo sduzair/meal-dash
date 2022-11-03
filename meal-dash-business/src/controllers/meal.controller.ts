@@ -35,6 +35,20 @@ class MealController {
       next(error);
     }
   };
+
+  
+  public updateMeal = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const meal_id = Number(req.params.meal_id);
+      const mealData: MealDto = req.body;
+      const updateUserData: Meal = await this.mealService.updateMeal(meal_id, mealData);
+  
+      res.status(200).json({ data: updateUserData, message: 'updated' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
 }
 
 export default MealController;

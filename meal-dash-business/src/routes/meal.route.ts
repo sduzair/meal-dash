@@ -17,6 +17,7 @@ class MealRoute implements Routes {
     this.router.post(`${this.path}`, validationMiddleware(MealDto, 'body'), this.mealController.createMealPlan);
     this.router.get(`${this.path}`, this.mealController.fetchMeals);
     this.router.get(`${this.path}/:id(\\d+)`, this.mealController.fetchMealById);
+    this.router.put(`${this.path}/:meal_id(\\d+)`, this.mealController.updateMeal);
   }
 }
 

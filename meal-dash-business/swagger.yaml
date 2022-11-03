@@ -262,6 +262,36 @@ paths:
         500:
           description: 'Server Error'
 
+          # [PUT] meals/id
+    put:
+      tags:
+      - meals
+      summary: Update Meals By Id
+      parameters:
+      - name: id
+        in: path
+        description: meal Id
+        required: true
+        type: integer
+      - name: body
+        in: body
+        description: meal Data
+        required: true
+        schema:
+          $ref: '#/definitions/meal'
+      responses:
+        200:
+          description: 'OK'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+
+
+
 
 # definitions
 definitions:

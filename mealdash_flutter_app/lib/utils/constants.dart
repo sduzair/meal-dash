@@ -3,8 +3,8 @@
 
 const bool isTestingMealAdd = false;
 const bool isTestingSignUp = true;
-const bool isTestingLogin = true;
-const bool isTestUserLoggedIn = false;
+const bool isTestingLogin = false;
+const bool isTestUserLoggedIn = true;
 
 // KEY CONSTANTS
 const String loggedInKey = 'LoggedIn';

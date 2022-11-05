@@ -106,14 +106,16 @@ class UserLoginButton extends StatelessWidget {
             // print("Already logging in");
             return;
           }
-          if (!constants.isTestingLogin && _formKey.currentState!.validate()) {
-            _formKey.currentState!.save();
+          // IF TESING LOGIN LOGIN DUMMY USER AND RETURN EARLY
+          if (constants.isTestingLogin) {
+            context.read<UserAuthViewModel>().login();
+            return;
           }
-          context.read<UserAuthViewModel>().login();
-          // context.read<UserAuthViewModel>().signIn(_userLoginModel);
-          // if (context.read<UserAuthViewModel>().isLoggedIn) {
-          // context.goNamed(constants.HomeNavTabRouteNames.meals.name);
-          // }
+          // IF NOT TESTING LOGIN VALIDATE FORM AND LOGIN USER IF VALID
+          if (_formKey.currentState!.validate()) {
+            _formKey.currentState!.save();
+            context.read<UserAuthViewModel>().login();
+          }
         },
         child: const TextUserLoginButton(),
       ),

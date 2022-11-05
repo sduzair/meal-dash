@@ -53,20 +53,36 @@ class MobileLoginScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: const [
-          LoginScreenTopImage(),
-          Expanded(
-            child: Padding(
+      body: SingleChildScrollView(
+        child: Column(
+          children: const [
+            LoginScreenTopImage(),
+            SizedBox(height: constants.defaultPadding * 2),
+            Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: constants.defaultPaddingLarge,
               ),
               child: LoginForm(),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
+      // body: SingleChildScrollView(
+      //   child: Column(
+      //     mainAxisSize: MainAxisSize.min,
+      //     children: const [
+      //       Expanded(child: LoginScreenTopImage()),
+      //       Expanded(
+      //         child: Padding(
+      //           padding: EdgeInsets.symmetric(
+      //             horizontal: constants.defaultPaddingLarge,
+      //           ),
+      //           child: LoginForm(),
+      //         ),
+      //       ),
+      //     ],
+      //   ),
+      // ),
     );
   }
 }

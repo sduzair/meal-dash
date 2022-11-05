@@ -274,10 +274,16 @@ class SubmitButton extends StatelessWidget {
               context.read<UserAuthViewModel>().isSigningUpSuccess) {
             return;
           }
-          if (!constants.isTestingSignUp && _formKey.currentState!.validate()) {
-            _formKey.currentState!.save();
+          // IF TESTING SIGNUP SIGNUP WITH DUMMY DATA AND SKIP VALIDATION
+          if (constants.isTestingSignUp) {
+            context.read<UserAuthViewModel>().signUp();
+            return;
           }
-          context.read<UserAuthViewModel>().signUp();
+          // FORM VALIDATION AND SIGNUP
+          if (_formKey.currentState!.validate()) {
+            _formKey.currentState!.save();
+            context.read<UserAuthViewModel>().signUp();
+          }
         },
         child: const TextSignUpButton(),
         // ),

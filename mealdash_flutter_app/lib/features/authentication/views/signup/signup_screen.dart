@@ -21,7 +21,7 @@ class _SignupScreenState extends State<SignupScreen> {
   bool _isMatchPassword = true;
   _checkIfPasswordsMatch() {
     setState(() {
-      if(_password1 == _password2) {
+      if (_password1 == _password2) {
         _isMatchPassword = true;
       } else {
         _isMatchPassword = false;
@@ -29,15 +29,16 @@ class _SignupScreenState extends State<SignupScreen> {
           SnackBar(
             margin: const EdgeInsets.all(70),
             behavior: SnackBarBehavior.floating,
-            shape:  const RoundedRectangleBorder(
+            shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(80)),
             ),
             content: Container(
-               padding: const EdgeInsets.all(6),
-              child:
-              const Text("Passwords do not match",),
+              padding: const EdgeInsets.all(6),
+              child: const Text(
+                "Passwords do not match",
+              ),
             ),
-            ),
+          ),
         );
         return;
       }
@@ -127,7 +128,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                 vertical: constants.defaultPadding),
                             child: TextFormField(
                               onChanged: (pass1) {
-                                  _password1 = pass1;
+                                _password1 = pass1;
                               },
                               onSaved: (password) {
                                 context
@@ -162,7 +163,7 @@ class _SignupScreenState extends State<SignupScreen> {
                               hintText: "Re-enter your password",
                               prefixIcon: Icon(Icons.lock),
                             ),
-                            ),
+                          ),
                           const SizedBox(height: constants.defaultPadding),
                           // AlreadyHaveAnAccountCheck(
                           //   login: false,
@@ -177,7 +178,6 @@ class _SignupScreenState extends State<SignupScreen> {
                           //     );
                           //   },
                           // ),
-
                         ],
                       ),
                     ),
@@ -204,12 +204,16 @@ class _SignupScreenState extends State<SignupScreen> {
                 if (!_isMatchPassword) {
                   return;
                 }
-                if (!constants.isTestingSignUp &&
-                    _formKey.currentState!.validate() &&
-                    _isMatchPassword) {
-                  _formKey.currentState!.save();
+                // IF TESING SIGNUP DON'T VALIDATE THE FORM, GO TO SIGNUPSCREEN2
+                if (constants.isTestingSignUp) {
+                  GoRouter.of(context).goNamed(constants.signupStep2RouteName);
+                  return;
                 }
-                GoRouter.of(context).goNamed(constants.signupStep2RouteName); 
+                // VALIDATE THE FORM AND GO TO SIGNUPSCREEN2
+                if (_formKey.currentState!.validate() && _isMatchPassword) {
+                  _formKey.currentState!.save();
+                  GoRouter.of(context).goNamed(constants.signupStep2RouteName);
+                }
               },
               icon: const Icon(Icons.navigate_next),
               label: const Text('NEXT'),

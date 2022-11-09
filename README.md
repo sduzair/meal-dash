@@ -34,7 +34,7 @@ This section lists the major frameworks/libraries used to bootstrap the project.
       <a href="#getting-started">Getting Started</a>
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>        
+        <li><a href="#setup(local)">Setup(local)</a></li>        
         <ul>
           <li><a href="#backend-service">Backend service</a></li>
         </ul>
@@ -53,8 +53,14 @@ This is an example of how to list things you need to use the software and how to
   npm install npm@latest -g
   ```
   
-### Installation
+### Setup(local)
 
+#### With Docker Compose
+From root run following commands in sequence:
+1. `docker-compose up -d mysql-master`
+2. `docker-compose up -d server`
+
+#### Without Docker Compose
 Commands:
 1. Go into app folder run `npm install`
 2. Open two terminals, run node server on one terminal and run typescript compiler on the other.

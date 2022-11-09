@@ -1,6 +1,7 @@
 /.vscode
 
 # Logs
+mysql-master
 logs
 *.log
 npm-debug.log*

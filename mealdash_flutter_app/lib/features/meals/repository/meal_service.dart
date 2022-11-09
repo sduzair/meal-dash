@@ -1,4 +1,4 @@
-import 'package:mealdash_app/features/mealplans/models/meal_model.dart';
+import 'package:mealdash_app/features/meals/models/meal_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:mealdash_app/utils/constants.dart' as constants;
 import 'dart:convert';

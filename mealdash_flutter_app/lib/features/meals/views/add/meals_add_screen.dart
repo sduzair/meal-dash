@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mealdash_app/features/mealplans/models/meal_model.dart';
-import 'package:mealdash_app/features/mealplans/view_models/meal_view_model.dart';
+import 'package:mealdash_app/features/meals/models/meal_model.dart';
+import 'package:mealdash_app/features/meals/view_models/meal_view_model.dart';
 import 'package:mealdash_app/utils/constants.dart' as constants;
 import 'package:provider/provider.dart';
 import 'package:material_tag_editor/tag_editor.dart';
@@ -198,7 +198,7 @@ class _MealAddScreenState extends State<MealAddScreen> {
                   const SizedBox(height: constants.defaultMargin),
                 ],
               ),
-            ),            
+            ),
           ],
         ),
       ),

@@ -1,6 +1,6 @@
 import 'package:mealdash_app/features/authentication/view_models/auth_view_model.dart';
-import 'package:mealdash_app/features/mealplans/models/meal_model.dart';
-import 'package:mealdash_app/features/mealplans/repository/meal_service.dart';
+import 'package:mealdash_app/features/meals/models/meal_model.dart';
+import 'package:mealdash_app/features/meals/repository/meal_service.dart';
 import 'package:mealdash_app/utils/constants.dart' as constants;
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
@@ -44,7 +44,7 @@ class MealsFutureBuilder extends StatefulWidget {
 
 class _MealsFutureBuilderState extends State<MealsFutureBuilder> {
   @override
-  Widget build(BuildContext context) {    
+  Widget build(BuildContext context) {
     if (context.read<UserAuthViewModel>().isShowLoggingInSuccessPopup) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         ScaffoldMessenger.of(context).hideCurrentSnackBar();

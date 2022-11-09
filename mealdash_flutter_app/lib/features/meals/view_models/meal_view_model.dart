@@ -2,8 +2,8 @@ import 'package:mealdash_app/utils/constants.dart' as constants;
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:mealdash_app/features/mealplans/models/meal_model.dart';
-import 'package:mealdash_app/features/mealplans/repository/meal_service.dart';
+import 'package:mealdash_app/features/meals/models/meal_model.dart';
+import 'package:mealdash_app/features/meals/repository/meal_service.dart';
 
 class MealAddViewModel with ChangeNotifier, DiagnosticableTreeMixin {
   File? image;
@@ -47,7 +47,6 @@ class MealAddViewModel with ChangeNotifier, DiagnosticableTreeMixin {
       notifyListeners();
     }
   }
-
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {

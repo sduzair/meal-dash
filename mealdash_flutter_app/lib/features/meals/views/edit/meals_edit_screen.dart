@@ -5,16 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mealdash_app/features/mealplans/models/meal_model.dart';
-import 'package:mealdash_app/features/mealplans/repository/meal_service.dart';
-import 'package:mealdash_app/features/mealplans/view_models/meal_view_model.dart';
+import 'package:mealdash_app/features/meals/models/meal_model.dart';
+import 'package:mealdash_app/features/meals/repository/meal_service.dart';
+import 'package:mealdash_app/features/meals/view_models/meal_view_model.dart';
 import 'package:mealdash_app/utils/constants.dart' as constants;
 import 'package:provider/provider.dart';
 import 'package:material_tag_editor/tag_editor.dart';
 
 class MealsEditScreen extends StatefulWidget {
   final String mealId;
-  const MealsEditScreen({Key? key,required this.mealId}) : super(key: key);
+  const MealsEditScreen({Key? key, required this.mealId}) : super(key: key);
 
   @override
   State<MealsEditScreen> createState() => _MealsEditScreenState();
@@ -40,183 +40,186 @@ class _MealsEditScreenState extends State<MealsEditScreen> {
           ),
         ),
         child: FutureBuilder<MealModelWithId>(
-      future: MealService.getMealById(widget.mealId),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          return ListView(
-            padding: const EdgeInsets.all(constants.defaultPadding),
-            children: [
-              const Center(
-                child: ImageWidget(),
-              ),
-              const SizedBox(height: constants.defaultMargin),
-              Form(
-                key: _formKey,
-                child: Column(
-                  children: <Widget>[
-                    const SizedBox(height: constants.defaultMargin),
-                    TextFormField(
-                      restorationId: 'mealName',
-                      decoration: const InputDecoration(
-                        prefixIcon: Icon(Icons.fastfood),
-                        hintText: 'What is the title of the meal?',
-                        labelText: 'Meal Title *',
-                      ),
-                      // onEditingComplete: () => ,
-                      validator: (String? value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter the title of the meal';
-                        }
-                        return null;
-                      },
-                      onSaved: (newValue) {
-                        context.read<MealAddViewModel>().meal.mealTitle =
-                        newValue!;
-                        print(
-                            'mealTitle: ${context.read<MealAddViewModel>().meal.mealTitle}');
-                      },
-                    ),
-                    const SizedBox(height: constants.defaultMargin),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        prefixIcon: Icon(Icons.description),
-                        hintText: 'What is the short description of the meal?',
-                        labelText: 'Short Description *',
-                      ),
-                      minLines: 2,
-                      maxLines: 2,
-                      // expands: true,
-                      keyboardType: TextInputType.multiline,
-                      validator: (String? value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter the description of the meal';
-                        }
-                        return null;
-                      },
-                      onSaved: (newValue) => context
-                          .read<MealAddViewModel>()
-                          .meal
-                          .mealShortDescription = newValue!,
-                    ),
-                    const SizedBox(height: constants.defaultMargin),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        prefixIcon: Icon(Icons.description),
-                        hintText: 'What is the long description of the meal?',
-                        labelText: 'Long Description *',
-                      ),
-                      minLines: 4,
-                      maxLines: null,
-                      // expands: true,
-                      keyboardType: TextInputType.multiline,
-                      validator: (String? value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter the description of the meal';
-                        }
-                        return null;
-                      },
-                      onSaved: (newValue) => context
-                          .read<MealAddViewModel>()
-                          .meal
-                          .mealLongDescription = newValue!,
-                    ),
-                    // const SizedBox(height: constants.defaultMargin),
-                    // field for meal price input (double)
-                    // TextFormField(
-                    //   controller: _mealPriceController,
-                    //   decoration: const InputDecoration(
-                    //     prefixIcon: Icon(Icons.attach_money),
-                    //     hintText: 'What is the price of the meal?',
-                    //     labelText: 'Meal Price *',
-                    //   ),
-                    //   inputFormatters: [
-                    //     CurrencyTextInputFormatter(
-                    //       locale: 'en_CA',
-                    //       decimalDigits: 2,
-                    //     ),
-                    //   ],
-                    //   keyboardType: TextInputType.number,
-                    //   validator: (String? value) {
-                    //     if (value == null || value.isEmpty) {
-                    //       return 'Please enter the price of the meal';
-                    //     }
-                    //     return null;
-                    //   },
-                    // ),
-                    const SizedBox(height: constants.defaultMargin),
-                    // form for taking arrat of ingredients as input
-                    const IngredientsChipsTextField(),
-                    const SizedBox(height: constants.defaultMargin),
-                    // input for meal weight in ounces or milliliters (double) (dropdown) (ounces by default)
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 4,
-                          child: TextFormField(
-                            decoration: const InputDecoration(
-                              prefixIcon: Icon(Icons.fastfood),
-                              hintText: 'What is the quantity of the meal?',
-                              labelText: 'Meal Quantity *',
-                            ),
-                            keyboardType: TextInputType.number,
-                            inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly,
-                            ],
-                            validator: (String? value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter the quantity of the meal';
-                              }
-                              return null;
-                            },
-                            onSaved: (newValue) => context
-                                .read<MealAddViewModel>()
-                                .meal
-                                .mealQuantity = int.parse(newValue!),
+          future: MealService.getMealById(widget.mealId),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return ListView(
+                padding: const EdgeInsets.all(constants.defaultPadding),
+                children: [
+                  const Center(
+                    child: ImageWidget(),
+                  ),
+                  const SizedBox(height: constants.defaultMargin),
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      children: <Widget>[
+                        const SizedBox(height: constants.defaultMargin),
+                        TextFormField(
+                          restorationId: 'mealName',
+                          decoration: const InputDecoration(
+                            prefixIcon: Icon(Icons.fastfood),
+                            hintText: 'What is the title of the meal?',
+                            labelText: 'Meal Title *',
                           ),
+                          // onEditingComplete: () => ,
+                          validator: (String? value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter the title of the meal';
+                            }
+                            return null;
+                          },
+                          onSaved: (newValue) {
+                            context.read<MealAddViewModel>().meal.mealTitle =
+                                newValue!;
+                            print(
+                                'mealTitle: ${context.read<MealAddViewModel>().meal.mealTitle}');
+                          },
                         ),
-                        const SizedBox(width: constants.defaultMargin),
-                        const Expanded(
-                          child: MealQuantityUnitDropDown(),
+                        const SizedBox(height: constants.defaultMargin),
+                        TextFormField(
+                          decoration: const InputDecoration(
+                            prefixIcon: Icon(Icons.description),
+                            hintText:
+                                'What is the short description of the meal?',
+                            labelText: 'Short Description *',
+                          ),
+                          minLines: 2,
+                          maxLines: 2,
+                          // expands: true,
+                          keyboardType: TextInputType.multiline,
+                          validator: (String? value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter the description of the meal';
+                            }
+                            return null;
+                          },
+                          onSaved: (newValue) => context
+                              .read<MealAddViewModel>()
+                              .meal
+                              .mealShortDescription = newValue!,
                         ),
+                        const SizedBox(height: constants.defaultMargin),
+                        TextFormField(
+                          decoration: const InputDecoration(
+                            prefixIcon: Icon(Icons.description),
+                            hintText:
+                                'What is the long description of the meal?',
+                            labelText: 'Long Description *',
+                          ),
+                          minLines: 4,
+                          maxLines: null,
+                          // expands: true,
+                          keyboardType: TextInputType.multiline,
+                          validator: (String? value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter the description of the meal';
+                            }
+                            return null;
+                          },
+                          onSaved: (newValue) => context
+                              .read<MealAddViewModel>()
+                              .meal
+                              .mealLongDescription = newValue!,
+                        ),
+                        // const SizedBox(height: constants.defaultMargin),
+                        // field for meal price input (double)
+                        // TextFormField(
+                        //   controller: _mealPriceController,
+                        //   decoration: const InputDecoration(
+                        //     prefixIcon: Icon(Icons.attach_money),
+                        //     hintText: 'What is the price of the meal?',
+                        //     labelText: 'Meal Price *',
+                        //   ),
+                        //   inputFormatters: [
+                        //     CurrencyTextInputFormatter(
+                        //       locale: 'en_CA',
+                        //       decimalDigits: 2,
+                        //     ),
+                        //   ],
+                        //   keyboardType: TextInputType.number,
+                        //   validator: (String? value) {
+                        //     if (value == null || value.isEmpty) {
+                        //       return 'Please enter the price of the meal';
+                        //     }
+                        //     return null;
+                        //   },
+                        // ),
+                        const SizedBox(height: constants.defaultMargin),
+                        // form for taking arrat of ingredients as input
+                        const IngredientsChipsTextField(),
+                        const SizedBox(height: constants.defaultMargin),
+                        // input for meal weight in ounces or milliliters (double) (dropdown) (ounces by default)
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 4,
+                              child: TextFormField(
+                                decoration: const InputDecoration(
+                                  prefixIcon: Icon(Icons.fastfood),
+                                  hintText: 'What is the quantity of the meal?',
+                                  labelText: 'Meal Quantity *',
+                                ),
+                                keyboardType: TextInputType.number,
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly,
+                                ],
+                                validator: (String? value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter the quantity of the meal';
+                                  }
+                                  return null;
+                                },
+                                onSaved: (newValue) => context
+                                    .read<MealAddViewModel>()
+                                    .meal
+                                    .mealQuantity = int.parse(newValue!),
+                              ),
+                            ),
+                            const SizedBox(width: constants.defaultMargin),
+                            const Expanded(
+                              child: MealQuantityUnitDropDown(),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: constants.defaultMargin),
+                        // optional input for meal calories with a unit of calories (double)
+                        TextFormField(
+                          decoration: const InputDecoration(
+                            prefixIcon: Icon(Icons.whatshot),
+                            hintText: 'What is the calorie count of the meal?',
+                            labelText: 'Meal Calories',
+                          ),
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                          ],
+                          onSaved: (newValue) {
+                            if (newValue != null && newValue.isNotEmpty) {
+                              context
+                                  .read<MealAddViewModel>()
+                                  .meal
+                                  .mealCalories = int.parse(newValue);
+                            }
+                          },
+                        ),
+                        const SizedBox(height: constants.defaultMargin),
+                        const AddMealSubmitButton(),
+                        const SizedBox(height: constants.defaultMargin),
                       ],
                     ),
-                    const SizedBox(height: constants.defaultMargin),
-                    // optional input for meal calories with a unit of calories (double)
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        prefixIcon: Icon(Icons.whatshot),
-                        hintText: 'What is the calorie count of the meal?',
-                        labelText: 'Meal Calories',
-                      ),
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                      ],
-                      onSaved: (newValue) {
-                        if (newValue != null && newValue.isNotEmpty) {
-                          context.read<MealAddViewModel>().meal.mealCalories =
-                              int.parse(newValue);
-                        }
-                      },
-                    ),
-                    const SizedBox(height: constants.defaultMargin),
-                    const AddMealSubmitButton(),
-                    const SizedBox(height: constants.defaultMargin),
-                  ],
-                ),
-              ),
-            ],
-          );
-        } else if (snapshot.hasError) {
-          return const Text('Error');
-        } else {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-      },
-    ),
-
+                  ),
+                ],
+              );
+            } else if (snapshot.hasError) {
+              return const Text('Error');
+            } else {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
+        ),
       ),
     );
   }
@@ -241,16 +244,16 @@ class ImageWidget extends StatelessWidget {
         child: imageFile == null
             ? const ImagePlaceholderWidget()
             : Ink(
-          height: 200,
-          width: 200 * (6 / 5),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(constants.borderRadius),
-            image: DecorationImage(
-              image: FileImage(imageFile),
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
+                height: 200,
+                width: 200 * (6 / 5),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(constants.borderRadius),
+                  image: DecorationImage(
+                    image: FileImage(imageFile),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
       ),
     );
   }
@@ -271,14 +274,14 @@ class MealQuantityUnitDropDown extends StatelessWidget {
       value: context.read<MealAddViewModel>().meal.mealQuantityUnit,
       items: MealQuantityUnit.values
           .map((MealQuantityUnit unit) => DropdownMenuItem<String>(
-        value: unit.name,
-        child: Text(unit.name),
-      ))
+                value: unit.name,
+                child: Text(unit.name),
+              ))
           .toList(),
       onChanged: (String? newValue) =>
-      context.read<MealAddViewModel>().meal.mealQuantityUnit = newValue!,
+          context.read<MealAddViewModel>().meal.mealQuantityUnit = newValue!,
       onSaved: (newValue) =>
-      context.read<MealAddViewModel>().meal.mealQuantityUnit = newValue!,
+          context.read<MealAddViewModel>().meal.mealQuantityUnit = newValue!,
     );
   }
 }
@@ -299,8 +302,8 @@ class IngredientsChipsTextField extends StatelessWidget {
         errorText: ingredientsProviderWatch.isAddingIngredients
             ? null
             : ingredientsProviderWatch.ingredients.isEmpty
-            ? 'Please add at least one ingredient'
-            : null,
+                ? 'Please add at least one ingredient'
+                : null,
       ),
       onTagChanged: (newValue) =>
           context.read<IngredientsProviderEdit>().addIngredient(newValue),
@@ -318,7 +321,7 @@ class IngredientsChipsTextField extends StatelessWidget {
             size: constants.defaultIconSizeSmall,
           ),
           deleteButtonTooltipMessage:
-          'Remove ${context.read<IngredientsProviderEdit>().ingredients[index]}',
+              'Remove ${context.read<IngredientsProviderEdit>().ingredients[index]}',
           onDeleted: () => context
               .read<IngredientsProviderEdit>()
               .removeIngredient(index: index),
@@ -468,7 +471,7 @@ void _showPhotoPickerOptionsBottomModal(BuildContext context) {
     // ),
     builder: (context) => DraggableScrollableSheet(
       initialChildSize:
-      constants.defaultDraggableScrollableSheetInitialChildSizeSmall,
+          constants.defaultDraggableScrollableSheetInitialChildSizeSmall,
       maxChildSize: constants.defaultDraggableScrollableSheetMaxChildSizeSmall,
       minChildSize: constants.defaultDraggableScrollableSheetMinChildSizeSmall,
       expand: false,
@@ -552,7 +555,7 @@ Future<File?> _pickImage(ImageSource source, BuildContext context) async {
 
 Future<File?> _cropImage({required File imageFile}) async {
   CroppedFile? croppedImage =
-  await ImageCropper().cropImage(sourcePath: imageFile.path);
+      await ImageCropper().cropImage(sourcePath: imageFile.path);
   if (croppedImage == null) return null;
   return File(croppedImage.path);
 }

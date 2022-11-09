@@ -1,28 +1,32 @@
-version: '4.0'
+version: '3.7'
 
 services:
   server:
+    env_file:
+      - ./meal-dash-business/.env.development.local
     container_name: server
+    depends_on:
+      - mysql-master
     build: ./meal-dash-business
     ports:
       - '3000:3000'
-    environment:
-      - NODE_ENV=development
-      - PORT=3000
-      - DB_HOST=mysql-master
-      - DB_PORT=3306
-      - DB_USER=root
-      - DB_PASSWORD=root
-      - DB_DATABASE=meal-dash
-      - SECRET_KEY=best_key_in_the_whole_world
-      - LOG_FORMAT=dev
-      - LOG_DIR="../../../logs"
-      - ORIGIN=*
-      - CREDENTIALS=true
-      - SMTP_HOST=smtp.gmail.com
-      - SMTP_PORT=587
-      - SMTP_USERNAME=meal.dash.capstone@gmail.com
-      - SMTP_PASSWORD="ccxbgveusqkcijmr"
+    # environment:
+    #   - NODE_ENV=development
+    #   - PORT=3000
+    #   - DB_HOST=mysql-master
+    #   - DB_PORT=3306
+    #   - DB_USER=root
+    #   - DB_PASSWORD=root
+    #   - DB_DATABASE=meal-dash
+    #   - SECRET_KEY=best_key_in_the_whole_world
+    #   - LOG_FORMAT=dev
+    #   - LOG_DIR="../../../logs"
+    #   - ORIGIN=*
+    #   - CREDENTIALS=true
+    #   - SMTP_HOST=smtp.gmail.com
+    #   - SMTP_PORT=587
+    #   - SMTP_USERNAME=meal.dash.capstone@gmail.com
+    #   - SMTP_PASSWORD="ccxbgveusqkcijmr"
     #restart: 'unless-stopped'
     #links:
       #- mysql-master
@@ -38,5 +42,6 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root  
     volumes:
+      - ./mysql-master:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 

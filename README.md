@@ -34,7 +34,7 @@ This section lists the major frameworks/libraries used to bootstrap the project.
       <a href="#getting-started">Getting Started</a>
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#setup(local)">Setup(local)</a></li>        
+        <li><a href="#setuplocal">Setup(local)</a></li>        
         <ul>
           <li><a href="#backend-service">Backend service</a></li>
         </ul>

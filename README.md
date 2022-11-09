@@ -34,9 +34,10 @@ This section lists the major frameworks/libraries used to bootstrap the project.
       <a href="#getting-started">Getting Started</a>
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#setuplocal">Setup(local)</a></li>        
+        <li><a href="#setup-local">Setup (local)</a></li>        
         <ul>
-          <li><a href="#backend-service">Backend service</a></li>
+          <li><a href="#with-docker-compose">With Docker Compose</a></li>
+          <li><a href="#without-docker-compose">Without Docker Compose</a></li>
         </ul>
       </ul>
     </li>
@@ -53,7 +54,7 @@ This is an example of how to list things you need to use the software and how to
   npm install npm@latest -g
   ```
   
-### Setup(local)
+### Setup (local)
 
 #### With Docker Compose
 From root run following commands in sequence:

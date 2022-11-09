@@ -1,2 +1,2 @@
-create database if not exists `meal-dash`;
+create database `meal-dash`;
 use `meal-dash`;

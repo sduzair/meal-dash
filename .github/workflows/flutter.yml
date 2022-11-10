@@ -3,14 +3,13 @@
 name: Flutter
 
 on:
-  push:
-    branches: [ "release/flutter-app-*" ]
   pull_request:
     branches: [ "production" ]
 
 jobs:
   build:
-
+    if: startsWith(github.ref, 'refs/heads/release/flutter-app-')
+    
     runs-on: ubuntu-latest
     defaults:
       run:

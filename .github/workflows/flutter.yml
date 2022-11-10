@@ -1,7 +1,4 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
+#The workflow is triggered on push to a branch named release/flutter-app-* and on pull request to the production branch. The first job builds the APK and uploads it as an artifact. The second job downloads the artifact and deploys it to Firebase App Distribution.
 
 name: Flutter
 
@@ -13,20 +10,44 @@ on:
 
 jobs:
   build:
-    # This job will run on ubuntu virtual machine
+
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: mealdash_flutter_app
+        working-directory: ./flutter-app
+      
     steps:
-      - uses: actions/checkout@v2
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v1
-      - name: Install dependencies
-        run: flutter pub get
-      - name: Check formatting
-        run: flutter format --dry-run . --set-exit-if-changed
-      - name: Check lints
-        run: flutter analyze
-      - name: Run tests
-        run: flutter test
+    - uses: actions/checkout@v2
+    - uses: subosito/flutter-action@v1
+      with:
+        channel: 'stable'
+    - name: Install dependencies
+      run: flutter pub get
+    # - name: Format code
+    #   run: flutter format --set-exit-if-changed .
+    - name: Build APK
+      run: flutter build apk --release
+    - name: Upload APK
+      uses: actions/upload-artifact@v2
+      with:
+        name: app-release.apk
+        path: ./flutter-app/build/app/outputs/flutter-apk/app-release.apk
+      
+  # deploy:
+  #   needs: build
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #   - name: Download APK
+  #     uses: actions/download-artifact@v2
+  #     with:
+  #       name: app-release.apk
+  #   - name: Deploy to Firebase
+  #     uses: wzieba/Firebase-Distribution-Github-Action@v1
+  #     with:
+  #       appId: ${{ secrets.FIREBASE_APP_ID }}
+  #       token: ${{ secrets.FIREBASE_TOKEN }}
+  #       groups: testers
+  #       file: app-release.apk
+
+

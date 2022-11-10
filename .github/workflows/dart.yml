@@ -10,13 +10,13 @@ on:
     branches: [ "release/flutter-app-*" ]
   pull_request:
     branches: [ "production" ]
-defaults:
-  run:
-    working-directory: mealdash_flutter_app
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: mealdash_flutter_app
 
     steps:
       - uses: actions/checkout@v3

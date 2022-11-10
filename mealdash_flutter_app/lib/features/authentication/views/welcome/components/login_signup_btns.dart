@@ -11,7 +11,8 @@ class LoginAndSignupBtn extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(
-          horizontal: constants.defaultPaddingXLarge),
+        horizontal: constants.defaultPaddingXLarge,
+      ),
       child: Column(
         children: [
           Hero(

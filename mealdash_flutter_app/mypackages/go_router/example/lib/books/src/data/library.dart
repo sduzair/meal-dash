@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'author.dart';
-import 'book.dart';
+import 'package:go_router_examples/books/src/data/author.dart';
+import 'package:go_router_examples/books/src/data/book.dart';
 
 /// Library data mock.
 final Library libraryInstance = Library()
@@ -11,22 +11,26 @@ final Library libraryInstance = Library()
       title: 'Left Hand of Darkness',
       authorName: 'Ursula K. Le Guin',
       isPopular: true,
-      isNew: true)
+    isNew: true,
+  )
   ..addBook(
       title: 'Too Like the Lightning',
       authorName: 'Ada Palmer',
       isPopular: false,
-      isNew: true)
+    isNew: true,
+  )
   ..addBook(
       title: 'Kindred',
       authorName: 'Octavia E. Butler',
       isPopular: true,
-      isNew: false)
+    isNew: false,
+  )
   ..addBook(
       title: 'The Lathe of Heaven',
       authorName: 'Ursula K. Le Guin',
       isPopular: false,
-      isNew: false);
+    isNew: false,
+  );
 
 /// A library that contains books and authors.
 class Library {

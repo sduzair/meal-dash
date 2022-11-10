@@ -18,16 +18,21 @@ final getIt = GetIt.instance;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   getIt.registerSingleton<SharedPreferences>(
-      await SharedPreferences.getInstance());
+    await SharedPreferences.getInstance(),
+  );
   constants.isTestUserLoggedIn
       ? await getIt<SharedPreferences>().setBool(constants.loggedInKey, true)
       : await getIt<SharedPreferences>().setBool(constants.loggedInKey, false);
   getIt.registerSingleton<Dio>(Dio());
   getIt.registerSingleton(DioClient(dio: getIt<Dio>()));
   getIt.registerSingleton<AuthService>(
-      AuthService(dioClient: getIt<DioClient>()));
+    AuthService(dioClient: getIt<DioClient>()),
+  );
   getIt.registerSingleton<UserAuthViewModel>(UserAuthViewModel(
-      prefs: getIt<SharedPreferences>(), authService: getIt<AuthService>()));
+      prefs: getIt<SharedPreferences>(),
+      authService: getIt<AuthService>(),
+    ),
+  );
   getIt.get<UserAuthViewModel>().checkLoggedIn();
 
   // load the theme data

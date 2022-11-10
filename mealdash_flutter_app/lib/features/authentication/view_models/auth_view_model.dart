@@ -152,12 +152,22 @@ class UserAuthViewModel with ChangeNotifier, DiagnosticableTreeMixin {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(FlagProperty('isSigningUp',
-        value: isSigningUp, ifTrue: 'Signing Up', ifFalse: 'Not Signing Up'));
+        value: isSigningUp,
+        ifTrue: 'Signing Up',
+        ifFalse: 'Not Signing Up',
+      ),
+    );
     properties.add(FlagProperty('isLoggingIn',
-        value: isLoggingIn, ifTrue: 'Signing In', ifFalse: 'Not Signing In'));
+        value: isLoggingIn,
+        ifTrue: 'Signing In',
+        ifFalse: 'Not Signing In',
+      ),
+    );
     properties.add(FlagProperty('isSigningOut',
         value: isSigningOut,
         ifTrue: 'Signing Out',
-        ifFalse: 'Not Signing Out'));
+        ifFalse: 'Not Signing Out',
+      ),
+    );
   }
 }

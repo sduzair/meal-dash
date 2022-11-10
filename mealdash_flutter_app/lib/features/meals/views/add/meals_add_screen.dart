@@ -67,7 +67,8 @@ class _MealAddScreenState extends State<MealAddScreen> {
                       context.read<MealAddViewModel>().meal.mealTitle =
                           newValue!;
                       print(
-                          'mealTitle: ${context.read<MealAddViewModel>().meal.mealTitle}');
+                        'mealTitle: ${context.read<MealAddViewModel>().meal.mealTitle}',
+                      );
                     },
                   ),
                   const SizedBox(height: constants.defaultMargin),
@@ -257,7 +258,8 @@ class MealQuantityUnitDropDown extends StatelessWidget {
           .map((MealQuantityUnit unit) => DropdownMenuItem<String>(
                 value: unit.name,
                 child: Text(unit.name),
-              ))
+            ),
+          )
           .toList(),
       onChanged: (String? newValue) =>
           context.read<MealAddViewModel>().meal.mealQuantityUnit = newValue!,
@@ -343,7 +345,8 @@ class _AddMealSubmitButtonState extends State<AddMealSubmitButton> {
             formKey!.validate() &&
             ingredientsProviderWatch.ingredients.isNotEmpty) {
           print(
-              'formKey.validate() && ingredientsProviderWatch.ingredients.isNotEmpty');
+            'formKey.validate() && ingredientsProviderWatch.ingredients.isNotEmpty',
+          );
           context.read<MealAddViewModel>().meal.mealIngredients =
               ingredientsProviderWatch.ingredients;
           formKey.save();

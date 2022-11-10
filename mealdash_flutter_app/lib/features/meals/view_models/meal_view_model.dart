@@ -52,11 +52,20 @@ class MealAddViewModel with ChangeNotifier, DiagnosticableTreeMixin {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(FlagProperty('isAddingMeal',
-        value: isAddingMeal, ifTrue: 'Adding Meal'));
+        value: isAddingMeal,
+        ifTrue: 'Adding Meal',
+      ),
+    );
     properties.add(FlagProperty('isAddingMealError',
-        value: isAddingMealError, ifTrue: 'Adding Meal Error'));
+        value: isAddingMealError,
+        ifTrue: 'Adding Meal Error',
+      ),
+    );
     properties.add(FlagProperty('isAddingMealSuccess',
-        value: isAddingMealSuccess, ifTrue: 'Adding Meal Success'));
+        value: isAddingMealSuccess,
+        ifTrue: 'Adding Meal Success',
+      ),
+    );
   }
 }
 

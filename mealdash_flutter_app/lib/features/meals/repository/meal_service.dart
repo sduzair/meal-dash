@@ -203,7 +203,9 @@ class MealService {
   // }
 
   static Future<MealModel> updateMeal(
-      String mealId, MealModel mealModel) async {
+    String mealId,
+    MealModel mealModel,
+  ) async {
     final response = await http.put(
       Uri.parse('${constants.apiUrl}/foodvendors/$foodVendorId/meals/$mealId'),
       headers: <String, String>{

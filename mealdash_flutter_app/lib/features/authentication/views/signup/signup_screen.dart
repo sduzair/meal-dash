@@ -75,7 +75,8 @@ class _SignupScreenState extends State<SignupScreen> {
                 child: SingleChildScrollView(
                   child: Container(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: constants.defaultPadding),
+                      horizontal: constants.defaultPadding,
+                    ),
                     child: Form(
                       key: _formKey,
                       child: Column(
@@ -102,7 +103,8 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                           Padding(
                             padding: const EdgeInsets.only(
-                                top: constants.defaultPadding),
+                              top: constants.defaultPadding,
+                            ),
                             child: TextFormField(
                               textInputAction: TextInputAction.next,
                               onSaved: (username) {
@@ -125,7 +127,8 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
-                                vertical: constants.defaultPadding),
+                              vertical: constants.defaultPadding,
+                            ),
                             child: TextFormField(
                               onChanged: (pass1) {
                                 _password1 = pass1;

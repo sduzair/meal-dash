@@ -55,7 +55,8 @@ class SignUpScreen2State extends State<SignUpScreen2> {
                       labelText: "First Name",
                       hintText: "Enter your first name",
                       floatingLabelBehavior: FloatingLabelBehavior.always,
-                      icon: Icon(Icons.account_circle)),
+                    icon: Icon(Icons.account_circle),
+                  ),
                   validator: (value) {
                     if (value!.isEmpty) {
                       return "Please enter your first name";
@@ -71,7 +72,8 @@ class SignUpScreen2State extends State<SignUpScreen2> {
                       labelText: "Last Name",
                       hintText: "Enter your last name",
                       floatingLabelBehavior: FloatingLabelBehavior.always,
-                      icon: Icon(Icons.account_circle)),
+                    icon: Icon(Icons.account_circle),
+                  ),
                   validator: (value) {
                     if (value!.isEmpty) {
                       return "Please enter your last name";
@@ -90,7 +92,8 @@ class SignUpScreen2State extends State<SignUpScreen2> {
                       labelText: "Phone Number",
                       hintText: "Enter your phone number",
                       floatingLabelBehavior: FloatingLabelBehavior.always,
-                      icon: Icon(Icons.phone)),
+                    icon: Icon(Icons.phone),
+                  ),
                   validator: (value) {
                     if (value!.isEmpty) {
                       return "Please enter your phone number";
@@ -109,7 +112,8 @@ class SignUpScreen2State extends State<SignUpScreen2> {
                       labelText: "Address",
                       hintText: "Address line 1",
                       floatingLabelBehavior: FloatingLabelBehavior.always,
-                      icon: Icon(Icons.location_on)),
+                    icon: Icon(Icons.location_on),
+                  ),
                   validator: (value) {
                     if (value!.isEmpty) {
                       return "Please enter your address";
@@ -128,7 +132,8 @@ class SignUpScreen2State extends State<SignUpScreen2> {
                       labelText: "Address",
                       hintText: "Address line 2",
                       floatingLabelBehavior: FloatingLabelBehavior.always,
-                      icon: Icon(Icons.location_on)),
+                    icon: Icon(Icons.location_on),
+                  ),
                   // validator: (value) {
                   //   if (value!.isEmpty) {
                   //     return "Please enter your address";
@@ -222,7 +227,8 @@ class SignUpScreen2State extends State<SignUpScreen2> {
                       labelText: "Postal Code",
                       hintText: "Enter your postal code",
                       floatingLabelBehavior: FloatingLabelBehavior.always,
-                      icon: Icon(Icons.location_city)),
+                    icon: Icon(Icons.location_city),
+                  ),
                   validator: (value) {
                     if (value!.isEmpty) {
                       return "Please enter your postal code";

@@ -40,7 +40,9 @@ class MyRouter {
         name: constants.welcomeRouteName,
         path: '/welcome',
         pageBuilder: (context, state) => MaterialPage<void>(
-            key: state.pageKey, child: const WelcomeScreen()),
+          key: state.pageKey,
+          child: const WelcomeScreen(),
+        ),
       ),
       GoRoute(
         name: constants.loginRouteName,
@@ -111,7 +113,8 @@ class MyRouter {
                 child: MultiProvider(
                   providers: [
                     ChangeNotifierProvider<MealAddViewModel>(
-                        create: (_) => MealAddViewModel()),
+                      create: (_) => MealAddViewModel(),
+                    ),
                   ],
                   child: child,
                 ),
@@ -128,7 +131,8 @@ class MyRouter {
                       builder: (context, state) => MultiProvider(
                         providers: [
                           ChangeNotifierProvider(
-                              create: (context) => IngredientsProviderAdd())
+                            create: (context) => IngredientsProviderAdd(),
+                          )
                         ],
                         child: const MealAddScreen(),
                       ),
@@ -143,7 +147,7 @@ class MyRouter {
                         child:  MealsEditScreen(
                         mealId: state.params['id'] as String,
                         ),
-                      )
+                      ),
                     ),
                     GoRoute(
                       name: constants.mealsDetailRouteName,

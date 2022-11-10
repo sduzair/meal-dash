@@ -158,7 +158,8 @@ class TextUserLoginButton extends StatelessWidget {
                         .read<UserAuthViewModel>()
                         .resetLoginAndNotifyListeners();
                   },
-                  child: const Text("OK"))
+                child: const Text("OK"),
+              )
             ],
           ),
         );

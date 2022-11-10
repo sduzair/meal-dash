@@ -32,7 +32,8 @@ class MobileLoginScreen extends StatelessWidget {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-                'Signup successful for ${context.read<UserAuthViewModel>().userSignUpModel.email}!'),
+              'Signup successful for ${context.read<UserAuthViewModel>().userSignUpModel.email}!',
+            ),
           ),
         );
       });

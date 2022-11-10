@@ -6,17 +6,17 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import 'src/auth.dart';
-import 'src/data/author.dart';
-import 'src/data/book.dart';
-import 'src/data/library.dart';
-import 'src/screens/author_details.dart';
-import 'src/screens/authors.dart';
-import 'src/screens/book_details.dart';
-import 'src/screens/books.dart';
-import 'src/screens/scaffold.dart';
-import 'src/screens/settings.dart';
-import 'src/screens/sign_in.dart';
+import 'package:go_router_examples/books/src/auth.dart';
+import 'package:go_router_examples/books/src/data/author.dart';
+import 'package:go_router_examples/books/src/data/book.dart';
+import 'package:go_router_examples/books/src/data/library.dart';
+import 'package:go_router_examples/books/src/screens/author_details.dart';
+import 'package:go_router_examples/books/src/screens/authors.dart';
+import 'package:go_router_examples/books/src/screens/book_details.dart';
+import 'package:go_router_examples/books/src/screens/books.dart';
+import 'package:go_router_examples/books/src/screens/scaffold.dart';
+import 'package:go_router_examples/books/src/screens/settings.dart';
+import 'package:go_router_examples/books/src/screens/sign_in.dart';
 
 void main() => runApp(Bookstore());
 
@@ -162,12 +162,14 @@ class FadeTransitionPage extends CustomTransitionPage<void> {
             transitionsBuilder: (BuildContext context,
                     Animation<double> animation,
                     Animation<double> secondaryAnimation,
-                    Widget child) =>
+            Widget child,
+          ) =>
                 FadeTransition(
                   opacity: animation.drive(_curveTween),
                   child: child,
                 ),
-            child: child);
+          child: child,
+        );
 
   static final CurveTween _curveTween = CurveTween(curve: Curves.easeIn);
 }

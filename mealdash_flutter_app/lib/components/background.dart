@@ -36,7 +36,9 @@ class Background extends StatelessWidget {
               child: Hero(
                   tag: "bottomImage",
                   child: Image.asset(constants.backgroundBottomRightImage,
-                      width: 120)),
+                  width: 120,
+                ),
+              ),
             ),
             SafeArea(child: child),
           ],

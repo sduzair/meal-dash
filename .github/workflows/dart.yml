@@ -7,7 +7,7 @@ name: Dart
 
 on:
   push:
-    branches: [ "release/flutter-app*" ]
+    branches: [ "release/flutter-app-*" ]
   pull_request:
     branches: [ "production" ]
 

@@ -1,4 +1,4 @@
-#The workflow is triggered on push to a branch named release/flutter-app-* and on pull request to the production branch. The first job builds the APK and uploads it as an artifact. The second job downloads the artifact and deploys it to Firebase App Distribution.
+#The workflow is triggered on push to a branch named release/flutter-app-* and on pull request to the production branch. The first job builds the APK and uploads it as an artifact. The second job downloads the artifact and deploys it to the Google Play Store.
 
 name: Flutter
 
@@ -41,13 +41,21 @@ jobs:
   #   - name: Download APK
   #     uses: actions/download-artifact@v2
   #     with:
-  #       name: app-release.apk
-  #   - name: Deploy to Firebase
-  #     uses: wzieba/Firebase-Distribution-Github-Action@v1
+  #       name: app-release.APK
+  #   - name: Play Store Deploy
+  #     uses: r0adkll/upload-google-play@v2
   #     with:
-  #       appId: ${{ secrets.FIREBASE_APP_ID }}
-  #       token: ${{ secrets.FIREBASE_TOKEN }}
-  #       groups: testers
-  #       file: app-release.apk
+  #       # The package name of the application
+  #       packageName: com.example.mealdash_flutter_app
+  #       # The service account JSON
+  #       serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
+  #       # The path to the APK to upload
+  #       releaseFile: app-release.apk
+  #       # The track to deploy to
+  #       track: internal
+  #       # The user fraction to use when rolling out the release
+  #       userFraction: 0.1
+
+  
 
 

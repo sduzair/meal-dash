@@ -1,4 +1,4 @@
-#The workflow is triggered on pull request to the production branch when HEAD starts with refs/heads/release/node-server-. The build job builds the docker image and pushes it to Docker Hub. The deploy job pulls the image from Docker Hub and deploys it to the production server.
+#The workflow is triggered on pull request to the production branch when head_ref starts with release/node-server-. The build job builds the docker image and pushes it to Docker Hub. The deploy job pulls the image from Docker Hub and deploys it to the production server.
 
 name: Node.js
 

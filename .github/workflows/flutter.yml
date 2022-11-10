@@ -1,4 +1,4 @@
-#The workflow is triggered on pull request to the production branch when HEAD starts with refs/heads/release/flutter-app-. The first job builds the APK and uploads it as an artifact. The second job downloads the artifact and deploys it to the Google Play Store.
+#The workflow is triggered on pull request to the production branch when head_ref starts with release/flutter-app-. The first job builds the APK and uploads it as an artifact. The second job downloads the artifact and deploys it to the Google Play Store.
 
 name: Flutter
 

@@ -19,31 +19,14 @@ jobs:
       run:
         working-directory: mealdash_flutter_app
     steps:
-    - name: Install Flutter
-      # You may pin to the exact commit or the version.
-      # uses: britannio/action-install-flutter@a486b7e3148e54a76390d849100b9dee819ff810
-      uses: britannio/action-install-flutter@v1.1
-      #with:
-        # The channel/version of Flutter to be used e.g., beta or 2.0.0
-        #version: # optional, default is stable
-    
-    # Get flutter dependencies.
-    - run: flutter pub get
-    
-    # Check for any formatting issues in the code.
-    #- run: flutter format --set-exit-if-changed .
-    
-    # Statically analyze the Dart code for any errors.
-    - run: flutter analyze .
-    
-    # Run widget tests for our flutter project.
-    #- run: flutter test
-    
-    # Build apk.
-    #- run: flutter build apk
-    
-    # Upload generated apk to the artifacts.
-    #- uses: actions/upload-artifact@v1
-    #  with:
-    #    name: release-apk
-    #    path: build/app/outputs/apk/release/app-release.apk
+      - uses: actions/checkout@v2
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v1
+      - name: Install dependencies
+        run: flutter pub get
+      - name: Check formatting
+        run: flutter format --dry-run . --set-exit-if-changed
+      - name: Check lints
+        run: flutter analyze
+      - name: Run tests
+        run: flutter test

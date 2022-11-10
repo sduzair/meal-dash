@@ -2,7 +2,7 @@
 // DEV CONSTANTS
 
 const bool isTestingMealAdd = false;
-const bool isTestingSignUp = true;
+const bool isTestingSignUp = false;
 const bool isTestingLogin = false;
 const bool isTestUserLoggedIn = true;
 

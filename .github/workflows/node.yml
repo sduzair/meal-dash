@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    if: startsWith(github.ref, 'refs/heads/release/node-server-')
+    if: startsWith(github.head_ref, 'release/node-server-')
 
     runs-on: ubuntu-latest
     defaults:

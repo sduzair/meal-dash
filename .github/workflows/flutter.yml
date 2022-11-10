@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    if: startsWith(github.ref, 'refs/heads/release/flutter-app-')
+    if: startsWith(github.head_ref, 'release/flutter-app-')
     
     runs-on: ubuntu-latest
     defaults:

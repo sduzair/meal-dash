@@ -34,8 +34,9 @@ class Background extends StatelessWidget {
               bottom: 0,
               right: 0,
               child: Hero(
-                  tag: "bottomImage",
-                  child: Image.asset(constants.backgroundBottomRightImage,
+                tag: "bottomImage",
+                child: Image.asset(
+                  constants.backgroundBottomRightImage,
                   width: 120,
                 ),
               ),

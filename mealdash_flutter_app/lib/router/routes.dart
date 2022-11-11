@@ -142,10 +142,11 @@ class MyRouter {
                       path: 'edit/:id',
                       builder: (context, state) => MultiProvider(
                         providers: [
-                          ChangeNotifierProvider(create: (context) => IngredientsProviderEdit())
+                          ChangeNotifierProvider(
+                              create: (context) => IngredientsProviderEdit())
                         ],
-                        child:  MealsEditScreen(
-                        mealId: state.params['id'] as String,
+                        child: MealsEditScreen(
+                          mealId: state.params['id'] as String,
                         ),
                       ),
                     ),

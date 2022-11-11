@@ -52,9 +52,9 @@ class SignUpScreen2State extends State<SignUpScreen2> {
                     // context.read<UserAuthViewModel>().userSignUpModel.firstName = newValue!;
                   },
                   decoration: const InputDecoration(
-                      labelText: "First Name",
-                      hintText: "Enter your first name",
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                    labelText: "First Name",
+                    hintText: "Enter your first name",
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
                     icon: Icon(Icons.account_circle),
                   ),
                   validator: (value) {
@@ -69,9 +69,9 @@ class SignUpScreen2State extends State<SignUpScreen2> {
                     // context.read<UserAuthViewModel>().userSignUpModel.lastName = newValue!;
                   },
                   decoration: const InputDecoration(
-                      labelText: "Last Name",
-                      hintText: "Enter your last name",
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                    labelText: "Last Name",
+                    hintText: "Enter your last name",
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
                     icon: Icon(Icons.account_circle),
                   ),
                   validator: (value) {
@@ -89,9 +89,9 @@ class SignUpScreen2State extends State<SignUpScreen2> {
                         .phoneNumber = newValue!;
                   },
                   decoration: const InputDecoration(
-                      labelText: "Phone Number",
-                      hintText: "Enter your phone number",
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                    labelText: "Phone Number",
+                    hintText: "Enter your phone number",
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
                     icon: Icon(Icons.phone),
                   ),
                   validator: (value) {
@@ -109,9 +109,9 @@ class SignUpScreen2State extends State<SignUpScreen2> {
                         .addressLine1 = newValue!;
                   },
                   decoration: const InputDecoration(
-                      labelText: "Address",
-                      hintText: "Address line 1",
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                    labelText: "Address",
+                    hintText: "Address line 1",
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
                     icon: Icon(Icons.location_on),
                   ),
                   validator: (value) {
@@ -129,9 +129,9 @@ class SignUpScreen2State extends State<SignUpScreen2> {
                         .addressLine2 = newValue!;
                   },
                   decoration: const InputDecoration(
-                      labelText: "Address",
-                      hintText: "Address line 2",
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                    labelText: "Address",
+                    hintText: "Address line 2",
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
                     icon: Icon(Icons.location_on),
                   ),
                   // validator: (value) {
@@ -224,9 +224,9 @@ class SignUpScreen2State extends State<SignUpScreen2> {
                         .postalCode = newValue!;
                   },
                   decoration: const InputDecoration(
-                      labelText: "Postal Code",
-                      hintText: "Enter your postal code",
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                    labelText: "Postal Code",
+                    hintText: "Enter your postal code",
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
                     icon: Icon(Icons.location_city),
                   ),
                   validator: (value) {

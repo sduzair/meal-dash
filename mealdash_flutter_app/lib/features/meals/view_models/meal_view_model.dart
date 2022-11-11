@@ -51,17 +51,23 @@ class MealAddViewModel with ChangeNotifier, DiagnosticableTreeMixin {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(FlagProperty('isAddingMeal',
+    properties.add(
+      FlagProperty(
+        'isAddingMeal',
         value: isAddingMeal,
         ifTrue: 'Adding Meal',
       ),
     );
-    properties.add(FlagProperty('isAddingMealError',
+    properties.add(
+      FlagProperty(
+        'isAddingMealError',
         value: isAddingMealError,
         ifTrue: 'Adding Meal Error',
       ),
     );
-    properties.add(FlagProperty('isAddingMealSuccess',
+    properties.add(
+      FlagProperty(
+        'isAddingMealSuccess',
         value: isAddingMealSuccess,
         ifTrue: 'Adding Meal Success',
       ),

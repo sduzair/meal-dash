@@ -108,7 +108,6 @@ class UserAuthViewModel with ChangeNotifier, DiagnosticableTreeMixin {
   bool _isSigningUpSuccess = false;
   bool get isSigningUpSuccess => _isSigningUpSuccess;
 
-  
   bool _isShowSignupSuccessPopup = false;
   bool get isShowSignupSuccessPopup => _isShowSignupSuccessPopup;
 
@@ -151,19 +150,25 @@ class UserAuthViewModel with ChangeNotifier, DiagnosticableTreeMixin {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(FlagProperty('isSigningUp',
+    properties.add(
+      FlagProperty(
+        'isSigningUp',
         value: isSigningUp,
         ifTrue: 'Signing Up',
         ifFalse: 'Not Signing Up',
       ),
     );
-    properties.add(FlagProperty('isLoggingIn',
+    properties.add(
+      FlagProperty(
+        'isLoggingIn',
         value: isLoggingIn,
         ifTrue: 'Signing In',
         ifFalse: 'Not Signing In',
       ),
     );
-    properties.add(FlagProperty('isSigningOut',
+    properties.add(
+      FlagProperty(
+        'isSigningOut',
         value: isSigningOut,
         ifTrue: 'Signing Out',
         ifFalse: 'Not Signing Out',

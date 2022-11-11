@@ -14,14 +14,15 @@ class HomeScaffoldWithBottomNav extends StatelessWidget {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),            label: 'Home',
+            icon: Icon(Icons.home),
+            label: 'Home',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.add_business),
-            label: 'Orders',   
+            label: 'Orders',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_month_outlined), 
+            icon: Icon(Icons.calendar_month_outlined),
             label: 'Meal Plans',
           ),
           BottomNavigationBarItem(
@@ -37,6 +38,7 @@ class HomeScaffoldWithBottomNav extends StatelessWidget {
     );
   }
 }
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -77,7 +79,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
-
 
 // class HomeDrawer extends StatelessWidget {
 //   const HomeDrawer({super.key});

@@ -23,7 +23,7 @@ class UserSignUpModel {
   String? addressLine2;
   @JsonKey(name: 'city')
   String? city;
-  @JsonKey(name: 'state') 
+  @JsonKey(name: 'state')
   String? state;
   @JsonKey(name: 'postal')
   String? postalCode;

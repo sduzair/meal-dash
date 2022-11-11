@@ -24,15 +24,14 @@ class SignUpScreenTopImage extends StatelessWidget {
             ),
             child: AnimatedTextKit(
               animatedTexts: [
-                
-                TyperAnimatedText('Create a profile to build and sell Meal Plans...'),
+                TyperAnimatedText(
+                    'Create a profile to build and sell Meal Plans...'),
               ],
               isRepeatingAnimation: false,
               displayFullTextOnTap: true,
-              
-            ),
             ),
           ),
+        ),
         // const SizedBox(height: defaultPadding),
       ],
     );

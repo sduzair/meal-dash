@@ -29,7 +29,6 @@ class UserLoginModel {
   Map<String, dynamic> toJson() => _$UserLoginModelToJson(this);
 }
 
-
 // {
 //   "user_email": "captainuzair+mealdash1@gmail.com",
 //   "user_password": "asdf"

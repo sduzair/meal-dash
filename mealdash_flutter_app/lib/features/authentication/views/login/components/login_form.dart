@@ -152,12 +152,12 @@ class TextUserLoginButton extends StatelessWidget {
             ),
             actions: [
               TextButton(
-                  onPressed: () {
-                    ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
-                    context
-                        .read<UserAuthViewModel>()
-                        .resetLoginAndNotifyListeners();
-                  },
+                onPressed: () {
+                  ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
+                  context
+                      .read<UserAuthViewModel>()
+                      .resetLoginAndNotifyListeners();
+                },
                 child: const Text("OK"),
               )
             ],

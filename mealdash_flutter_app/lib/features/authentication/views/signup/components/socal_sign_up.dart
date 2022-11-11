@@ -3,8 +3,6 @@ import 'package:mealdash_app/features/authentication/views/signup/components/or_
 
 import 'package:mealdash_app/features/authentication/views/signup/components/social_icon.dart';
 
-
-
 class SocalSignUp extends StatelessWidget {
   const SocalSignUp({
     Key? key,

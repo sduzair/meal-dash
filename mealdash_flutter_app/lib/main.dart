@@ -28,7 +28,8 @@ Future<void> main() async {
   getIt.registerSingleton<AuthService>(
     AuthService(dioClient: getIt<DioClient>()),
   );
-  getIt.registerSingleton<UserAuthViewModel>(UserAuthViewModel(
+  getIt.registerSingleton<UserAuthViewModel>(
+    UserAuthViewModel(
       prefs: getIt<SharedPreferences>(),
       authService: getIt<AuthService>(),
     ),
@@ -92,7 +93,6 @@ class MyApp extends StatelessWidget {
                 // unselectedLabelStyle: theme.textTheme.bodyText2!.copyWith(
                 //   color: theme.colorScheme.primaryContainer,
                 // ),
-
               ),
             ),
           );

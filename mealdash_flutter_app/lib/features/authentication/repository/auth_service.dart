@@ -4,7 +4,6 @@ import 'package:mealdash_app/features/authentication/models/user_signup_model.da
 import 'package:mealdash_app/service_locator.dart';
 
 class AuthService {
-
   final DioClient dioClient;
 
   const AuthService({required this.dioClient});

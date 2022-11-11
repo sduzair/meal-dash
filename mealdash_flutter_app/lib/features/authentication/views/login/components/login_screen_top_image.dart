@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class LoginScreenTopImage extends StatelessWidget {
   const LoginScreenTopImage({
     Key? key,

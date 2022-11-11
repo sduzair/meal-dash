@@ -35,29 +35,6 @@ jobs:
 #       with:
 #         name: app-release.apk
 #         path: ./flutter-app/build/app/outputs/flutter-apk/app-release.apk
-      
-  # deploy:
-  #   needs: build
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #   - name: Download APK
-  #     uses: actions/download-artifact@v2
-  #     with:
-  #       name: app-release.APK
-  #   - name: Play Store Deploy
-  #     uses: r0adkll/upload-google-play@v2
-  #     with:
-  #       # The package name of the application
-  #       packageName: com.example.mealdash_flutter_app
-  #       # The service account JSON
-  #       serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
-  #       # The path to the APK to upload
-  #       releaseFile: app-release.apk
-  #       # The track to deploy to
-  #       track: internal
-  #       # The user fraction to use when rolling out the release
-  #       userFraction: 0.1
 
   
 

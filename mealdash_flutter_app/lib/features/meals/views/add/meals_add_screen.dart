@@ -255,9 +255,10 @@ class MealQuantityUnitDropDown extends StatelessWidget {
       ),
       value: context.read<MealAddViewModel>().meal.mealQuantityUnit,
       items: MealQuantityUnit.values
-          .map((MealQuantityUnit unit) => DropdownMenuItem<String>(
-                value: unit.name,
-                child: Text(unit.name),
+          .map(
+            (MealQuantityUnit unit) => DropdownMenuItem<String>(
+              value: unit.name,
+              child: Text(unit.name),
             ),
           )
           .toList(),

@@ -9,6 +9,8 @@
   <h3 align="center">Source code for Meal Dash</h3>
 </div>
 
+![Flutter CI](https://github.com/azeez-ahmad/meal-dash/actions/workflows/flutter-ci.yml/badge.svg)
+
 ## About the project
 
 With our application we want to create a platform that offers tiffin/meal prep plans that are healthy and delivered to the doorstep of our customers. Customers would be able to select from a wide range of meal plans and subscribe to them. Food service vendors can advertise their meal plans that are composed of multiple containerized and portioned meals which are delivered on a weekly basis to their customers. :tada::confetti_ball::balloon::balloon:

@@ -1,21 +1,23 @@
 #The workflow is triggered on merging to the production branch when head_ref starts with release/flutter-app-. The first job builds the APK and uploads it as an artifact. The second job downloads the artifact and deploys it to the Google Play Store.
 
-# name: Flutter CD
+name: Flutter CD
 
-# on:
-#   pull_request:
-#     branches: [ "production" ]
+on:
+  merge:
+    branches: [ "production" ]
 
-# jobs:
-#   build:
-#     if: startsWith(github.head_ref, 'release/flutter-app-')
+jobs:
+  build:
+    if: startsWith(github.head_ref, 'release/flutter-app-')
     
-#     runs-on: ubuntu-latest
-#     defaults:
-#       run:
-#         working-directory: mealdash_flutter_app
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: mealdash_flutter_app
 
-#     steps:
+    steps:
+      - name: Flutter CD pipeline started
+        run: echo "Flutter CD pipeline started"
 #       - uses: actions/checkout@v2
 #       - uses: subosito/flutter-action@v1
 #         with:

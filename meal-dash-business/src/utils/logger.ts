@@ -4,26 +4,6 @@ import winston from 'winston';
 import winstonDaily from 'winston-daily-rotate-file';
 import { LOG_DIR } from '@config';
 
-// ! I GET THIS ERROR WHEN USING LOG_DIR
-/** 
-node: internal / validators: 121
-throw new ERR_INVALID_ARG_TYPE(name, 'string', value);
-    ^
-
-  TypeError[ERR_INVALID_ARG_TYPE]: The "path" argument must be of type string.Received undefined
-    at new NodeError(node: internal / errors: 387: 5)
-    at validateString(node: internal / validators: 121: 11)
-    at join(node: path: 429: 7)
-    at Object.<anonymous>(C: \Users\sduza\Desktop\MealDashProject\meal - dash\meal - dash - business\dist\utils\logger.js: 25: 31)
-    at Module._compile(node: internal / modules / cjs / loader: 1126: 14)
-    at Object.Module._extensions..js(node: internal / modules / cjs / loader: 1180: 10)
-    at Module.load(node: internal / modules / cjs / loader: 1004: 32)
-    at Function.Module._load(node: internal / modules / cjs / loader: 839: 12)
-    at Module.require(node: internal / modules / cjs / loader: 1028: 19)
-    at require(node: internal / modules / cjs / helpers: 102: 18) {
-  code: 'ERR_INVALID_ARG_TYPE'
-}
-*/
 
 // logs dir
 // const logDir: string = join(__dirname, LOG_DIR);

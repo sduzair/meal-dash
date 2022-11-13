@@ -6,6 +6,7 @@ import 'package:mealdash_app/features/authentication/views/signup/signup_screen.
 import 'package:mealdash_app/features/authentication/views/signup/signup_screen2.dart';
 import 'package:mealdash_app/features/authentication/views/welcome/welcome_screen.dart';
 import 'package:mealdash_app/features/mealplans/views/mealplans_screen.dart';
+import 'package:mealdash_app/features/meals/repository/meal_service.dart';
 import 'package:mealdash_app/features/meals/view_models/meal_view_model.dart';
 import 'package:mealdash_app/features/home/views/home_scaffold.dart';
 import 'package:mealdash_app/features/meals/views/meals_screen.dart';
@@ -13,6 +14,7 @@ import 'package:mealdash_app/features/meals/views/add/meals_add_screen.dart';
 import 'package:mealdash_app/features/meals/views/details/meals_details_screen.dart';
 import 'package:mealdash_app/features/meals/views/edit/meals_edit_screen.dart';
 import 'package:mealdash_app/features/orders/views/orders_screen.dart';
+import 'package:mealdash_app/main.dart';
 import 'package:mealdash_app/utils/constants.dart' as constants;
 import 'package:provider/provider.dart';
 
@@ -25,7 +27,7 @@ class MyRouter {
   MyRouter(this.userAuthViewModel);
 
   late final router = GoRouter(
-    navigatorKey: _rootNavigatorKey,
+    // navigatorKey: _rootNavigatorKey,
     refreshListenable: userAuthViewModel,
     debugLogDiagnostics: true,
     restorationScopeId: 'sadfasf',
@@ -113,7 +115,9 @@ class MyRouter {
                 child: MultiProvider(
                   providers: [
                     ChangeNotifierProvider<MealAddViewModel>(
-                      create: (_) => MealAddViewModel(),
+                      create: (_) => MealAddViewModel(
+                        mealService: getIt.get<MealService>(),
+                      ),
                     ),
                   ],
                   child: child,
@@ -143,7 +147,8 @@ class MyRouter {
                       builder: (context, state) => MultiProvider(
                         providers: [
                           ChangeNotifierProvider(
-                              create: (context) => IngredientsProviderEdit())
+                            create: (context) => IngredientsProviderEdit(),
+                          )
                         ],
                         child: MealsEditScreen(
                           mealId: state.params['id'] as String,
@@ -167,7 +172,7 @@ class MyRouter {
           ),
         ],
         builder: (context, state, child) => HomeScaffoldWithBottomNav(
-          key: _shellNavigatorKey,
+          // key: _shellNavigatorKey,
           child: child,
         ),
         pageBuilder: (context, state, child) => NoTransitionPage<void>(
@@ -188,6 +193,8 @@ class MyRouter {
           !(state.subloc ==
               state.namedLocation(constants.signupStep2RouteName)) &&
           !(state.subloc == state.namedLocation(constants.welcomeRouteName))) {
+        print('redirecting to welcome screen as user is not logged in');
+        print(state.subloc);
         return state.namedLocation(constants.welcomeRouteName);
       } else {
         return null;

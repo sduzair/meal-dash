@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'meal_model.dart';
+part of 'meal_dto.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-MealModel _$MealModelFromJson(Map<String, dynamic> json) => MealModel(
+MealDTO _$MealDTOFromJson(Map<String, dynamic> json) => MealDTO(
       mealTitle: json['mealTitle'] as String?,
       mealShortDescription: json['mealShortDescription'] as String?,
       mealLongDescription: json['mealLongDescription'] as String?,
@@ -18,7 +18,7 @@ MealModel _$MealModelFromJson(Map<String, dynamic> json) => MealModel(
       mealQuantityUnit: json['mealQuantityUnit'] as String,
     );
 
-Map<String, dynamic> _$MealModelToJson(MealModel instance) => <String, dynamic>{
+Map<String, dynamic> _$MealDTOToJson(MealDTO instance) => <String, dynamic>{
       'mealTitle': instance.mealTitle,
       'mealShortDescription': instance.mealShortDescription,
       'mealLongDescription': instance.mealLongDescription,
@@ -28,8 +28,8 @@ Map<String, dynamic> _$MealModelToJson(MealModel instance) => <String, dynamic>{
       'mealQuantityUnit': instance.mealQuantityUnit,
     };
 
-MealModelWithId _$MealModelWithIdFromJson(Map<String, dynamic> json) =>
-    MealModelWithId(
+MealDTOWithId _$MealDTOWithIdFromJson(Map<String, dynamic> json) =>
+    MealDTOWithId(
       mealId: json['mealId'] as String,
       mealTitle: json['mealTitle'] as String?,
       mealShortDescription: json['mealShortDescription'] as String?,
@@ -42,7 +42,7 @@ MealModelWithId _$MealModelWithIdFromJson(Map<String, dynamic> json) =>
       mealQuantityUnit: json['mealQuantityUnit'] as String,
     );
 
-Map<String, dynamic> _$MealModelWithIdToJson(MealModelWithId instance) =>
+Map<String, dynamic> _$MealDTOWithIdToJson(MealDTOWithId instance) =>
     <String, dynamic>{
       'mealTitle': instance.mealTitle,
       'mealShortDescription': instance.mealShortDescription,

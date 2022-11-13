@@ -2,11 +2,12 @@
 
 const bool isTestingMealAdd = false;
 const bool isTestingSignUp = false;
-const bool isTestingLogin = false;
+const bool isTestingLogin = true;
 const bool isTestUserLoggedIn = true;
+const bool clearCookies = true;
 
 // KEY CONSTANTS
-const String loggedInKey = 'LoggedIn';
+const String loggedinKey = 'LoggedIn';
 
 // ROUTE CONSTANTS
 const String rootRouteName = 'root';

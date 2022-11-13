@@ -3,9 +3,11 @@ import 'dart:io';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mealdash_app/features/meals/models/meal_model.dart';
+import 'package:mealdash_app/components/custombuttons.dart';
+import 'package:mealdash_app/features/meals/dtos/meal_dto.dart';
 import 'package:mealdash_app/features/meals/view_models/meal_view_model.dart';
 import 'package:mealdash_app/utils/constants.dart' as constants;
 import 'package:provider/provider.dart';
@@ -34,6 +36,10 @@ class _MealAddScreenState extends State<MealAddScreen> {
         data: theme.copyWith(
           inputDecorationTheme: theme.inputDecorationTheme.copyWith(
             border: const OutlineInputBorder(),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.blue[600]!),
+            ),
+            // floatingLabelStyle: const TextStyle(color: Colors.blue),
             isDense: true,
           ),
         ),
@@ -64,10 +70,10 @@ class _MealAddScreenState extends State<MealAddScreen> {
                       return null;
                     },
                     onSaved: (newValue) {
-                      context.read<MealAddViewModel>().meal.mealTitle =
+                      context.read<MealAddViewModel>().mealDTO.mealTitle =
                           newValue!;
                       print(
-                        'mealTitle: ${context.read<MealAddViewModel>().meal.mealTitle}',
+                        'mealTitle: ${context.read<MealAddViewModel>().mealDTO.mealTitle}',
                       );
                     },
                   ),
@@ -90,7 +96,7 @@ class _MealAddScreenState extends State<MealAddScreen> {
                     },
                     onSaved: (newValue) => context
                         .read<MealAddViewModel>()
-                        .meal
+                        .mealDTO
                         .mealShortDescription = newValue!,
                   ),
                   const SizedBox(height: constants.defaultMargin),
@@ -112,7 +118,7 @@ class _MealAddScreenState extends State<MealAddScreen> {
                     },
                     onSaved: (newValue) => context
                         .read<MealAddViewModel>()
-                        .meal
+                        .mealDTO
                         .mealLongDescription = newValue!,
                   ),
                   // const SizedBox(height: constants.defaultMargin),
@@ -145,7 +151,7 @@ class _MealAddScreenState extends State<MealAddScreen> {
                   // input for meal weight in ounces or milliliters (double) (dropdown) (ounces by default)
                   Row(
                     children: [
-                      Expanded(
+                      Flexible(
                         flex: 4,
                         child: TextFormField(
                           decoration: const InputDecoration(
@@ -165,14 +171,12 @@ class _MealAddScreenState extends State<MealAddScreen> {
                           },
                           onSaved: (newValue) => context
                               .read<MealAddViewModel>()
-                              .meal
+                              .mealDTO
                               .mealQuantity = int.parse(newValue!),
                         ),
                       ),
                       const SizedBox(width: constants.defaultMargin),
-                      const Expanded(
-                        child: MealQuantityUnitDropDown(),
-                      ),
+                      const Flexible(child: MealQuantityUnitDropDown()),
                     ],
                   ),
                   const SizedBox(height: constants.defaultMargin),
@@ -189,7 +193,7 @@ class _MealAddScreenState extends State<MealAddScreen> {
                     ],
                     onSaved: (newValue) {
                       if (newValue != null && newValue.isNotEmpty) {
-                        context.read<MealAddViewModel>().meal.mealCalories =
+                        context.read<MealAddViewModel>().mealDTO.mealCalories =
                             int.parse(newValue);
                       }
                     },
@@ -252,8 +256,12 @@ class MealQuantityUnitDropDown extends StatelessWidget {
     return DropdownButtonFormField<String>(
       decoration: const InputDecoration(
         labelText: 'Unit *',
+        isDense: true,
+        floatingLabelStyle: TextStyle(
+          decorationColor: Colors.black,
+        ),
       ),
-      value: context.read<MealAddViewModel>().meal.mealQuantityUnit,
+      value: context.read<MealAddViewModel>().mealDTO.mealQuantityUnit,
       items: MealQuantityUnit.values
           .map(
             (MealQuantityUnit unit) => DropdownMenuItem<String>(
@@ -263,9 +271,9 @@ class MealQuantityUnitDropDown extends StatelessWidget {
           )
           .toList(),
       onChanged: (String? newValue) =>
-          context.read<MealAddViewModel>().meal.mealQuantityUnit = newValue!,
+          context.read<MealAddViewModel>().mealDTO.mealQuantityUnit = newValue!,
       onSaved: (newValue) =>
-          context.read<MealAddViewModel>().meal.mealQuantityUnit = newValue!,
+          context.read<MealAddViewModel>().mealDTO.mealQuantityUnit = newValue!,
     );
   }
 }
@@ -289,76 +297,84 @@ class IngredientsChipsTextField extends StatelessWidget {
                 ? 'Please add at least one ingredient'
                 : null,
       ),
-      onTagChanged: (newValue) =>
-          context.read<IngredientsProviderAdd>().addIngredient(newValue),
+      onTagChanged: (newValue) {
+        context.read<IngredientsProviderAdd>().addIngredient(newValue);
+        // context.read<IngredientsProviderAdd>().isAddingIngredients = true;
+      },
       tagBuilder: (context, index) {
         print('IngredientsChipsTextField TagBuilder build');
-        return Chip(
-          // labelPaddin: const EdgeInsets.only(left: 8.0),
-          label: Text(
-            context.read<IngredientsProviderAdd>().ingredients[index],
-            textScaleFactor: 1.1,
+        return Padding(
+          padding: const EdgeInsets.symmetric(
+            vertical: constants.defaultPaddingSmall,
           ),
-          deleteIcon: const Icon(
-            Icons.close,
-            // size: 18,
-            size: constants.defaultIconSizeSmall,
+          child: Chip(
+            // labelPaddin: const EdgeInsets.only(left: 8.0),
+            backgroundColor: Theme.of(context).chipTheme.selectedColor,
+            label: Text(
+              context.read<IngredientsProviderAdd>().ingredients[index],
+              textScaleFactor: 1.1,
+              // style: const TextStyle(color: Colors.white),
+            ),
+            deleteIcon: const Icon(
+              Icons.close,
+              // size: 18,
+              size: constants.defaultIconSizeSmall,
+            ),
+            deleteButtonTooltipMessage:
+                'Remove ${context.read<IngredientsProviderAdd>().ingredients[index]}',
+            onDeleted: () => context
+                .read<IngredientsProviderAdd>()
+                .removeIngredient(index: index),
+            // setState(() => widget.meal.mealIngredients.removeAt(index)),
           ),
-          deleteButtonTooltipMessage:
-              'Remove ${context.read<IngredientsProviderAdd>().ingredients[index]}',
-          onDeleted: () => context
-              .read<IngredientsProviderAdd>()
-              .removeIngredient(index: index),
-          // setState(() => widget.meal.mealIngredients.removeAt(index)),
         );
       },
     );
   }
 }
 
-class AddMealSubmitButton extends StatefulWidget {
+class AddMealSubmitButton extends StatelessWidget {
   const AddMealSubmitButton({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<AddMealSubmitButton> createState() => _AddMealSubmitButtonState();
-}
-
-class _AddMealSubmitButtonState extends State<AddMealSubmitButton> {
-  @override
   Widget build(BuildContext context) {
     print('AddMealSubmitButton build');
-    final mealVMWatch = context.watch<MealAddViewModel>();
-    final ingredientsProviderWatch = context.watch<IngredientsProviderAdd>();
+    final mealAddVMWatch = context.watch<MealAddViewModel>();
+    // WHEN THE FORM IS SUBMITTED SUCCESSFULLY GO BACK TO MEALS NAVIGATION BAR PAGE AND RESET THE STATE OF THE FORM IN THE VIEW MODEL
+    if (mealAddVMWatch.isAddingMealSuccess) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        GoRouter.of(context).goNamed(constants.HomeNavTabRouteNames.meals.name);
+      });
+      context.read<MealAddViewModel>().resetAddMealStateAndNotifyListeners();
+    }
     final formKey = Form.of(context);
-    return ElevatedButton(
+    return CustomElevatedButton(
       child: const AddMealSubmitButtonText(),
       onPressed: () {
-        print(mealVMWatch.meal.toJson());
-        if (mealVMWatch.isAddingMeal) {
+        if (context.read<MealAddViewModel>().isAddingMeal ||
+            context.read<MealAddViewModel>().isAddingMealSuccess) {
           return;
         }
+        // IF TESTING MEAL ADD WITH DUMMY DATA AND NO IMAGE THEM SKIP VALIDATION
+        if (constants.isTestingMealAdd) {
+          context.read<MealAddViewModel>().addMeal();
+          return;
+        }
+        // USER IS DONE ADDING INGREDIENTS
+        context.read<IngredientsProviderAdd>().isAddingIngredients = false;
 
-        ingredientsProviderWatch.isAddingIngredients = false;
-
-        if (!constants.isTestingMealAdd &&
-            formKey!.validate() &&
-            ingredientsProviderWatch.ingredients.isNotEmpty) {
+        if (formKey!.validate() &&
+            context.read<IngredientsProviderAdd>().ingredients.isNotEmpty) {
           print(
-            'formKey.validate() && ingredientsProviderWatch.ingredients.isNotEmpty',
+            'formKey.validate() && context.read<IngredientsProviderAdd>().ingredients.isNotEmpty',
           );
-          context.read<MealAddViewModel>().meal.mealIngredients =
-              ingredientsProviderWatch.ingredients;
           formKey.save();
+          context.read<MealAddViewModel>().mealDTO.mealIngredients =
+              context.read<IngredientsProviderAdd>().ingredients;
+          context.read<MealAddViewModel>().addMeal();
         }
-        context.read<MealAddViewModel>().addMeal();
-        if (mealVMWatch.isAddingMealSuccess) {
-          Navigator.of(context).pop();
-        }
-        // ScaffoldMessenger.of(context).showSnackBar(
-        //   const SnackBar(content: Text('Processing Data')),
-        // );
       },
     );
   }
@@ -372,42 +388,39 @@ class AddMealSubmitButtonText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print('AddMealSubmitButtonText build');
-    return Consumer<MealAddViewModel>(
-      builder: (context, meal, child) {
-        if (meal.isAddingMeal) {
-          return const CircularProgressIndicator();
-        } else if (meal.isAddingMealSuccess) {
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Text('Added Meal'),
-              SizedBox(width: 10),
-              Icon(Icons.check),
-            ],
-          );
-        } else if (meal.isAddingMealError) {
-          // return error message with icon button to retry adding meal
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Text('Error Adding Meal'),
-              SizedBox(width: 10),
-              Icon(Icons.refresh),
-            ],
-          );
-        } else {
-          // return add meal text with icon button to add meal
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Text('Add Meal'),
-              SizedBox(width: 10),
-              Icon(Icons.add),
-            ],
-          );
-        }
-      },
-    );
+    final mealAddVM = context.watch<MealAddViewModel>();
+    if (mealAddVM.isAddingMeal) {
+      return const CircularProgressIndicator();
+    } else if (mealAddVM.isAddingMealSuccess) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const [
+          Text('Added Meal'),
+          SizedBox(width: 10),
+          Icon(Icons.check),
+        ],
+      );
+    } else if (mealAddVM.isAddingMealError) {
+      // return error message with icon button to retry adding meal
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const [
+          Text('Error Adding Meal'),
+          SizedBox(width: 10),
+          Icon(Icons.refresh),
+        ],
+      );
+    } else {
+      // return add meal text with icon button to add meal
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const [
+          Text('Add Meal'),
+          SizedBox(width: 10),
+          Icon(Icons.add),
+        ],
+      );
+    }
   }
 }
 

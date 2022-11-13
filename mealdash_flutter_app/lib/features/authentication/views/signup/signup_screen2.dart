@@ -33,7 +33,7 @@ class SignUpScreen2State extends State<SignUpScreen2> {
               onPressed: () {
                 context
                     .read<UserAuthViewModel>()
-                    .resetSignUpAndNotifyListeners();
+                    .resetSignUpStateAndNotifyListeners();
                 context.goNamed(constants.signupRouteName);
                 // GoRouter.of(context).pop();
               },
@@ -265,6 +265,8 @@ class SubmitButton extends StatelessWidget {
       SchedulerBinding.instance.addPostFrameCallback((_) {
         GoRouter.of(context).goNamed(constants.loginRouteName);
       });
+      // * THIS IS DONE AFTER SIGNUP SUCCESS SNACKBAR IS SHOWN ON LOGIN PAGE
+      // context.read<UserAuthViewModel>().resetSignUpStateAndNotifyListeners();
     }
     return Hero(
       tag: "signup_btn",
@@ -280,7 +282,7 @@ class SubmitButton extends StatelessWidget {
               context.read<UserAuthViewModel>().isSigningUpSuccess) {
             return;
           }
-          // IF TESTING SIGNUP SIGNUP WITH DUMMY DATA AND SKIP VALIDATION
+          // IF TESTING SIGNUP SIGNUP WITH DUMMY DATA THEN SKIP VALIDATION
           if (constants.isTestingSignUp) {
             context.read<UserAuthViewModel>().signUp();
             return;
@@ -328,7 +330,7 @@ class TextSignUpButton extends StatelessWidget {
                   ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
                   context
                       .read<UserAuthViewModel>()
-                      .resetSignUpAndNotifyListeners();
+                      .resetSignUpStateAndNotifyListeners();
                   GoRouter.of(context).goNamed(constants.loginRouteName);
                 },
                 child: const Text("SIGN IN"),
@@ -338,7 +340,7 @@ class TextSignUpButton extends StatelessWidget {
                   ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
                   context
                       .read<UserAuthViewModel>()
-                      .resetSignUpAndNotifyListeners();
+                      .resetSignUpStateAndNotifyListeners();
                 },
                 child: const Text("CLOSE"),
               ),

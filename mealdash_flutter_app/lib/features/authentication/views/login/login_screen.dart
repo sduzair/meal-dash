@@ -26,7 +26,9 @@ class MobileLoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (context.read<UserAuthViewModel>().isShowSignupSuccessPopup) {
+    // * RESETTING STATE OF PREVIOUS LOGIN ATTEMPT, THIS COULD NOT BE DONE ON MEALS HOME PAGE OR LOGOUT BUTTON CLICK
+    // context.read<UserAuthViewModel>().resetLoginStateAndNotifyListeners();
+    if (context.read<UserAuthViewModel>().showSignupSuccessPopup) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         ScaffoldMessenger.of(context).hideCurrentSnackBar();
         ScaffoldMessenger.of(context).showSnackBar(
@@ -36,6 +38,20 @@ class MobileLoginScreen extends StatelessWidget {
             ),
           ),
         );
+      });
+      context.read<UserAuthViewModel>().resetSignUpStateAndNotifyListeners();
+    }
+    if (context.read<UserAuthViewModel>().showLoggingOutSuccessPopup) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Logged out successfully!',
+            ),
+          ),
+        );
+        context.read<UserAuthViewModel>().resetLogoutStateAndNotifyListeners();
       });
     }
     return Scaffold(
@@ -48,7 +64,14 @@ class MobileLoginScreen extends StatelessWidget {
             icon: const Icon(Icons.arrow_back_ios),
             color: Colors.black,
             onPressed: () {
-              context.read<UserAuthViewModel>().resetLoginAndNotifyListeners();
+              // // AFTER SUCCESSFUL SIGNUP
+              // context
+              //     .read<UserAuthViewModel>()
+              //     .resetLoginStateAndNotifyListeners();
+              // // AFTER SUCCESSFUL LOGOUT
+              // context
+              //     .read<UserAuthViewModel>()
+              //     .resetLogoutStateAndNotifyListeners();
               context.goNamed(constants.welcomeRouteName);
             },
           ),

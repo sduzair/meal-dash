@@ -1,7 +1,7 @@
 name: Node.js
 
 on:
-  merge:
+  push:
     branches: [ "production" ]
 
 jobs:

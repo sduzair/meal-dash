@@ -26,7 +26,7 @@ class _LoginFormState extends State<LoginForm> {
         children: [
           TextFormField(
             onSaved: (email) {
-              context.read<UserAuthViewModel>().userLoginModel.email = email!;
+              context.read<UserAuthViewModel>().userLoginDTO.email = email!;
             },
             validator: (value) {
               if (value!.isEmpty) {
@@ -50,7 +50,7 @@ class _LoginFormState extends State<LoginForm> {
                 const EdgeInsets.symmetric(vertical: constants.defaultPadding),
             child: TextFormField(
               onSaved: (newValue) {
-                context.read<UserAuthViewModel>().userLoginModel.password =
+                context.read<UserAuthViewModel>().userLoginDTO.password =
                     newValue!;
               },
               validator: (value) {
@@ -156,7 +156,7 @@ class TextUserLoginButton extends StatelessWidget {
                   ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
                   context
                       .read<UserAuthViewModel>()
-                      .resetLoginAndNotifyListeners();
+                      .resetLoginStateAndNotifyListeners();
                 },
                 child: const Text("OK"),
               )
@@ -167,6 +167,7 @@ class TextUserLoginButton extends StatelessWidget {
       return const Text("LOGIN");
     } else if (authVMWatch.isLoggingInSuccess) {
       SchedulerBinding.instance.addPostFrameCallback((_) {
+        // * RESETTING LOGIN STATE ON MEALS HOME PAGE WITHOUT NOTIFIYING LISTENERS AS ROUTING IS GETTING INTERFERED WHEN NOTIFIYING LISTENERS
         GoRouter.of(context).goNamed(constants.HomeNavTabRouteNames.meals.name);
       });
 

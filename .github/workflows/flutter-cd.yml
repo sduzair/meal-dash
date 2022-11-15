@@ -3,7 +3,7 @@
 name: Flutter CD
 
 on:
-  merge:
+  push:
     branches: [ "production" ]
 
 jobs:

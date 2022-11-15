@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mealdash_app/features/meals/models/meal_model.dart';
+import 'package:mealdash_app/features/meals/dtos/meal_dto.dart';
 import 'package:mealdash_app/features/meals/repository/meal_service.dart';
 import 'package:mealdash_app/features/meals/view_models/meal_view_model.dart';
 import 'package:mealdash_app/utils/constants.dart' as constants;
@@ -39,8 +39,8 @@ class _MealsEditScreenState extends State<MealsEditScreen> {
             isDense: true,
           ),
         ),
-        child: FutureBuilder<MealModelWithId>(
-          future: MealService.getMealById(widget.mealId),
+        child: FutureBuilder<MealDTOWithId>(
+          future: context.read<MealService>().fetchMealById(widget.mealId),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return ListView(
@@ -70,10 +70,10 @@ class _MealsEditScreenState extends State<MealsEditScreen> {
                             return null;
                           },
                           onSaved: (newValue) {
-                            context.read<MealAddViewModel>().meal.mealTitle =
+                            context.read<MealAddViewModel>().mealDTO.mealTitle =
                                 newValue!;
                             print(
-                              'mealTitle: ${context.read<MealAddViewModel>().meal.mealTitle}',
+                              'mealTitle: ${context.read<MealAddViewModel>().mealDTO.mealTitle}',
                             );
                           },
                         ),
@@ -97,7 +97,7 @@ class _MealsEditScreenState extends State<MealsEditScreen> {
                           },
                           onSaved: (newValue) => context
                               .read<MealAddViewModel>()
-                              .meal
+                              .mealDTO
                               .mealShortDescription = newValue!,
                         ),
                         const SizedBox(height: constants.defaultMargin),
@@ -120,7 +120,7 @@ class _MealsEditScreenState extends State<MealsEditScreen> {
                           },
                           onSaved: (newValue) => context
                               .read<MealAddViewModel>()
-                              .meal
+                              .mealDTO
                               .mealLongDescription = newValue!,
                         ),
                         // const SizedBox(height: constants.defaultMargin),
@@ -173,7 +173,7 @@ class _MealsEditScreenState extends State<MealsEditScreen> {
                                 },
                                 onSaved: (newValue) => context
                                     .read<MealAddViewModel>()
-                                    .meal
+                                    .mealDTO
                                     .mealQuantity = int.parse(newValue!),
                               ),
                             ),
@@ -199,7 +199,7 @@ class _MealsEditScreenState extends State<MealsEditScreen> {
                             if (newValue != null && newValue.isNotEmpty) {
                               context
                                   .read<MealAddViewModel>()
-                                  .meal
+                                  .mealDTO
                                   .mealCalories = int.parse(newValue);
                             }
                           },
@@ -272,7 +272,7 @@ class MealQuantityUnitDropDown extends StatelessWidget {
       decoration: const InputDecoration(
         labelText: 'Unit *',
       ),
-      value: context.read<MealAddViewModel>().meal.mealQuantityUnit,
+      value: context.read<MealAddViewModel>().mealDTO.mealQuantityUnit,
       items: MealQuantityUnit.values
           .map(
             (MealQuantityUnit unit) => DropdownMenuItem<String>(
@@ -282,9 +282,9 @@ class MealQuantityUnitDropDown extends StatelessWidget {
           )
           .toList(),
       onChanged: (String? newValue) =>
-          context.read<MealAddViewModel>().meal.mealQuantityUnit = newValue!,
+          context.read<MealAddViewModel>().mealDTO.mealQuantityUnit = newValue!,
       onSaved: (newValue) =>
-          context.read<MealAddViewModel>().meal.mealQuantityUnit = newValue!,
+          context.read<MealAddViewModel>().mealDTO.mealQuantityUnit = newValue!,
     );
   }
 }
@@ -354,7 +354,7 @@ class _AddMealSubmitButtonState extends State<AddMealSubmitButton> {
     return ElevatedButton(
       child: const AddMealSubmitButtonText(),
       onPressed: () {
-        print(mealVMWatch.meal.toJson());
+        print(mealVMWatch.mealDTO.toJson());
         if (mealVMWatch.isAddingMeal) {
           return;
         }
@@ -367,7 +367,7 @@ class _AddMealSubmitButtonState extends State<AddMealSubmitButton> {
           print(
             'formKey.validate() && ingredientsProviderWatch.ingredients.isNotEmpty',
           );
-          context.read<MealAddViewModel>().meal.mealIngredients =
+          context.read<MealAddViewModel>().mealDTO.mealIngredients =
               ingredientsProviderWatch.ingredients;
           formKey.save();
         }

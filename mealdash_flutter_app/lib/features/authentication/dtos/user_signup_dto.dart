@@ -1,10 +1,10 @@
 // ignore: depend_on_referenced_packages
 import 'package:json_annotation/json_annotation.dart';
 
-part 'user_signup_model.g.dart';
+part 'user_signup_dto.g.dart';
 
 @JsonSerializable()
-class UserSignUpModel {
+class UserSignUpDTO {
   @JsonKey(name: 'user_login')
   String? username;
   @JsonKey(name: 'user_email')
@@ -28,7 +28,7 @@ class UserSignUpModel {
   @JsonKey(name: 'postal')
   String? postalCode;
 
-  UserSignUpModel({
+  UserSignUpDTO({
     required this.email,
     required this.password,
     // required this.firstName,
@@ -41,7 +41,7 @@ class UserSignUpModel {
     required this.postalCode,
   });
 
-  UserSignUpModel.initializeDummyVals()
+  UserSignUpDTO.initializeDummyVals()
       : username = 'uzDasdfsdsfgsdddddddddfgFGHr',
         email = 'captasdf65sdfgsdfg4ddddddddddddsh1@gmail.com',
         password = 'asdf',
@@ -54,10 +54,10 @@ class UserSignUpModel {
         state = 'asdf',
         postalCode = 'A1A-1A1';
 
-  UserSignUpModel.empty();
+  UserSignUpDTO.empty();
 
-  factory UserSignUpModel.fromJson(Map<String, dynamic> json) =>
-      _$UserSignUpModelFromJson(json);
+  factory UserSignUpDTO.fromJson(Map<String, dynamic> json) =>
+      _$UserSignUpDTOFromJson(json);
 
-  Map<String, dynamic> toJson() => _$UserSignUpModelToJson(this);
+  Map<String, dynamic> toJson() => _$UserSignUpDTOToJson(this);
 }

@@ -1,17 +1,59 @@
+import 'package:cookie_jar/cookie_jar.dart';
+import 'package:mealdash_app/features/authentication/view_models/auth_view_model.dart';
+import 'package:mealdash_app/main.dart';
 import 'package:mealdash_app/utils/constants.dart' as constants;
 import 'package:dio/dio.dart';
+import 'package:dio_cookie_manager/dio_cookie_manager.dart';
+import 'package:path_provider/path_provider.dart';
 
 class DioClient {
-// dio instance
-  final Dio dio;
+  static final DioClient _singleton = DioClient._internal();
 
-  DioClient({required this.dio}) {
-    dio
+  factory DioClient() {
+    return _singleton;
+  }
+
+  DioClient._internal();
+
+  late final Dio dio;
+
+  late final CookieJar cookieJar;
+
+  Future<void> init() async {
+    final appDocDir = await getApplicationDocumentsDirectory();
+    cookieJar =
+        PersistCookieJar(storage: FileStorage('${appDocDir.path}/.cookies/'));
+    // TESTING ENVIRONMENT
+    constants.clearCookies ? cookieJar.deleteAll() : null;
+    // final cookieJar = CookieJar();
+    dio = Dio()
+      ..interceptors.add(CookieManager(cookieJar))
+      ..interceptors.add(
+        LogInterceptor(
+          responseBody: true,
+          requestBody: true,
+          requestHeader: true,
+          responseHeader: true,
+        ),
+      )
+      ..interceptors.add(
+        // interceptor to intercept 401 errors and redirect to login page
+        InterceptorsWrapper(
+          onError: (DioError e, handler) {
+            if (e.response?.statusCode == 401) {
+              // redirect to login page
+              print('401 error intercepted');
+              // getit UserauthViewModel and logout user shared prefs
+              getIt<UserAuthViewModel>().logoutUnauthorized();
+            }
+            return handler.next(e);
+          },
+        ),
+      )
       ..options.baseUrl = Endpoints.baseUrl
       ..options.connectTimeout = Endpoints.connectionTimeout
       ..options.receiveTimeout = Endpoints.receiveTimeout
-      ..options.responseType = ResponseType.json
-      ..interceptors.add(LogInterceptor(responseBody: true));
+      ..options.responseType = ResponseType.json;
   }
 }
 

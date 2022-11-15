@@ -1,19 +1,25 @@
+import 'package:dio/dio.dart';
+import 'package:mealdash_app/service_locator.dart';
 import 'package:mealdash_app/utils/constants.dart' as constants;
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:mealdash_app/features/meals/models/meal_model.dart';
+import 'package:mealdash_app/features/meals/dtos/meal_dto.dart';
 import 'package:mealdash_app/features/meals/repository/meal_service.dart';
 
 class MealAddViewModel with ChangeNotifier, DiagnosticableTreeMixin {
+  final MealService mealService;
+
+  MealAddViewModel({required this.mealService})
+      : _mealDTO = constants.isTestingMealAdd
+            ? MealDTO.initializeDummyVals()
+            : MealDTO.empty();
+
   File? image;
 
-  MealAddViewModel()
-      : meal = constants.isTestingMealAdd
-            ? MealModel.initializeDummyVals()
-            : MealModel.empty();
+  final MealDTO _mealDTO;
 
-  MealModel meal;
+  MealDTO get mealDTO => _mealDTO;
 
   bool _isAddingMeal = false;
   bool get isAddingMeal => _isAddingMeal;
@@ -21,31 +27,41 @@ class MealAddViewModel with ChangeNotifier, DiagnosticableTreeMixin {
   bool _isAddingMealError = false;
   bool get isAddingMealError => _isAddingMealError;
 
+  String? _addMealErrorMessage;
+  String? get addMealErrorMessage => _addMealErrorMessage;
+
   bool _isAddingMealSuccess = false;
   bool get isAddingMealSuccess => _isAddingMealSuccess;
 
+  bool _showAddingMealSuccessPopup = false;
+  bool get showAddingMealSuccessPopup => _showAddingMealSuccessPopup;
+
   Future<void> addMeal() async {
     print('addMeal() called');
-    print(meal.toJson());
+    print(_mealDTO.toJson());
+    resetAddMealStateAndNotifyListeners();
     _isAddingMeal = true;
-    _isAddingMealError = false;
     notifyListeners();
     try {
-      final response = await MealService.addMeal(meal);
-      if (response.statusCode == 201) {
-        _isAddingMealSuccess = true;
-        return;
-      } else {
-        _isAddingMealError = true;
-        return;
-      }
-    } catch (e) {
+      await mealService.addMeal(_mealDTO);
+      _isAddingMealSuccess = true;
+      _showAddingMealSuccessPopup = true;
+    } on DioError catch (e) {
       _isAddingMealError = true;
-      return;
+      _addMealErrorMessage = DioExceptions.fromDioError(e).message;
     } finally {
       _isAddingMeal = false;
       notifyListeners();
     }
+  }
+
+  resetAddMealStateAndNotifyListeners() {
+    _isAddingMeal = false;
+    _isAddingMealError = false;
+    _isAddingMealSuccess = false;
+    _addMealErrorMessage = null;
+    _showAddingMealSuccessPopup = false;
+    notifyListeners();
   }
 
   @override

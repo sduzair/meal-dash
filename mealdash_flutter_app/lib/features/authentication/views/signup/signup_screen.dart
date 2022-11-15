@@ -25,6 +25,7 @@ class _SignupScreenState extends State<SignupScreen> {
         _isMatchPassword = true;
       } else {
         _isMatchPassword = false;
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             margin: const EdgeInsets.all(70),

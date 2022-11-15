@@ -1,6 +1,7 @@
 import 'package:mealdash_app/features/authentication/view_models/auth_view_model.dart';
-import 'package:mealdash_app/features/meals/models/meal_model.dart';
+import 'package:mealdash_app/features/meals/dtos/meal_dto.dart';
 import 'package:mealdash_app/features/meals/repository/meal_service.dart';
+import 'package:mealdash_app/main.dart';
 import 'package:mealdash_app/utils/constants.dart' as constants;
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
@@ -35,17 +36,12 @@ class MealsScreen extends StatelessWidget {
   }
 }
 
-class MealsFutureBuilder extends StatefulWidget {
+class MealsFutureBuilder extends StatelessWidget {
   const MealsFutureBuilder({Key? key}) : super(key: key);
 
   @override
-  State<MealsFutureBuilder> createState() => _MealsFutureBuilderState();
-}
-
-class _MealsFutureBuilderState extends State<MealsFutureBuilder> {
-  @override
   Widget build(BuildContext context) {
-    if (context.read<UserAuthViewModel>().isShowLoggingInSuccessPopup) {
+    if (context.watch<UserAuthViewModel>().showLoggingInSuccessPopup) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         ScaffoldMessenger.of(context).hideCurrentSnackBar();
         ScaffoldMessenger.of(context).showSnackBar(
@@ -54,9 +50,13 @@ class _MealsFutureBuilderState extends State<MealsFutureBuilder> {
           ),
         );
       });
+      // * CANNOT RESET STATE HERE AS IT IS INTERFERING WITH ROUTING WHICH IS ALSO USING USERAUTHVIEWMODEL
+      context.read<UserAuthViewModel>().resetLoginStateAndDontNotifyListeners();
     }
-    return FutureBuilder<List<MealModelWithId>>(
-      future: MealService.getMeals(),
+    // TODO: SHOW MEAL ADDED SUCCESSFULLY SNACKBAR
+    return FutureBuilder<List<MealDTOWithId>?>(
+      // future: MealService.getMeals(),
+      future: getIt<MealService>().fetchMeals(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return ListView.builder(

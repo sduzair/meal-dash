@@ -2,10 +2,10 @@
 
 import 'package:json_annotation/json_annotation.dart';
 
-part 'meal_model.g.dart';
+part 'meal_dto.g.dart';
 
 @JsonSerializable()
-class MealModel {
+class MealDTO {
   String? mealTitle;
   String? mealShortDescription;
   String? mealLongDescription;
@@ -14,7 +14,7 @@ class MealModel {
   int? mealQuantity;
   String mealQuantityUnit = MealQuantityUnit.oz.name;
 
-  MealModel({
+  MealDTO({
     required this.mealTitle,
     required this.mealShortDescription,
     required this.mealLongDescription,
@@ -24,7 +24,7 @@ class MealModel {
     required this.mealQuantityUnit,
   });
 
-  MealModel.initializeDummyVals()
+  MealDTO.initializeDummyVals()
       : mealTitle = 'test',
         mealShortDescription = 'test',
         mealLongDescription = 'test',
@@ -32,23 +32,23 @@ class MealModel {
         mealCalories = 765,
         mealQuantity = 10;
 
-  MealModel.empty();
+  MealDTO.empty();
 
-  factory MealModel.fromJson(Map<String, dynamic> json) =>
-      _$MealModelFromJson(json);
+  factory MealDTO.fromJson(Map<String, dynamic> json) =>
+      _$MealDTOFromJson(json);
 
   get mealImage => null;
 
-  Map<String, dynamic> toJson() => _$MealModelToJson(this);
+  Map<String, dynamic> toJson() => _$MealDTOToJson(this);
 }
 
 // part 'meal_model_with_id.g.dart';
 
 @JsonSerializable()
-class MealModelWithId extends MealModel {
+class MealDTOWithId extends MealDTO {
   String mealId;
 
-  MealModelWithId({
+  MealDTOWithId({
     required this.mealId,
     required super.mealTitle,
     required super.mealShortDescription,
@@ -59,11 +59,11 @@ class MealModelWithId extends MealModel {
     required super.mealQuantityUnit,
   });
 
-  factory MealModelWithId.fromJson(Map<String, dynamic> json) =>
-      _$MealModelWithIdFromJson(json);
+  factory MealDTOWithId.fromJson(Map<String, dynamic> json) =>
+      _$MealDTOWithIdFromJson(json);
 
   @override
-  Map<String, dynamic> toJson() => _$MealModelWithIdToJson(this);
+  Map<String, dynamic> toJson() => _$MealDTOWithIdToJson(this);
 }
 
 enum MealQuantityUnit { oz, ml }

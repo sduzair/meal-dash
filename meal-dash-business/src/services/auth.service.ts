@@ -24,7 +24,7 @@ class AuthService extends Repository<UserEntity> {
 
     const hashedPassword = await hash(userData.user_password, 10);
     const createUserData: User = await UserEntity.create({ ...userData, user_password: hashedPassword }).save();
-    MailService.getInstance().sendMail(createUserData.user_email);
+    MailService.getInstance().sendMail(createUserData);
     return createUserData;
   }
 

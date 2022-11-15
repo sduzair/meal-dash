@@ -4,7 +4,6 @@ import { SMTP_HOST, SMTP_PORT, SMTP_USERNAME, SMTP_PASSWORD } from '@config';
 import handlebars from 'handlebars';
 import { User } from '@/interfaces/users.interface';
 import path from 'path';
-import templateEmail from '@/templates/registration.handlebars';
 
 
 export default class MailService {

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { compare, hash } from 'bcrypt';
 import { sign } from 'jsonwebtoken';
 import { EntityRepository, Repository, Transaction } from 'typeorm';
@@ -11,19 +12,24 @@ import { LoginUserDto } from '@/dtos/loginuser.dto';
 import { VenderDto } from '@/dtos/vender.dto';
 import { CreateUserDto } from '@/dtos/createusers.dto';
 import MailService from '@/helper/email.helper';
-
+import { GOOGLE_API_KEY } from '@config';
+import { createClient } from "@google/maps";
+const googleMapsClient = createClient({
+  key: GOOGLE_API_KEY,
+  Promise: Promise
+})
 // AuthRepository class to handle all the database operations for authentication
 @EntityRepository()
 class AuthService extends Repository<UserEntity> {
 
   public async signup(userData: CreateUserDto): Promise<User> {
     if (isEmpty(userData)) throw new HttpException(400, "userData is empty");
-
     const findUser: User = await UserEntity.findOne({ where: { user_email: userData.user_email } });
     if (findUser) throw new HttpException(409, `This email ${userData.user_email} already exists`);
 
+    const location = await this.getLatLng(userData);
     const hashedPassword = await hash(userData.user_password, 10);
-    const createUserData: User = await UserEntity.create({ ...userData, user_password: hashedPassword }).save();
+    const createUserData: User = await UserEntity.create({ ...userData, user_password: hashedPassword, ...location }).save();
     MailService.getInstance().sendMail(createUserData);
     return createUserData;
   }
@@ -61,7 +67,23 @@ class AuthService extends Repository<UserEntity> {
 
     return { expiresIn, token: sign(dataStoredInToken, secretKey, { expiresIn }) };
   }
-
+  private getLatLng = (userData: CreateUserDto): Promise<{lat:number, lng: number}> => {
+    let address: string;
+    address += isEmpty(userData.address1) ? "": userData.address1 +" ";
+    address += isEmpty(userData.address2) ? "": userData.address2 +" ";
+    address += isEmpty(userData.city) ? "": userData.city +" ";
+    address += isEmpty(userData.state) ? "": userData.state +" ";
+    address += isEmpty(userData.postal) ? "": userData.postal +" ";
+    const location = googleMapsClient.geocode({address: address})
+    .asPromise()
+    .then((response) => {
+      return response.json.results[0].geometry.location
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+    return location;
+  }
   public createCookie(tokenData: TokenData): string {
     return `Authorization=${tokenData.token}; HttpOnly; Max-Age=${tokenData.expiresIn};`;
   }

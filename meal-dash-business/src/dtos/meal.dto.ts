@@ -1,4 +1,5 @@
-import { IsBoolean, IsNumber, IsString } from 'class-validator';
+/* eslint-disable prettier/prettier */
+import { IsBoolean, IsArray, IsNumber, IsString } from 'class-validator';
 
 export class MealDto {
   @IsNumber()
@@ -13,8 +14,8 @@ export class MealDto {
   @IsString()
   public mealLongDescription: string;
 
-  @IsString()
-  public mealIngredients: string;
+  @IsArray()
+  public mealIngredients: string[];
 
   @IsNumber()
   public mealCalories: number;

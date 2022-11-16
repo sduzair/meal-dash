@@ -4,7 +4,7 @@ export interface Meal {
   mealTitle: string;
   mealShortDescription: string;
   mealLongDescription: string;
-  mealIngredients: string;
+  mealIngredients: string[] | string;
   mealCalories: number;
   mealQuantity: number;
   mealQuantityUnit: string;

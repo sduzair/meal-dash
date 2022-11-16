@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { IsNotEmpty } from 'class-validator';
 import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, Unique, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { Meal } from '@interfaces/meal.interface';
@@ -23,9 +24,9 @@ export class MealEntity extends BaseEntity implements Meal {
   @IsNotEmpty()
   mealLongDescription: string;
 
-  @Column()
+  @Column({type:"json"})
   @IsNotEmpty()
-  mealIngredients: string;
+  mealIngredients: any;
 
   @Column()
   @IsNotEmpty()

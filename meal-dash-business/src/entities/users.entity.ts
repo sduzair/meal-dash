@@ -1,5 +1,6 @@
+/* eslint-disable prettier/prettier */
 import { IsNotEmpty } from 'class-validator';
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, Unique, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, Unique, CreateDateColumn, UpdateDateColumn, Double } from 'typeorm';
 import { User } from '@interfaces/users.interface';
 
 //MealPlanEntity represents the mealplan table in the database
@@ -54,7 +55,16 @@ export class UserEntity extends BaseEntity implements User {
   @IsNotEmpty()
   postal: string;
 
-  // @Column()
-  // @UpdateDateColumn()
-  // updatedAt: Date;
+  @Column("double")
+  @IsNotEmpty()
+  lat: number;
+
+  @Column("double")
+  @IsNotEmpty()
+  lng: number;
+
+  @Column()
+  @IsNotEmpty()
+  formattedAddress: string;
+
 }

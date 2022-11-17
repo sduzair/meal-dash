@@ -67,17 +67,23 @@ class AuthService extends Repository<UserEntity> {
 
     return { expiresIn, token: sign(dataStoredInToken, secretKey, { expiresIn }) };
   }
-  private getLatLng = (userData: CreateUserDto): Promise<{lat:number, lng: number}> => {
+  private getLatLng = (userData: CreateUserDto): Promise<{lat:number, lng: number, formattedAddress: string}> => {
     let address: string;
-    address += isEmpty(userData.address1) ? "": userData.address1 +" ";
-    address += isEmpty(userData.address2) ? "": userData.address2 +" ";
-    address += isEmpty(userData.city) ? "": userData.city +" ";
-    address += isEmpty(userData.state) ? "": userData.state +" ";
-    address += isEmpty(userData.postal) ? "": userData.postal +" ";
+        address += isEmpty(userData.address1) ? "": userData.address1 +" ";
+        address += isEmpty(userData.address2) ? "": userData.address2 +" ";
+        address += isEmpty(userData.city) ? "": userData.city +" ";
+        address += isEmpty(userData.state) ? "": userData.state +" ";
+        address += isEmpty(userData.postal) ? "": userData.postal +" ";
+
     const location = googleMapsClient.geocode({address: address})
     .asPromise()
     .then((response) => {
-      return response.json.results[0].geometry.location
+      const locationData = {
+        lat: response.json.results[0].geometry.location.lat,
+        lng: response.json.results[0].geometry.location.lng,
+        formattedAddress: response.json.results[0].formatted_address
+      }
+      return locationData;
     })
     .catch((err) => {
       console.log(err);

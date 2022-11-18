@@ -1,13 +1,15 @@
 tags:
 - name: users
   description: users API
+- name: Authentication
+  description: User authentication endpoints
 
 paths:
 # [POST] sign up user
   /signup:
     post:
       tags:
-      - sigup
+      - Authentication
       summary: sign-up
       parameters:
       - name: body
@@ -29,7 +31,7 @@ paths:
   /login:
     post:
       tags:
-      - login
+      - Authentication
       summary: login-in
       parameters:
       - name: body
@@ -51,7 +53,7 @@ paths:
   /logout:
     post:
       tags:
-      - logout
+      - Authentication
       summary: logout
       security:
         - basicAuth: []
@@ -64,6 +66,50 @@ paths:
           description: 'Conflict'
         500:
           description: 'Server Error'
+  # [PUT] Update Vender Radius
+  /update-radius:
+    put:
+      tags:
+      - Authentication
+      summary: vender radius update 
+      parameters:
+      - name: body
+        in: body
+        description: user Data
+        required: true
+        schema:
+          $ref: '#/definitions/update_radius'
+      responses:
+        201:
+          description: 'Created'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+  # [PUT] Update Vender Radius
+  /verify-user:
+    put:
+      tags:
+      - Authentication
+      summary: verify user by security code
+      parameters:
+      - name: body
+        in: body
+        description: user Data
+        required: true
+        schema:
+          $ref: '#/definitions/verify_user'
+      responses:
+        201:
+          description: 'Created'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'               
 # [GET] users
   /users:
     get:
@@ -301,6 +347,8 @@ definitions:
         - user_login
         - user_email
         - user_password
+        - first_name
+        - last_name
         - phone
         - user_type
         - address1
@@ -318,6 +366,12 @@ definitions:
       user_password:
         type: string
         description: user Password
+      first_name:
+        type: string
+        description: user first name
+      last_name:
+        type: string
+        description: user last name  
       phone:
         type: string
         description: user Phone
@@ -453,7 +507,39 @@ definitions:
         format: date-time
         description: Meal item timestamp
 
+  update_radius:
+    type: object
+    required:
+        - user_id
+        - user_login
+        - vender_radius
+    properties:
+      user_id:
+        type: number
+        description: user id
+      user_login:
+        type: string
+        description: username
+      vender_radius:
+        type: number
+        description: vender radius
 
+  verify_user:
+    type: object
+    required:
+        - user_id
+        - user_login
+        - user_activation_code
+    properties:
+      user_id:
+        type: number
+        description: user id
+      user_login:
+        type: string
+        description: username
+      user_activation_code:
+        type: number
+        description: vender radius      
 schemes:
  - https
  - http

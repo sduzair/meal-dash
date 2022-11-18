@@ -2,7 +2,8 @@ import { NextFunction, Request, Response } from 'express';
 import { User } from '@interfaces/users.interface';
 import userService from '@services/users.service';
 import { CreateUserDto } from '@/dtos/createusers.dto';
-
+import { UpdateRadiusDto } from '@/dtos/radius.dto';
+import { VerifyUserDto } from '@/dtos/verifyuser.dto';
 
 // UserController class
 class UsersController {
@@ -61,8 +62,31 @@ class UsersController {
     try {
       const userId = Number(req.params.user_id);
       const deleteUserData: User = await this.userService.deleteUser(userId);
+      res.status(200).json({ data: deleteUserData, message: 'User has been deleted' });
+    } catch (error) {
+      next(error);
+    }
+  };
 
-      res.status(200).json({ data: deleteUserData, message: 'deleted' });
+  //updateVenderRadius method to update a user by id
+  public updateVenderRadius = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const userData: UpdateRadiusDto = req.body;
+      const updateUserData: User = await this.userService.updateVenderRadius(userData);
+
+      res.status(200).json({ data: updateUserData, message: 'Vender delivery radius has been updated' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  //updateVenderRadius method to update a user by id
+  public verifyUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const userData: VerifyUserDto = req.body;
+      const updateUserData: User = await this.userService.verifyUser(userData);
+
+      res.status(200).json({ data: updateUserData, message: 'User has been verified' });
     } catch (error) {
       next(error);
     }

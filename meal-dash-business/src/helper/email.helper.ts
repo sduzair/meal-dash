@@ -1,5 +1,4 @@
 import nodemailer from 'nodemailer';
-import { logger } from '@utils/logger';
 import { SMTP_HOST, SMTP_PORT, SMTP_USERNAME, SMTP_PASSWORD } from '@config';
 import handlebars from 'handlebars';
 import { User } from '@/interfaces/users.interface';
@@ -103,7 +102,7 @@ export default class MailService {
         var replacements = {
             username: user.user_login,
             image: 'cid:meal-dash-logo',
-            security_code: 741741,
+            security_code: user.user_activation_code,
 
         };
         var htmlToSend = template(replacements);

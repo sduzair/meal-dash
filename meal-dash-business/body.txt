@@ -12,13 +12,15 @@
     "state": "ON",
     "postal": "n2t0b3"
   }
-  {
+ {
     "user_login": "azeez",
     "user_email": "azeez.wp+mealdash1@gmail.com",
     "user_password": "bossman",
+    "first_name" : "azeez",
+    "last_name" : "ahmad",
     "phone": "+12345678912",
-    "user_type": "string",
-    "address1": "address1",
+    "user_type": "root",
+    "address1": "636 Montpellier DR",
     "address2": "address2",
     "city": "waterloo",
     "state": "ON",

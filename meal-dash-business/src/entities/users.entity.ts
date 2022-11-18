@@ -37,6 +37,14 @@ export class UserEntity extends BaseEntity implements User {
 
   @Column()
   @IsNotEmpty()
+  first_name: string;
+
+  @Column()
+  @IsNotEmpty()
+  last_name: string;
+
+  @Column()
+  @IsNotEmpty()
   address1: string;
 
   @Column()
@@ -66,5 +74,14 @@ export class UserEntity extends BaseEntity implements User {
   @Column()
   @IsNotEmpty()
   formattedAddress: string;
+
+  @Column({ default: 0 })
+  vender_radius: number;
+
+  @Column()
+  user_activation_code: number;
+
+  @Column({default: false})
+  user_status: boolean;
 
 }

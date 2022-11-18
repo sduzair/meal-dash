@@ -2,6 +2,20 @@
     "user_login": "bossman",
     "user_email": "bossman@meal-dash.com",
     "user_password": "bossman",
+    "first_name" : "meal",
+    "last_name" : "dash",
+    "phone": "+12345678912",
+    "user_type": "root",
+    "address1": "636 Montpellier DR",
+    "address2": "address2",
+    "city": "waterloo",
+    "state": "ON",
+    "postal": "n2t0b3"
+  }
+  {
+    "user_login": "azeez",
+    "user_email": "azeez.wp+mealdash1@gmail.com",
+    "user_password": "bossman",
     "phone": "+12345678912",
     "user_type": "string",
     "address1": "address1",

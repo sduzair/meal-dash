@@ -4,6 +4,8 @@ import { User } from '@interfaces/users.interface';
 import AuthService from '@services/auth.service';
 import { LoginUserDto } from '@/dtos/loginuser.dto';
 import { CreateUserDto } from '@/dtos/createusers.dto';
+import { VerifyUserDto } from '@/dtos/verifyuser.dto';
+import { UpdateRadiusDto } from '@/dtos/radius.dto';
 
 // AuthController class
 class AuthController {
@@ -42,6 +44,30 @@ class AuthController {
 
       res.setHeader('Set-Cookie', ['Authorization=; Max-age=0']);
       res.status(200).json({ data: logOutUserData, message: 'logout' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  //updateVenderRadius method to update a user by id
+  public updateVenderRadius = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const userData: UpdateRadiusDto = req.body;
+      const updateUserData: User = await this.authService.updateVenderRadius(userData);
+
+      res.status(200).json({ data: updateUserData, message: 'Vender delivery radius has been updated' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  //updateVenderRadius method to update a user by id
+  public verifyUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const userData: VerifyUserDto = req.body;
+      const updateUserData: User = await this.authService.verifyUser(userData);
+
+      res.status(200).json({ data: updateUserData, message: 'User has been verified' });
     } catch (error) {
       next(error);
     }

@@ -4,6 +4,8 @@ import { Routes } from '@interfaces/routes.interface';
 import validationMiddleware from '@middlewares/validation.middleware';
 import { CreateUserDto } from '@/dtos/createusers.dto';
 import authMiddleware from '@/middlewares/auth.middleware';
+import { UpdateRadiusDto } from '@/dtos/radius.dto';
+import { VerifyUserDto } from '@/dtos/verifyuser.dto';
 
 // UsersRoute class to handle all the routes for users
 class UsersRoute implements Routes {
@@ -21,6 +23,8 @@ class UsersRoute implements Routes {
     this.router.post(`${this.path}`, authMiddleware, validationMiddleware(CreateUserDto, 'body'), this.usersController.createUser);
     this.router.put(`${this.path}/:user_id(\\d+)`, authMiddleware, validationMiddleware(CreateUserDto, 'body', true), this.usersController.updateUser);
     this.router.delete(`${this.path}/:user_id(\\d+)`, authMiddleware, this.usersController.deleteUser);
+    this.router.put(`${this.path}/update-radius`, validationMiddleware(UpdateRadiusDto, 'body', true), this.usersController.updateVenderRadius);
+    this.router.put(`${this.path}/verify-user`, validationMiddleware(VerifyUserDto, 'body', true), this.usersController.verifyUser);
   }
 }
 

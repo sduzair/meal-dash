@@ -5,6 +5,8 @@ import { HttpException } from '@exceptions/HttpException';
 import { User } from '@interfaces/users.interface';
 import { isEmpty } from '@utils/util';
 import { CreateUserDto } from '@/dtos/createusers.dto';
+import { UpdateRadiusDto } from '@/dtos/radius.dto';
+import { VerifyUserDto } from '@/dtos/verifyuser.dto';
 
 // UserService class to handle all the database operations for Users
 @EntityRepository()
@@ -60,6 +62,34 @@ class UserService extends Repository<UserEntity> {
 
     await UserEntity.delete({ user_id: user_id });
     return findUser;
+  }
+
+
+  //updateUser update user by id
+  public async updateVenderRadius(updateRadiusDto: UpdateRadiusDto): Promise<User> {
+    if (isEmpty(updateRadiusDto)) throw new HttpException(400, "updateRadiusDto is empty");
+
+    const findUser: User = await UserEntity.findOne({ where: { user_id: updateRadiusDto.user_id, user_login: updateRadiusDto.user_login} });
+    if (!findUser) throw new HttpException(409, "User doesn't exist");
+
+    await UserEntity.update(findUser.user_id, { vender_radius: updateRadiusDto.vender_radius });
+
+    const updateUser: User = await UserEntity.findOne({ where: { user_id: findUser.user_id } });//TODO change interface to user
+    return updateUser;
+  }
+
+  //updateUser update user by id
+  public async verifyUser(verifyUserDto: VerifyUserDto): Promise<User> {
+    if (isEmpty(verifyUserDto)) throw new HttpException(400, "verifyUserDto is empty");
+
+    const user_found: User = await UserEntity.findOne({ where: { user_id: verifyUserDto.user_id, user_login: verifyUserDto.user_login} });
+    if (!user_found) throw new HttpException(409, "User doesn't exist");
+    if(user_found.user_activation_code != verifyUserDto.user_activation_code) throw new HttpException(409, "User activation code is not correct");
+
+    await UserEntity.update(user_found.user_id, { user_status: true });
+
+    const updateUser: User = await UserEntity.findOne({ where: { user_id: user_found.user_id } });//TODO change interface to user
+    return updateUser;
   }
 }
 

@@ -17,7 +17,7 @@ class UserLoginDTO {
   });
 
   UserLoginDTO.initializeDummyVals()
-      : email = 'asdsk@ldjf.com',
+      : email = 'captasdf65sdfgsdfg4ddddddddddddsh12@gmail.com',
         // username = 'uzair',
         password = 'asdf';
 

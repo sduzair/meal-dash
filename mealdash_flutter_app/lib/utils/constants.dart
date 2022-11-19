@@ -1,9 +1,9 @@
 // DEV CONSTANTS
 
 const bool isTestingMealAdd = false;
-const bool isTestingSignUp = false;
+const bool isTestingSignUp = true;
 const bool isTestingLogin = true;
-const bool isTestUserLoggedIn = true;
+const bool isTestUserLoggedIn = false;
 const bool clearCookies = true;
 
 // KEY CONSTANTS

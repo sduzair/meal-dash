@@ -39,7 +39,7 @@ class MobileLoginScreen extends StatelessWidget {
           ),
         );
       });
-      context.read<UserAuthViewModel>().resetSignUpStateAndNotifyListeners();
+      context.read<UserAuthViewModel>().resetSignUpState();
     }
     if (context.read<UserAuthViewModel>().showLoggingOutSuccessPopup) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -51,7 +51,7 @@ class MobileLoginScreen extends StatelessWidget {
             ),
           ),
         );
-        context.read<UserAuthViewModel>().resetLogoutStateAndNotifyListeners();
+        context.read<UserAuthViewModel>().resetLogoutState();
       });
     }
     return Scaffold(

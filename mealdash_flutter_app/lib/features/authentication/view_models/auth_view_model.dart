@@ -157,6 +157,14 @@ class UserAuthViewModel with ChangeNotifier, DiagnosticableTreeMixin {
     notifyListeners();
   }
 
+  void resetSignUpState() {
+    _isSigningUp = false;
+    _isSigningUpError = false;
+    _isSigningUpSuccess = false;
+    _signUpErrorMessage = null;
+    _showSignupSuccessPopup = false;
+  }
+
   // LOGOUT METHODS
 
   bool _isLoggingOut = false;
@@ -201,6 +209,14 @@ class UserAuthViewModel with ChangeNotifier, DiagnosticableTreeMixin {
     _logoutErrorMessage = null;
     _showLoggingOutSuccessPopup = false;
     notifyListeners();
+  }
+
+  void resetLogoutState() {
+    _isLoggingOut = false;
+    _isLoggingOutError = false;
+    _isLoggingOutSuccess = false;
+    _logoutErrorMessage = null;
+    _showLoggingOutSuccessPopup = false;
   }
 
   Future<void> logoutUnauthorized() async {

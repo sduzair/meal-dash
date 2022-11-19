@@ -45,7 +45,7 @@ class AuthService extends Repository<UserEntity> {
     const findUser: User = await UserEntity.findOne({ where: { user_email: userData.user_email } });
     if (!findUser) throw new HttpException(409, `This email ${userData.user_email} was not found`);
 
-    if(!findUser.user_status) throw new HttpException(409, `This email ${userData.user_email} is not verified`);
+    if(!findUser.user_status) throw new HttpException(403, `This email ${userData.user_email} is not verified`);
 
     const isPasswordMatching: boolean = await compare(userData.user_password, findUser.user_password);
     if (!isPasswordMatching) throw new HttpException(409, "Password not matching");

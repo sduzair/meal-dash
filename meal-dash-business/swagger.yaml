@@ -271,6 +271,8 @@ paths:
       tags:
       - meal
       summary: Add meal
+      consumes:
+        - multipart/form-Data
       parameters:
       - name: body
         in: body
@@ -278,6 +280,11 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/meal'
+      - name: file
+        in: formData
+        description: meal image
+        required: true
+        type: file
       responses:
         201:
           description: 'Created'
@@ -468,19 +475,13 @@ definitions:
   meal:
     type: object
     required:
-          - vendor_id
           - mealTitle
           - mealShortDescription
           - mealLongDescription
           - mealIngredients
-          - mealCalories
           - mealQuantity
           - mealQuantityUnit
-          - timeStamp
     properties:
-      vendor_id:
-        type: number
-        description: Food Vendor id
       mealTitle:
         type: string
         description: Meal item title
@@ -491,7 +492,9 @@ definitions:
         type: string
         description: Meal item long Description
       mealIngredients:
-        type: string
+        type: array
+        items:
+          type: string
         description: Meal item ingredients
       mealCalories:
         type: number
@@ -502,10 +505,6 @@ definitions:
       mealQuantityUnit:
         type: string
         description: Meal item quantity unit
-      timeStamp:
-        type: string
-        format: date-time
-        description: Meal item timestamp
 
   update_radius:
     type: object

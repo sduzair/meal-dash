@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { NextFunction, Request, Response } from 'express';
 import { MealDto } from '@/dtos/meal.dto';
 import { Meal } from '@interfaces/meal.interface';
@@ -44,6 +45,17 @@ class MealController {
       const updateUserData: Meal = await this.mealService.updateMeal(meal_id, mealData);
   
       res.status(200).json({ data: updateUserData, message: 'updated' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public deleteMeal = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const mealId = Number(req.params.meal_id);
+      const deleteMealData: Meal = await this.mealService.deleteMeal(mealId);
+
+      res.status(200).json({ data: deleteMealData, message: 'meal deleted' });
     } catch (error) {
       next(error);
     }

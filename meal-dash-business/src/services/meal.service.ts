@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { EntityRepository, Repository } from 'typeorm';
 import { MealDto } from '@dtos/meal.dto';
 import { MealEntity } from '@entities/meal.entity';
@@ -32,9 +33,23 @@ class MealService extends Repository<MealEntity> {
 
     const updateMeal: Meal = await MealEntity.findOne({ where: { meal_id: meal_id } });
     if (!updateMeal) throw new HttpException(409, "Meal doesn't exist");
-    return mealData;
+    await MealEntity.update(meal_id,{ ... mealData });
+    const updatedMeal: Meal = await MealEntity.findOne({ where: { meal_id: meal_id } });
+    return updatedMeal;
+  }
+    //deleteMealById delete  meal by id
+    public async deleteMeal(meal_id: number): Promise<Meal> {
+    if (isEmpty(meal_id)) throw new HttpException(400, "meal_id is empty");
+
+    const findMeal: Meal = await MealEntity.findOne({ where: { meal_id: meal_id } });
+    if (!findMeal) throw new HttpException(409, "Meal doesn't exist");
+
+    await MealEntity.delete({ meal_id: meal_id });
+    return findMeal;
   }
 
+  
 }
+
 
 export default MealService;

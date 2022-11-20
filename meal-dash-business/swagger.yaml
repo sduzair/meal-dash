@@ -318,8 +318,8 @@ paths:
           # [PUT] meals/id
     put:
       tags:
-      - meals
-      summary: Update Meals By Id
+      - meal
+      summary: Update Meal By Id
       parameters:
       - name: id
         in: path
@@ -342,7 +342,24 @@ paths:
         500:
           description: 'Server Error'
 
-
+# [DELETE] meals/id
+    delete:
+      tags:
+      - meal
+      summary: Delete Meal By Id
+      parameters:
+      - name: id
+        in: path
+        description: meal Id
+        required: true
+        type: integer
+      responses:
+        200:
+          description: 'OK'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
 
 
 

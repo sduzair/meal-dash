@@ -9,4 +9,5 @@ export interface Meal {
   mealQuantity: number;
   mealQuantityUnit: string;
   timeStamp: string;
+  imagePath: string;
 }

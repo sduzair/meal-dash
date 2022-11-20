@@ -43,4 +43,8 @@ export class MealEntity extends BaseEntity implements Meal {
   @Column()
   @IsNotEmpty()
   timeStamp: string;
+
+  @Column()
+  @IsNotEmpty()
+  imagePath: string;
 }

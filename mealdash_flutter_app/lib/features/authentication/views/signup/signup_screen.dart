@@ -59,9 +59,7 @@ class _SignupScreenState extends State<SignupScreen> {
               icon: const Icon(Icons.arrow_back_ios),
               color: Colors.black,
               onPressed: () {
-                context.goNamed(constants.welcomeRouteName);
-                // GoRouter.of(context).navigator?.pop();
-                // Navigator.maybePop(context);
+                GoRouter.of(context).goNamed(constants.welcomeRouteName);
               },
             ),
           ],

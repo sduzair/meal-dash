@@ -61,6 +61,9 @@ class UserAuthViewModel with ChangeNotifier, DiagnosticableTreeMixin {
   bool _isLoggingInError = false;
   bool get isLoggingInError => _isLoggingInError;
 
+  bool _isLoggingInErrorUnverifiedEmail = false;
+  bool get isLoggingInErrorUnverifiedEmail => _isLoggingInErrorUnverifiedEmail;
+
   String? _loginErrorMessage;
   String? get loginErrorMessage => _loginErrorMessage;
 
@@ -85,6 +88,11 @@ class UserAuthViewModel with ChangeNotifier, DiagnosticableTreeMixin {
     } on DioError catch (e) {
       _isLoggingInError = true;
       _loginErrorMessage = DioExceptions.fromDioError(e).message;
+      switch (DioExceptions.fromDioError(e).statusCode) {
+        case 403:
+          _isLoggingInErrorUnverifiedEmail = true;
+          break;
+      }
     } finally {
       _isLoggingIn = false;
       notifyListeners();
@@ -95,15 +103,17 @@ class UserAuthViewModel with ChangeNotifier, DiagnosticableTreeMixin {
     _isLoggingIn = false;
     _isLoggingInSuccess = false;
     _isLoggingInError = false;
+    _isLoggingInErrorUnverifiedEmail = false;
     _loginErrorMessage = null;
     _showLoggingInSuccessPopup = false;
     notifyListeners();
   }
 
-  void resetLoginStateAndDontNotifyListeners() {
+  void resetLoginState() {
     _isLoggingIn = false;
     _isLoggingInSuccess = false;
     _isLoggingInError = false;
+    _isLoggingInErrorUnverifiedEmail = false;
     _loginErrorMessage = null;
     _showLoggingInSuccessPopup = false;
   }
@@ -119,6 +129,10 @@ class UserAuthViewModel with ChangeNotifier, DiagnosticableTreeMixin {
 
   bool _isSigningUpError = false;
   bool get isSigningUpError => _isSigningUpError;
+
+  bool _isSigningUpErrorUserAlreadyExists = false;
+  bool get isSigningUpErrorUserAlreadyExists =>
+      _isSigningUpErrorUserAlreadyExists;
 
   String? _signUpErrorMessage;
   String? get signUpErrorMessage => _signUpErrorMessage;
@@ -141,7 +155,12 @@ class UserAuthViewModel with ChangeNotifier, DiagnosticableTreeMixin {
       _showSignupSuccessPopup = true;
     } on DioError catch (e) {
       _isSigningUpError = true;
-      _signUpErrorMessage = DioExceptions.fromDioError(e).toString();
+      _signUpErrorMessage = DioExceptions.fromDioError(e).message;
+      switch (DioExceptions.fromDioError(e).statusCode) {
+        case 409:
+          _isSigningUpErrorUserAlreadyExists = true;
+          break;
+      }
     } finally {
       _isSigningUp = false;
       notifyListeners();
@@ -151,6 +170,7 @@ class UserAuthViewModel with ChangeNotifier, DiagnosticableTreeMixin {
   void resetSignUpStateAndNotifyListeners() {
     _isSigningUp = false;
     _isSigningUpError = false;
+    _isSigningUpErrorUserAlreadyExists = false;
     _isSigningUpSuccess = false;
     _signUpErrorMessage = null;
     _showSignupSuccessPopup = false;
@@ -160,6 +180,7 @@ class UserAuthViewModel with ChangeNotifier, DiagnosticableTreeMixin {
   void resetSignUpState() {
     _isSigningUp = false;
     _isSigningUpError = false;
+    _isSigningUpErrorUserAlreadyExists = false;
     _isSigningUpSuccess = false;
     _signUpErrorMessage = null;
     _showSignupSuccessPopup = false;

@@ -10,6 +10,8 @@ UserSignUpDTO _$UserSignUpDTOFromJson(Map<String, dynamic> json) =>
     UserSignUpDTO(
       email: json['user_email'] as String?,
       password: json['user_password'] as String?,
+      firstName: json['first_name'] as String?,
+      lastName: json['last_name'] as String?,
       phoneNumber: json['phone'] as String?,
       addressLine1: json['address1'] as String?,
       addressLine2: json['address2'] as String?,
@@ -25,6 +27,8 @@ Map<String, dynamic> _$UserSignUpDTOToJson(UserSignUpDTO instance) =>
       'user_login': instance.username,
       'user_email': instance.email,
       'user_password': instance.password,
+      'first_name': instance.firstName,
+      'last_name': instance.lastName,
       'phone': instance.phoneNumber,
       'user_type': instance.userType,
       'address1': instance.addressLine1,

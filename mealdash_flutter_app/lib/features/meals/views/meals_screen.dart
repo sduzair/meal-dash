@@ -51,7 +51,8 @@ class MealsFutureBuilder extends StatelessWidget {
         );
       });
       // * CANNOT RESET STATE HERE AS IT IS INTERFERING WITH ROUTING WHICH IS ALSO USING USERAUTHVIEWMODEL
-      context.read<UserAuthViewModel>().resetLoginStateAndDontNotifyListeners();
+      // TODO: try to move this to login view
+      context.read<UserAuthViewModel>().resetLoginState();
     }
     // TODO: SHOW MEAL ADDED SUCCESSFULLY SNACKBAR
     return FutureBuilder<List<MealDTOWithId>?>(

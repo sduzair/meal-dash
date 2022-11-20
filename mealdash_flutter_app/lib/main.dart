@@ -77,7 +77,7 @@ class MyApp extends StatelessWidget {
             title: 'Flutter Auth',
             theme: theme.copyWith(
               bannerTheme: theme.bannerTheme.copyWith(
-                elevation: constants.defaultElevation,
+                elevation: constants.defaultElevationSmall,
               ),
               bottomNavigationBarTheme: theme.bottomNavigationBarTheme.copyWith(
                 // elevation: constants.defaultElevation,

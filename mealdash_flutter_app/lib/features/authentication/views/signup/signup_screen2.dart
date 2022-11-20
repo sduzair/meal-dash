@@ -33,9 +33,8 @@ class SignUpScreen2State extends State<SignUpScreen2> {
               onPressed: () {
                 context
                     .read<UserAuthViewModel>()
-                    .resetSignUpStateAndNotifyListeners();
-                context.goNamed(constants.signupRouteName);
-                // GoRouter.of(context).pop();
+                    .resetSignUpState();
+                GoRouter.of(context).goNamed(constants.signupRouteName);
               },
             ),
           ],
@@ -49,7 +48,10 @@ class SignUpScreen2State extends State<SignUpScreen2> {
                 // const SizedBox(height: Constants.defaultPadding * 2),
                 TextFormField(
                   onSaved: (newValue) {
-                    // context.read<UserAuthViewModel>().userSignUpModel.firstName = newValue!;
+                    context
+                        .read<UserAuthViewModel>()
+                        .userSignUpModel
+                        .firstName = newValue!;
                   },
                   decoration: const InputDecoration(
                     labelText: "First Name",
@@ -66,7 +68,8 @@ class SignUpScreen2State extends State<SignUpScreen2> {
                 ),
                 TextFormField(
                   onSaved: (newValue) {
-                    // context.read<UserAuthViewModel>().userSignUpModel.lastName = newValue!;
+                    context.read<UserAuthViewModel>().userSignUpModel.lastName =
+                        newValue!;
                   },
                   decoration: const InputDecoration(
                     labelText: "Last Name",
@@ -325,12 +328,13 @@ class TextSignUpButton extends StatelessWidget {
             content: Text(authVMWatch.signUpErrorMessage!),
             leading: const CircleAvatar(child: Icon(Icons.error)),
             actions: [
-              TextButton(
+              if (authVMWatch.isSigningUpErrorUserAlreadyExists)
+                TextButton(
                 onPressed: () {
                   ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
                   context
                       .read<UserAuthViewModel>()
-                      .resetSignUpStateAndNotifyListeners();
+                      .resetSignUpState();
                   GoRouter.of(context).goNamed(constants.loginRouteName);
                 },
                 child: const Text("SIGN IN"),
@@ -345,11 +349,6 @@ class TextSignUpButton extends StatelessWidget {
                 child: const Text("CLOSE"),
               ),
             ],
-            // onVisible: () {
-            //   Future.delayed(const Duration(seconds: 5), () {
-            //     ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
-            //   });
-            // },
           ),
         );
       });

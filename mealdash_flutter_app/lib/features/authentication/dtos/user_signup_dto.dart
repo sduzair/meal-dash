@@ -11,8 +11,10 @@ class UserSignUpDTO {
   String? email;
   @JsonKey(name: 'user_password')
   String? password;
-  // String? firstName;
-  // String? lastName;
+  @JsonKey(name: 'first_name')
+  String? firstName;
+  @JsonKey(name: 'last_name')
+  String? lastName;
   @JsonKey(name: 'phone')
   String? phoneNumber;
   @JsonKey(name: 'user_type')
@@ -31,8 +33,8 @@ class UserSignUpDTO {
   UserSignUpDTO({
     required this.email,
     required this.password,
-    // required this.firstName,
-    // required this.lastName,
+    required this.firstName,
+    required this.lastName,
     required this.phoneNumber,
     required this.addressLine1,
     required this.addressLine2,
@@ -45,8 +47,8 @@ class UserSignUpDTO {
       : username = 'uzDasdfsdsfgsdddddddddfgFGHr2',
         email = 'captasdf65sdfgsdfg4ddddddddddddsh12@gmail.com',
         password = 'asdf',
-        // firstName = 'asdf',
-        // lastName = 'asdf',
+        firstName = 'asdf',
+        lastName = 'asdf',
         phoneNumber = '+12234567890',
         addressLine1 = 'asdf',
         addressLine2 = 'asdf',

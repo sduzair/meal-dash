@@ -72,6 +72,8 @@ class Endpoints {
 
 class DioExceptions implements Exception {
   late String message;
+  /// status code exists only when exception is raised by server response
+  int? statusCode;
 
   DioExceptions.fromDioError(DioError dioError) {
     switch (dioError.type) {
@@ -89,6 +91,7 @@ class DioExceptions implements Exception {
           dioError.response?.statusCode,
           dioError.response?.data,
         );
+        statusCode = dioError.response?.statusCode;
         break;
       case DioErrorType.sendTimeout:
         message = "Send timeout in connection with API server";
@@ -113,12 +116,13 @@ class DioExceptions implements Exception {
       case 401:
         return 'Unauthorized';
       case 403:
-        return 'Forbidden';
+        return error['message'] ?? 'Forbidden'; // LOGIN PAGE: UNVERIFIED EMAIL
       case 404:
-        return error['message'];
+        return error['message'] ?? 'Not found';
       case 409:
         return error[
-            'message']; // LOIGN PAGE: INCORRECT PASSWORD OR EMAIL NOT FOUND
+            'message'] ??
+            'Conflict'; // LOIGN PAGE: INCORRECT PASSWORD OR EMAIL NOT FOUND
       case 500:
         return 'Internal server error';
       case 502:

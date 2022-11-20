@@ -155,8 +155,9 @@ class TextUserLoginButton extends StatelessWidget {
                 TextButton(
                   onPressed: () {
                     ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
-                    // TODO: when logging in error is not verified user direct to verify user page
-                    // GoRouter.of(context).goNamed("/verify-user");
+                    context.read<UserAuthViewModel>().resetLoginState();
+                    GoRouter.of(context)
+                        .goNamed(constants.signupEmailVerificationRouteName);
                   },
                   child: const Text("VERIFY EMAIL"),
                 ),

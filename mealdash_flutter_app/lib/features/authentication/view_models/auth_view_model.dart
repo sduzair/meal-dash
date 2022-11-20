@@ -76,7 +76,7 @@ class UserAuthViewModel with ChangeNotifier, DiagnosticableTreeMixin {
   Future<void> login() async {
     print('login() called');
     print(_userLoginDTO.toJson());
-    resetLoginStateAndNotifyListeners();
+    resetLoginState();
     _isLoggingIn = true;
     notifyListeners();
     try {
@@ -146,7 +146,7 @@ class UserAuthViewModel with ChangeNotifier, DiagnosticableTreeMixin {
   Future<void> signUp() async {
     print('signUp() called');
     print(_userSignUpDTO.toJson());
-    resetSignUpStateAndNotifyListeners();
+    resetSignUpState();
     _isSigningUp = true;
     notifyListeners();
     try {
@@ -205,7 +205,7 @@ class UserAuthViewModel with ChangeNotifier, DiagnosticableTreeMixin {
 
   Future<void> logout() async {
     print('logout() called');
-    resetLogoutStateAndNotifyListeners();
+    resetLogoutState();
     _isLoggingOut = true;
     notifyListeners();
     try {

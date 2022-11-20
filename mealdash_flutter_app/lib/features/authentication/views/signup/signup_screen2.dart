@@ -31,9 +31,7 @@ class SignUpScreen2State extends State<SignUpScreen2> {
               icon: const Icon(Icons.arrow_back_ios),
               color: Colors.black,
               onPressed: () {
-                context
-                    .read<UserAuthViewModel>()
-                    .resetSignUpState();
+                context.read<UserAuthViewModel>().resetSignUpState();
                 GoRouter.of(context).goNamed(constants.signupRouteName);
               },
             ),
@@ -281,6 +279,12 @@ class SubmitButton extends StatelessWidget {
           ),
         ),
         onPressed: () {
+          if (constants.isTestingEmailVerification) {
+            GoRouter.of(context)
+                .goNamed(constants.signupEmailVerificationRouteName);
+            return;
+          }
+
           if (context.read<UserAuthViewModel>().isSigningUp ||
               context.read<UserAuthViewModel>().isSigningUpSuccess) {
             return;
@@ -330,15 +334,13 @@ class TextSignUpButton extends StatelessWidget {
             actions: [
               if (authVMWatch.isSigningUpErrorUserAlreadyExists)
                 TextButton(
-                onPressed: () {
-                  ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
-                  context
-                      .read<UserAuthViewModel>()
-                      .resetSignUpState();
-                  GoRouter.of(context).goNamed(constants.loginRouteName);
-                },
-                child: const Text("SIGN IN"),
-              ),
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
+                    context.read<UserAuthViewModel>().resetSignUpState();
+                    GoRouter.of(context).goNamed(constants.loginRouteName);
+                  },
+                  child: const Text("SIGN IN"),
+                ),
               TextButton(
                 onPressed: () {
                   ScaffoldMessenger.of(context).hideCurrentMaterialBanner();

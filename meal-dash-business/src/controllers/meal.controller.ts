@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 import { MealDto } from '@/dtos/meal.dto';
 import { Meal } from '@interfaces/meal.interface';
 import MealService from '@/services/meal.service';
+import { RequestWithUser } from '@/interfaces/auth.interface';
 
 class MealController {
   public mealService = new MealService();
@@ -56,6 +57,18 @@ class MealController {
       const deleteMealData: Meal = await this.mealService.deleteMeal(mealId);
 
       res.status(200).json({ data: deleteMealData, message: 'meal deleted' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public fetchAllMealsByVendor = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      let user = req.user;
+      const vendorId = user.user_id;
+      const vendorName = user.user_login;
+      const findOneMealData: Meal = await this.mealService.fetchAllMealsByVendor(vendorId, vendorName);
+      res.status(200).json({ data: findOneMealData, message: 'findOne' });
     } catch (error) {
       next(error);
     }

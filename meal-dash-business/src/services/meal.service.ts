@@ -33,12 +33,12 @@ class MealService extends Repository<MealEntity> {
 
     const updateMeal: Meal = await MealEntity.findOne({ where: { meal_id: meal_id } });
     if (!updateMeal) throw new HttpException(409, "Meal doesn't exist");
-    await MealEntity.update(meal_id,{ ... mealData });
+    await MealEntity.update(meal_id, { ...mealData });
     const updatedMeal: Meal = await MealEntity.findOne({ where: { meal_id: meal_id } });
     return updatedMeal;
   }
-    //deleteMealById delete  meal by id
-    public async deleteMeal(meal_id: number): Promise<Meal> {
+  //deleteMealById delete  meal by id
+  public async deleteMeal(meal_id: number): Promise<Meal> {
     if (isEmpty(meal_id)) throw new HttpException(400, "meal_id is empty");
 
     const findMeal: Meal = await MealEntity.findOne({ where: { meal_id: meal_id } });
@@ -48,7 +48,15 @@ class MealService extends Repository<MealEntity> {
     return findMeal;
   }
 
-  
+  //fetchAllMealByVender fetch meal by user id
+  public async fetchAllMealsByVendor(vendor_id: number, vendor_name: string): Promise<Meal> {
+    if (isEmpty(vendor_id)) throw new HttpException(400, 'meal Id is empty');
+    const findMeals: Meal = await MealEntity.findOne({ where: { vendor_id: vendor_id } });
+    if (!findMeals) throw new HttpException(409, `No meal data found for this vendor name: ${vendor_name}`);
+
+    return findMeals;
+  }
+
 }
 
 

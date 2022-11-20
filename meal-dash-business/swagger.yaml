@@ -265,6 +265,16 @@ paths:
           description: 'OK'
         500:
           description: 'Server Error'
+  /meal/all:
+    get:
+      tags:
+      - meal
+      summary: Find all meals by vender
+      responses:
+        200:
+          description: 'OK'
+        500:
+          description: 'Server Error'        
 
 # [POST] meal
     post:

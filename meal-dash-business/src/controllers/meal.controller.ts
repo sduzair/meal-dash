@@ -4,14 +4,17 @@ import { MealDto } from '@/dtos/meal.dto';
 import { Meal } from '@interfaces/meal.interface';
 import MealService from '@/services/meal.service';
 import { RequestWithUser } from '@/interfaces/auth.interface';
+import { plainToInstance } from 'class-transformer';
 
 class MealController {
   public mealService = new MealService();
 
-  public createMealPlan = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  public createMealPlan = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const mealData: MealDto = req.body;
-      const createMealData: Meal = await this.mealService.createMeal(mealData);
+      const mealData = plainToInstance(MealDto, JSON.parse(req.fields.mealdata));
+      mealData.imagePath = req.files.image.path;
+      let user = req.user;
+      const createMealData: Meal = await this.mealService.createMeal(mealData, user.user_id);
       res.status(201).json({ data: createMealData, message: 'created' });
     } catch (error) {
       next(error);

@@ -8,9 +8,9 @@ import { isEmpty } from '@utils/util';
 
 @EntityRepository()
 class MealService extends Repository<MealEntity> {
-  public async createMeal(MealData: MealDto): Promise<Meal> {
+  public async createMeal(MealData: MealDto, user_id: number): Promise<Meal> {
     if (isEmpty(MealData)) throw new HttpException(400, 'MealData is empty');
-    const createMealData: Meal = await MealEntity.create({ ...MealData }).save();
+    const createMealData: Meal = await MealEntity.create({ ...MealData, vendor_id: user_id }).save();
     return createMealData;
   }
 

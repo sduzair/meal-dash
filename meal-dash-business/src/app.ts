@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import 'reflect-metadata';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
@@ -9,11 +10,12 @@ import compression from 'compression';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJSDoc from 'swagger-jsdoc';
 import { createConnection } from 'typeorm';
-import { NODE_ENV, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS } from '@config';
+import { NODE_ENV, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS, UPLOAD_PATH } from '@config';
 import { dbConnection } from '@databases';
 import { Routes } from '@interfaces/routes.interface';
 import errorMiddleware from '@middlewares/error.middleware';
 import { logger, stream } from '@utils/logger';
+import formidableMiddleware from 'express-formidable';
 
 class App {
   public app: express.Application;
@@ -58,6 +60,12 @@ class App {
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(cookieParser());
+    this.app.use("/meal/add-meal",formidableMiddleware({
+      encoding: 'utf-8',
+      uploadDir: UPLOAD_PATH,
+      multiples:false,
+    }))
+    
   }
 
   private initializeRoutes(routes: Routes[]) {

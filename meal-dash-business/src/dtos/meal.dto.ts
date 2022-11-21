@@ -2,9 +2,7 @@
 import { IsBoolean, IsArray, IsNumber, IsString } from 'class-validator';
 
 export class MealDto {
-  @IsNumber()
-  public vendor_id: number;
-
+  
   @IsString()
   public mealTitle: string;
 
@@ -26,6 +24,7 @@ export class MealDto {
   @IsString()
   public mealQuantityUnit: string;
 
-  @IsString()
-  public timeStamp: string;
+  public image: string;
+  public imagePath: string;
+
 }

@@ -265,16 +265,7 @@ paths:
           description: 'OK'
         500:
           description: 'Server Error'
-  /meal/all:
-    get:
-      tags:
-      - meal
-      summary: Find all meals by vender
-      responses:
-        200:
-          description: 'OK'
-        500:
-          description: 'Server Error'        
+    
 
 # [POST] meal
     post:
@@ -295,6 +286,7 @@ paths:
         description: meal image
         required: true
         type: file
+        
       responses:
         201:
           description: 'Created'
@@ -304,6 +296,18 @@ paths:
           description: 'Conflict'
         500:
           description: 'Server Error'
+
+# [GET] meal
+  /meal/all:
+    get:
+      tags:
+      - meal
+      summary: Find all meals by vender
+      responses:
+        200:
+          description: 'OK'
+        500:
+          description: 'Server Error'    
 
 # [GET] meal/id
   /meal/{id}:

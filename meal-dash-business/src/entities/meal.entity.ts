@@ -40,8 +40,7 @@ export class MealEntity extends BaseEntity implements Meal {
   @IsNotEmpty()
   mealQuantityUnit: string;
 
-  @Column()
-  @IsNotEmpty()
+  @Column({default: Date.now()}) 
   timeStamp: string;
 
   @Column()

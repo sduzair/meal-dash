@@ -122,7 +122,7 @@ class UserAuthViewModel with ChangeNotifier, DiagnosticableTreeMixin {
 
   final UserSignUpDTO _userSignUpDTO;
 
-  UserSignUpDTO get userSignUpModel => _userSignUpDTO;
+  UserSignUpDTO get userSignUpDTO => _userSignUpDTO;
 
   bool _isSigningUp = false;
   bool get isSigningUp => _isSigningUp;

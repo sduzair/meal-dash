@@ -4,7 +4,7 @@ const bool isTestingMealAdd = false;
 const bool isTestingSignUp = true;
 const bool isTestingLogin = true;
 const bool isTestUserLoggedIn = false;
-const bool isTestingEmailVerification = true;
+const bool isTestingEmailVerification = false;
 const bool clearCookies = true;
 
 // KEY CONSTANTS

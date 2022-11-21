@@ -1,10 +1,15 @@
 import 'dart:async';
 
+import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
+import 'package:mealdash_app/components/custombuttons.dart';
+import 'package:mealdash_app/features/authentication/view_models/verify_email_view_model.dart';
 import 'package:mealdash_app/utils/constants.dart' as constants;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mealdash_app/components/background.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:provider/provider.dart';
 
 class VerifyEmailScreen extends StatefulWidget {
   final String userEmail;
@@ -23,6 +28,12 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
   StreamController<ErrorAnimationType>? errorController;
 
   bool hasError = false;
+  void setStateHasError(bool value) {
+    setState(() {
+      hasError = value;
+    });
+  }
+
   String currentText = "";
   final formKey = GlobalKey<FormState>();
 
@@ -41,6 +52,11 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final verifyEmailViewModel = context.watch<VerifyEmailViewModel>();
+    if (context.read<VerifyEmailViewModel>().isVerifyingEmailError) {
+      textEditingController.clear();
+      errorController?.add(ErrorAnimationType.shake);
+    }
     return Background(
       child: Scaffold(
         backgroundColor: Colors.transparent,
@@ -57,240 +73,381 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
             ),
           ],
         ),
-        body: GestureDetector(
-          onTap: () {},
-          child: SizedBox(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            child: ListView(
-              children: <Widget>[
-                const SizedBox(height: 8),
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 8.0),
-                  child: Text(
-                    'Phone Number Verification',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 30.0, vertical: 8),
-                  child: RichText(
-                    text: TextSpan(
-                      text: "Enter the code sent to ",
-                      children: [
-                        TextSpan(
-                          text: widget.userEmail,
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15,
+        body: Form(
+          key: formKey,
+          child: Stack(
+            children: [
+              GestureDetector(
+                onTap: () {},
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  child: ListView(
+                    padding: const EdgeInsets.all(constants.defaultPadding),
+                    children: <Widget>[
+                      const SizedBox(height: constants.defaultPaddingLarge),
+                      Text(
+                        'Email Verification',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize:
+                              Theme.of(context).textTheme.headline4!.fontSize,
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(
+                        height: constants.defaultPadding,
+                      ),
+                      RichText(
+                        text: TextSpan(
+                          text: "Enter the code sent to ",
+                          children: [
+                            TextSpan(
+                              text: widget.userEmail,
+                              style: TextStyle(
+                                color: Theme.of(context).primaryColorDark,
+                                fontWeight: FontWeight.bold,
+                                fontSize: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1!
+                                    .fontSize,
+                              ),
+                            ),
+                          ],
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.onBackground,
+                            fontSize:
+                                Theme.of(context).textTheme.bodyText1!.fontSize,
                           ),
                         ),
-                      ],
-                      style: const TextStyle(
-                        color: Colors.black54,
-                        fontSize: 15,
+                        textAlign: TextAlign.center,
                       ),
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Form(
-                  key: formKey,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 8.0,
-                      horizontal: 30,
-                    ),
-                    child: PinCodeTextField(
-                      appContext: context,
-                      pastedTextStyle: TextStyle(
-                        color: Colors.green.shade600,
-                        fontWeight: FontWeight.bold,
+                      const SizedBox(
+                        height: constants.defaultPaddingLarge,
                       ),
-                      length: 6,
-                      obscureText: true,
-                      obscuringCharacter: '*',
-                      obscuringWidget: const FlutterLogo(
-                        size: 24,
-                      ),
-                      blinkWhenObscuring: true,
-                      animationType: AnimationType.fade,
-                      validator: (v) {
-                        if (v!.length < 3) {
-                          return "I'm from validator";
-                        } else {
-                          return null;
-                        }
-                      },
-                      pinTheme: PinTheme(
-                        shape: PinCodeFieldShape.box,
-                        borderRadius: BorderRadius.circular(5),
-                        fieldHeight: 50,
-                        fieldWidth: 40,
-                        activeFillColor: Colors.white,
-                      ),
-                      cursorColor: Colors.black,
-                      animationDuration: const Duration(milliseconds: 300),
-                      enableActiveFill: true,
-                      errorAnimationController: errorController,
-                      controller: textEditingController,
-                      keyboardType: TextInputType.number,
-                      boxShadows: const [
-                        BoxShadow(
-                          offset: Offset(0, 1),
-                          color: Colors.black12,
-                          blurRadius: 10,
-                        )
-                      ],
-                      onCompleted: (v) {
-                        debugPrint("Completed");
-                      },
-                      // onTap: () {
-                      //   print("Pressed");
-                      // },
-                      onChanged: (value) {
-                        debugPrint(value);
-                        setState(() {
-                          currentText = value;
-                        });
-                      },
-                      beforeTextPaste: (text) {
-                        debugPrint("Allowing to paste $text");
-                        //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
-                        //but you can show anything you want here, like your pop up saying wrong paste format or etc
-                        return true;
-                      },
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                  child: Text(
-                    hasError ? "*Please fill up all the cells properly" : "",
-                    style: const TextStyle(
-                      color: Colors.red,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      "Didn't receive the code? ",
-                      style: TextStyle(color: Colors.black54, fontSize: 15),
-                    ),
-                    TextButton(
-                      onPressed: () => {},
-                      child: const Text(
-                        "RESEND",
-                        style: TextStyle(
-                          color: Color(0xFF91D3B3),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: constants.defaultPaddingSmall,
+                          horizontal: constants.defaultPaddingLarge,
+                        ),
+                        child: PinCodeTextField(
+                          autovalidateMode: AutovalidateMode.disabled,
+                          // backgroundColor: Theme.of(context).colorScheme.background,
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(6),
+                            FilteringTextInputFormatter.digitsOnly,
+                          ],
+                          appContext: context,
+                          pastedTextStyle: const TextStyle(
+                            // color: Colors.green.shade600,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          length: 6,
+                          // blinkWhenObscuring: true,a
+                          animationType: AnimationType.fade,
+                          validator: (v) {                          
+                            if (v!.length < 6) {
+                              return "Please enter a valid code";
+                            } else {
+                              return null;
+                            }
+                          },
+                          pinTheme: PinTheme(
+                            activeColor: hasError ||
+                                    verifyEmailViewModel.isVerifyingEmailError
+                                ? Theme.of(context).errorColor
+                                : Theme.of(context).colorScheme.onBackground,
+                            inactiveColor: hasError ||
+                                    verifyEmailViewModel.isVerifyingEmailError
+                                ? Theme.of(context).errorColor
+                                : Theme.of(context).highlightColor,
+                            selectedColor: hasError ||
+                                    verifyEmailViewModel.isVerifyingEmailError
+                                ? Theme.of(context).errorColor
+                                : Theme.of(context).colorScheme.onBackground,
+                            errorBorderColor: Theme.of(context).errorColor,
+                            shape: PinCodeFieldShape.box,
+                            borderRadius: BorderRadius.circular(5),
+                            fieldHeight: 50,
+                            fieldWidth: 40,
+                          ),
+                          cursorColor: Colors.black,
+                          animationDuration: const Duration(milliseconds: 300),
+                          enableActiveFill: false,
+                          errorAnimationController: errorController,
+                          controller: textEditingController,
+                          keyboardType: TextInputType.number,
+                          onCompleted: (v) {
+                            debugPrint("Completed");
+                            if (context
+                                    .read<VerifyEmailViewModel>()
+                                    .isVerifyngEmail ||
+                                context
+                                    .read<VerifyEmailViewModel>()
+                                    .isVerifyingEmailSuccess) {
+                              return;
+                            }
+                            // IF TESTING
+                            if (constants.isTestingEmailVerification) {
+                              context
+                                  .read<VerifyEmailViewModel>()
+                                  .verifyEmail();
+                              return;
+                            }
+                            // IF NOT TESTING
+                            if (!formKey.currentState!.validate()) {
+                              setStateHasError(true);
+                              errorController?.add(
+                                ErrorAnimationType.shake,
+                              );
+                            } else {
+                              context
+                                  .read<VerifyEmailViewModel>()
+                                  .verifyEmailDTO
+                                  .activationCode = int.tryParse(v) ?? 0;
+                              context
+                                  .read<VerifyEmailViewModel>()
+                                  .verifyEmail();
+                            }
+                            // if (context
+                            //         .read<VerifyEmailViewModel>()
+                            //         .isVerifyngEmail ||
+                            //     context
+                            //         .read<VerifyEmailViewModel>()
+                            //         .isVerifyingEmailSuccess) {
+                            //   return;
+                            // }
+                            // formKey.currentState!.validate();
+                            // context.read<VerifyEmailViewModel>().verifyEmail();
+                          },
+                          // onTap: () {
+                          //   print("Pressed");
+                          // },
+                          onChanged: (value) {
+                            debugPrint(value);
+                            setState(() {
+                              hasError = false;
+                              currentText = value;
+                            });
+                          },
+                          beforeTextPaste: (text) {
+                            debugPrint("Allowing to paste $text");
+                            //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
+                            //but you can show anything you want here, like your pop up saying wrong paste format or etc
+                            return true;
+                          },
                         ),
                       ),
-                    )
-                  ],
-                ),
-                const SizedBox(
-                  height: 14,
-                ),
-                Container(
-                  margin: const EdgeInsets.symmetric(
-                    vertical: 16.0,
-                    horizontal: 30,
+                      // const SizedBox(
+                      //   height: constants.defaultPaddingSmall,
+                      // ),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.center,
+                      //   children: <Widget>[
+                      //     Flexible(
+                      //       child: TextButton(
+                      //         child: const Text("Clear"),
+                      //         onPressed: () {
+                      //           textEditingController.clear();
+                      //         },
+                      //       ),
+                      //     ),
+                      //     Flexible(
+                      //       child: TextButton(
+                      //         child: const Text("Set Text"),
+                      //         onPressed: () {
+                      //           setState(() {
+                      //             textEditingController.text = "123456";
+                      //           });
+                      //         },
+                      //       ),
+                      //     ),
+                      //   ],
+                      // )
+                    ],
                   ),
-                  decoration: BoxDecoration(
-                    color: Colors.green.shade300,
-                    borderRadius: BorderRadius.circular(5),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.green.shade200,
-                        offset: const Offset(1, -2),
-                        blurRadius: 5,
+                ),
+              ),
+              Positioned(
+                bottom: 0,
+                width: MediaQuery.of(context).size.width,
+                child: Padding(
+                  padding: const EdgeInsets.all(
+                    constants.defaultPadding,
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Didn't receive the code? ",
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.onBackground,
+                              fontSize: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1!
+                                  .fontSize,
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () => {},
+                            child: Text(
+                              "RESEND",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).primaryColorDark,
+                                fontSize: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1!
+                                    .fontSize,
+                              ),
+                            ),
+                          )
+                        ],
                       ),
-                      BoxShadow(
-                        color: Colors.green.shade200,
-                        offset: const Offset(-1, 2),
-                        blurRadius: 5,
+                      const SizedBox(
+                        height: constants.defaultPaddingSmall,
+                      ),
+                      EmailVerificationButton(
+                        formKey: formKey,
+                        errorController: errorController!,
+                        setStateHasError: setStateHasError,
                       )
                     ],
                   ),
-                  child: ButtonTheme(
-                    height: 50,
-                    child: TextButton(
-                      onPressed: () {
-                        formKey.currentState!.validate();
-                        // conditions for validating
-                        if (currentText.length != 6 ||
-                            currentText != "123456") {
-                          errorController!.add(
-                            ErrorAnimationType.shake,
-                          ); // Triggering error shake animation
-                          setState(() => hasError = true);
-                        } else {
-                          setState(
-                            () {
-                              hasError = false;
-                            },
-                          );
-                        }
-                      },
-                      child: Center(
-                        child: Text(
-                          "VERIFY".toUpperCase(),
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
                 ),
-                const SizedBox(
-                  height: 16,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Flexible(
-                      child: TextButton(
-                        child: const Text("Clear"),
-                        onPressed: () {
-                          textEditingController.clear();
-                        },
-                      ),
-                    ),
-                    Flexible(
-                      child: TextButton(
-                        child: const Text("Set Text"),
-                        onPressed: () {
-                          setState(() {
-                            textEditingController.text = "123456";
-                          });
-                        },
-                      ),
-                    ),
-                  ],
-                )
-              ],
-            ),
+              )
+            ],
           ),
         ),
       ),
     );
+  }
+}
+
+class EmailVerificationButton extends StatelessWidget {
+  final GlobalKey<FormState> formKey;
+  final StreamController<ErrorAnimationType> errorController;
+  final void Function(bool) setStateHasError;
+
+  const EmailVerificationButton({
+    Key? key,
+    required this.formKey,
+    required this.errorController,
+    required this.setStateHasError,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Theme.of(context).colorScheme.secondary,
+      ),
+      onPressed: () {
+        debugPrint("Verify Email");
+        // ALREADY PRESSED THE BUTTON
+        if (context.read<VerifyEmailViewModel>().isVerifyngEmail ||
+            context.read<VerifyEmailViewModel>().isVerifyingEmailSuccess) {
+          return;
+        }
+        // IF TESTING
+        if (constants.isTestingEmailVerification) {
+          context.read<VerifyEmailViewModel>().verifyEmail();
+          return;
+        }
+        // IF NOT TESTING
+        if (!formKey.currentState!.validate()) {
+          errorController.add(
+            ErrorAnimationType.shake,
+          );
+          setStateHasError(true);
+        } else {
+          // context.read<VerifyEmailViewModel>().verifyEmailDTO.activationCode = int.tryParse()
+          context.read<VerifyEmailViewModel>().verifyEmail();
+        }
+      },
+      child: TextEmailVerificationButton(setStateHasError: setStateHasError),
+    );
+  }
+}
+
+class TextEmailVerificationButton extends StatelessWidget {
+  final void Function(bool) setStateHasError;
+
+  const TextEmailVerificationButton({
+    Key? key,
+    required this.setStateHasError,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final verifyEmailViewModel = context.watch<VerifyEmailViewModel>();
+    if (verifyEmailViewModel.isVerifyngEmail) {
+      return const CircularProgressIndicator(
+        color: Colors.white,
+      );
+    } else if (verifyEmailViewModel.isVerifyingEmailSuccess) {
+      // TODO: TRY TO DISPOSE THE VIEW MODEL IF POSSIBLE
+      context.read<VerifyEmailViewModel>().resetVerifyEmailState();
+      GoRouter.of(context).goNamed(constants.loginRouteName);
+      return const Icon(
+        Icons.check,
+        color: Colors.white,
+      );
+    } else if (verifyEmailViewModel.isVerifyingEmailError) {
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        ScaffoldMessenger.of(context).clearMaterialBanners();
+        ScaffoldMessenger.of(context).showMaterialBanner(
+          MaterialBanner(
+            content: Text(
+              verifyEmailViewModel.verifyingEmailErrorMessage!,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onErrorContainer,
+              ),
+            ),
+            backgroundColor: Theme.of(context).colorScheme.errorContainer,
+            leading: Icon(
+              Icons.error,
+              color: Theme.of(context).colorScheme.error,
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
+                  context
+                      .read<VerifyEmailViewModel>()
+                      .resetVerifyEmailStateAndNotifyListeners();
+                },
+                child: Text(
+                  "OK",
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onErrorContainer,
+                  ),
+                ),
+              )
+            ],
+          ),
+        );
+        // * Without this textEditingController.clear() keeps clearing the text
+        context.read<VerifyEmailViewModel>().resetVerifyEmailState();
+      });
+      return const Text(
+        "VERIFY",
+        style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        ),
+      );
+    } else {
+      return const Text(
+        "VERIFY",
+        style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        ),
+      );
+    }
   }
 }

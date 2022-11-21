@@ -48,7 +48,7 @@ class SignUpScreen2State extends State<SignUpScreen2> {
                   onSaved: (newValue) {
                     context
                         .read<UserAuthViewModel>()
-                        .userSignUpModel
+                        .userSignUpDTO
                         .firstName = newValue!;
                   },
                   decoration: const InputDecoration(
@@ -66,7 +66,7 @@ class SignUpScreen2State extends State<SignUpScreen2> {
                 ),
                 TextFormField(
                   onSaved: (newValue) {
-                    context.read<UserAuthViewModel>().userSignUpModel.lastName =
+                    context.read<UserAuthViewModel>().userSignUpDTO.lastName =
                         newValue!;
                   },
                   decoration: const InputDecoration(
@@ -86,7 +86,7 @@ class SignUpScreen2State extends State<SignUpScreen2> {
                   onSaved: (newValue) {
                     context
                         .read<UserAuthViewModel>()
-                        .userSignUpModel
+                        .userSignUpDTO
                         .phoneNumber = newValue!;
                   },
                   decoration: const InputDecoration(
@@ -106,7 +106,7 @@ class SignUpScreen2State extends State<SignUpScreen2> {
                   onSaved: (newValue) {
                     context
                         .read<UserAuthViewModel>()
-                        .userSignUpModel
+                        .userSignUpDTO
                         .addressLine1 = newValue!;
                   },
                   decoration: const InputDecoration(
@@ -126,7 +126,7 @@ class SignUpScreen2State extends State<SignUpScreen2> {
                   onSaved: (newValue) {
                     context
                         .read<UserAuthViewModel>()
-                        .userSignUpModel
+                        .userSignUpDTO
                         .addressLine2 = newValue!;
                   },
                   decoration: const InputDecoration(
@@ -168,7 +168,7 @@ class SignUpScreen2State extends State<SignUpScreen2> {
                             if (state != null && state.isNotEmpty) {
                               context
                                   .read<UserAuthViewModel>()
-                                  .userSignUpModel
+                                  .userSignUpDTO
                                   .state = state;
                             }
                           },
@@ -176,7 +176,7 @@ class SignUpScreen2State extends State<SignUpScreen2> {
                             if (city != null && city.isNotEmpty) {
                               context
                                   .read<UserAuthViewModel>()
-                                  .userSignUpModel
+                                  .userSignUpDTO
                                   .city = city;
                             }
                           },
@@ -221,7 +221,7 @@ class SignUpScreen2State extends State<SignUpScreen2> {
                   onSaved: (newValue) {
                     context
                         .read<UserAuthViewModel>()
-                        .userSignUpModel
+                        .userSignUpDTO
                         .postalCode = newValue!;
                   },
                   decoration: const InputDecoration(
@@ -326,11 +326,22 @@ class TextSignUpButton extends StatelessWidget {
       );
     } else if (authVMWatch.isSigningUpError) {
       SchedulerBinding.instance.addPostFrameCallback((_) {
-        ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
+        ScaffoldMessenger.of(context).clearMaterialBanners();
         ScaffoldMessenger.of(context).showMaterialBanner(
           MaterialBanner(
-            content: Text(authVMWatch.signUpErrorMessage!),
-            leading: const CircleAvatar(child: Icon(Icons.error)),
+            content: Text(
+              authVMWatch.signUpErrorMessage!,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onErrorContainer,
+              ),
+            ),
+            leading: CircleAvatar(
+              child: Icon(
+                Icons.error,
+                color: Theme.of(context).colorScheme.error,
+              ),
+            ),
+            backgroundColor: Theme.of(context).colorScheme.errorContainer,
             actions: [
               if (authVMWatch.isSigningUpErrorUserAlreadyExists)
                 TextButton(
@@ -339,7 +350,12 @@ class TextSignUpButton extends StatelessWidget {
                     context.read<UserAuthViewModel>().resetSignUpState();
                     GoRouter.of(context).goNamed(constants.loginRouteName);
                   },
-                  child: const Text("SIGN IN"),
+                  child: Text(
+                    "SIGN IN",
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onErrorContainer,
+                    ),
+                  ),
                 ),
               TextButton(
                 onPressed: () {
@@ -348,7 +364,12 @@ class TextSignUpButton extends StatelessWidget {
                       .read<UserAuthViewModel>()
                       .resetSignUpStateAndNotifyListeners();
                 },
-                child: const Text("CLOSE"),
+                child: Text(
+                  "CLOSE",
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onErrorContainer,
+                  ),
+                ),
               ),
             ],
           ),

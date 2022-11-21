@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mealdash_app/features/authentication/repository/verify_email_service.dart';
 import 'package:mealdash_app/features/authentication/view_models/auth_view_model.dart';
+import 'package:mealdash_app/features/authentication/view_models/verify_email_view_model.dart';
 import 'package:mealdash_app/features/authentication/views/login/login_screen.dart';
 import 'package:mealdash_app/features/authentication/views/signup/signup_screen.dart';
 import 'package:mealdash_app/features/authentication/views/signup/signup_screen2.dart';
@@ -74,10 +76,19 @@ class MyRouter {
       GoRoute(
         name: constants.signupEmailVerificationRouteName,
         path: '/verify-email',
-        pageBuilder: (context, state) => MaterialPage<void>(
-          key: state.pageKey,
-          child: VerifyEmailScreen(
-            userEmail: userAuthViewModel.userLoginDTO.email!,
+        builder: (context, state) => MultiProvider(
+          providers: [
+            ChangeNotifierProvider<VerifyEmailViewModel>(
+              create: (_) => VerifyEmailViewModel(
+                verifyEmailService: getIt.get<VerifyEmailService>(),
+              ),
+            ),
+          ],
+          child: const VerifyEmailScreen(
+            // TODO: to get email two possible ways
+            // TODO: 1- pass email from signup screen to shared preferences to here
+            // TODO: 2- pass email from login screen when user unverified to shared preferences to here
+            userEmail: "todo@asdf.com",
           ),
         ),
       ),

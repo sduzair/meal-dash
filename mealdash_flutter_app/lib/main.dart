@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:json_theme/json_theme.dart';
 import 'package:mealdash_app/features/authentication/repository/auth_service.dart';
+import 'package:mealdash_app/features/authentication/repository/verify_email_service.dart';
 import 'package:mealdash_app/features/meals/repository/meal_service.dart';
 import 'package:mealdash_app/router/routes.dart';
 import 'package:mealdash_app/service_locator.dart';
@@ -29,6 +30,9 @@ Future<void> main() async {
   getIt.registerSingleton<MealService>(
     MealService(dioClient: getIt<DioClient>()),
   );
+  getIt.registerSingleton<VerifyEmailService>(
+    VerifyEmailService(dioClient: getIt<DioClient>()),
+  );
   getIt.registerSingleton<UserAuthViewModel>(
     UserAuthViewModel(
       prefs: getIt<SharedPreferences>(),
@@ -44,6 +48,8 @@ Future<void> main() async {
   final themeStr = await rootBundle.loadString('assets/appainter_theme.json');
   final themeJson = jsonDecode(themeStr);
   final theme = ThemeDecoder.decodeThemeData(themeJson)!;
+
+  getIt.registerSingleton<ThemeData>(theme);
 
   runApp(MyApp(theme: theme, userAuthViewModel: getIt<UserAuthViewModel>()));
 }

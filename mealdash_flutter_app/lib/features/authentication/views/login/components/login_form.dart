@@ -145,10 +145,16 @@ class TextUserLoginButton extends StatelessWidget {
         ScaffoldMessenger.of(context).clearMaterialBanners();
         ScaffoldMessenger.of(context).showMaterialBanner(
           MaterialBanner(
-            content: Text(authVMWatch.loginErrorMessage!),
-            leading: const CircleAvatar(
-              backgroundColor: Colors.red,
-              child: Icon(Icons.error),
+            content: Text(
+              authVMWatch.loginErrorMessage!,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onErrorContainer,
+              ),
+            ),
+            backgroundColor: Theme.of(context).colorScheme.errorContainer,
+            leading: CircleAvatar(
+              backgroundColor: Theme.of(context).colorScheme.error,
+              child: const Icon(Icons.error),
             ),
             actions: [
               if (authVMWatch.isLoggingInErrorUnverifiedEmail)
@@ -159,7 +165,12 @@ class TextUserLoginButton extends StatelessWidget {
                     GoRouter.of(context)
                         .goNamed(constants.signupEmailVerificationRouteName);
                   },
-                  child: const Text("VERIFY EMAIL"),
+                  child: Text(
+                    "VERIFY EMAIL",
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onErrorContainer,
+                    ),
+                  ),
                 ),
               TextButton(
                 onPressed: () {
@@ -168,7 +179,12 @@ class TextUserLoginButton extends StatelessWidget {
                       .read<UserAuthViewModel>()
                       .resetLoginStateAndNotifyListeners();
                 },
-                child: const Text("OK"),
+                child: Text(
+                  "OK",
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onErrorContainer,
+                  ),
+                ),
               )
             ],
           ),

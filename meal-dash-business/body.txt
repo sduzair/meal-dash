@@ -33,3 +33,14 @@
     "mealplan_description": "tacgem3so",
     "is_active": true
   }
+  // add meal
+  {
+ 
+    "mealTitle": "meal123",
+    "mealShortDescription": "string1",
+    "mealLongDescription": "string1",
+    "mealIngredients": ["vad"],
+    "mealQuantity": 2,
+    "mealQuantityUnit": "string1",
+"mealCalories":23
+}

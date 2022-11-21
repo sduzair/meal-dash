@@ -268,6 +268,7 @@ paths:
     
 
 # [POST] meal
+  /meal/add-meal:
     post:
       tags:
       - meal
@@ -275,12 +276,13 @@ paths:
       consumes:
         - multipart/form-Data
       parameters:
-      - name: body
-        in: body
+      - name: mealdata
+        in: formData
         description: meal Data
         required: true
-        schema:
-          $ref: '#/definitions/meal'
+        type: string
+        # schema:
+        #   $ref: '#/definitions/meal'
       - name: file
         in: formData
         description: meal image

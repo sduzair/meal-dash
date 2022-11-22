@@ -64,6 +64,7 @@ class App {
       encoding: 'utf-8',
       uploadDir: UPLOAD_PATH,
       multiples:false,
+      keepExtensions: true,
     }))
     
   }

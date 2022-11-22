@@ -5,10 +5,18 @@ import { MealEntity } from '@entities/meal.entity';
 import { HttpException } from '@exceptions/HttpException';
 import { Meal } from '@interfaces/meal.interface';
 import { isEmpty } from '@utils/util';
+import { UpdateMealDto } from '@/dtos/updatemeal.dto';
+import { unlink } from 'fs';
+const fs = require('fs');
 
 @EntityRepository()
 class MealService extends Repository<MealEntity> {
   public async createMeal(MealData: MealDto, user_id: number): Promise<Meal> {
+    if(!fs.existsSync('./../uploads')){
+      fs.mkdirSync('./../uploads',function (err,data) {
+        if(err) console.log('Some error in making folder',err);
+      });
+    }
     if (isEmpty(MealData)) throw new HttpException(400, 'MealData is empty');
     const createMealData: Meal = await MealEntity.create({ ...MealData, vendor_id: user_id }).save();
     return createMealData;
@@ -28,7 +36,7 @@ class MealService extends Repository<MealEntity> {
     return findUser;
   }
 
-  public async updateMeal(meal_id: number, mealData: MealDto): Promise<Meal> {
+  public async updateMeal(meal_id: number, mealData: UpdateMealDto): Promise<Meal> {
     if (isEmpty(mealData)) throw new HttpException(400, "mealData is empty");
 
     const updateMeal: Meal = await MealEntity.findOne({ where: { meal_id: meal_id } });
@@ -43,7 +51,12 @@ class MealService extends Repository<MealEntity> {
 
     const findMeal: Meal = await MealEntity.findOne({ where: { meal_id: meal_id } });
     if (!findMeal) throw new HttpException(409, "Meal doesn't exist");
-
+    console.log(findMeal.imagePath)
+    
+unlink(findMeal.imagePath, (err) => {
+  if (err) throw err;
+  console.log('successfully deleted /tmp/hello');
+});
     await MealEntity.delete({ meal_id: meal_id });
     return findMeal;
   }

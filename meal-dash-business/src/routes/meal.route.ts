@@ -23,13 +23,12 @@ class MealRoute implements Routes {
 
   
   private initializeRoutes() {
-    //this.router.post(`${this.path}`, validationMiddleware(MealDto, 'body'), this.mealController.createMealPlan);
     this.router.post(`${this.path}/add-meal`, authMiddleware, validationFileUploadMiddleware(MealDto, 'fields'), this.mealController.createMealPlan);
-    this.router.get(`${this.path}`, this.mealController.fetchMeals);
-    this.router.get(`${this.path}/:id(\\d+)`, this.mealController.fetchMealById);
-    this.router.put(`${this.path}/:meal_id(\\d+)`, this.mealController.updateMeal);
-    this.router.delete(`${this.path}/:meal_id(\\d+)`, this.mealController.deleteMeal);
-    this.router.get(`${this.path}/all`, this.mealController.fetchAllMealsByVendor);
+    this.router.get(`${this.path}`, authMiddleware, this.mealController.fetchMeals);
+    this.router.get(`${this.path}/:id(\\d+)`, authMiddleware, this.mealController.fetchMealById);
+    this.router.put(`${this.path}/:meal_id(\\d+)`, authMiddleware, this.mealController.updateMeal);
+    this.router.delete(`${this.path}/:meal_id(\\d+)`, authMiddleware, this.mealController.deleteMeal);
+    this.router.get(`${this.path}/all`, authMiddleware, this.mealController.fetchAllMealsByVendor);
   }
 }
 

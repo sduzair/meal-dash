@@ -283,7 +283,7 @@ paths:
         type: string
         # schema:
         #   $ref: '#/definitions/meal'
-      - name: file
+      - name: image
         in: formData
         description: meal image
         required: true

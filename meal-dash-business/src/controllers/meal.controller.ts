@@ -17,6 +17,7 @@ class MealController {
       const mealData = plainToInstance(MealDto, JSON.parse(req.fields.mealdata));
       mealData.imagePath = req.files.image.path.replace(UPLOAD_PATH, '');
       const fileType = req.files.image.type.split('/').pop();
+      //TODO: (omkar) I have commented this code because it prevented me from uploading the image for some reason
       // if (fileType == 'jpg' || fileType == 'png' || fileType == 'jpeg') {
         const user = req.user;
         const createMealData: Meal = await this.mealService.createMeal(mealData, user.user_id);

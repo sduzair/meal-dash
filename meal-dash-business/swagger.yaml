@@ -255,7 +255,7 @@ paths:
           description: 'Server Error'
 
 # [GET] meals
-  /meal:
+  /meals:
     get:
       tags:
       - meal
@@ -266,9 +266,8 @@ paths:
         500:
           description: 'Server Error'
     
-
 # [POST] meal
-  /meal/add-meal:
+  /meals/add-meal:
     post:
       tags:
       - meal
@@ -300,7 +299,7 @@ paths:
           description: 'Server Error'
 
 # [GET] meal
-  /meal/all:
+  /meals/all:
     get:
       tags:
       - meal
@@ -312,7 +311,7 @@ paths:
           description: 'Server Error'    
 
 # [GET] meal/id
-  /meal/{id}:
+  /meals/{id}:
     get:
       tags:
       - meal
@@ -447,9 +446,11 @@ definitions:
       user_email:
         type: string
         description: user Email
+        example: 'bossman@meal-dash.com'
       user_password:
         type: string
         description: user Password
+        example: 'bossman'
 
   createmealplan:
     type: object
@@ -505,7 +506,7 @@ definitions:
         type: number
         description: subscription meal plan id
 
-  meal:
+  meals:
     type: object
     required:
           - mealTitle

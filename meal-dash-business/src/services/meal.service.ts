@@ -13,7 +13,7 @@ const fs = require('fs');
 class MealService extends Repository<MealEntity> {
   public async createMeal(MealData: MealDto, user_id: number): Promise<Meal> {
     if(!fs.existsSync('./../uploads')){
-      fs.mkdirSync('./../uploads',function (err,data) {
+      fs.mkdirSync('./../uploads',function (err, data) {
         if(err) console.log('Some error in making folder',err);
       });
     }

@@ -3,18 +3,19 @@ import { NextFunction, Request, Response } from 'express';
 import { MealDto } from '@/dtos/meal.dto';
 import { Meal } from '@interfaces/meal.interface';
 import MealService from '@/services/meal.service';
-import { RequestWithUser } from '@/interfaces/auth.interface';
+import { RequestWithUser, RequestWithUserAndFile } from '@/interfaces/auth.interface';
 import { plainToInstance } from 'class-transformer';
 import { UpdateMealDto } from '@/dtos/updatemeal.dto';
 import { HttpException } from '@/exceptions/HttpException';
+import { UPLOAD_PATH } from '@/config';
 
 class MealController {
   public mealService = new MealService();
 
-  public createMealPlan = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
+  public createMealPlan = async (req: RequestWithUserAndFile, res: Response, next: NextFunction): Promise<void> => {
     try {
       const mealData = plainToInstance(MealDto, JSON.parse(req.fields.mealdata));
-      mealData.imagePath = req.files.image.path;
+      mealData.imagePath = req.files.image.path.replace(UPLOAD_PATH, '');
       const fileType = req.files.image.type.split('/').pop();
       if (fileType == 'jpg' || fileType == 'png' || fileType == 'jpeg') {
         const user = req.user;

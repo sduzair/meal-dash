@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import 'reflect-metadata';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
@@ -60,10 +59,11 @@ class App {
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(cookieParser());
-    this.app.use("/meal/add-meal",formidableMiddleware({
+    this.app.use(express.static( UPLOAD_PATH));
+    this.app.use("/meals/add-meal",formidableMiddleware({
+      multiples: true,
       encoding: 'utf-8',
       uploadDir: UPLOAD_PATH,
-      multiples:false,
       keepExtensions: true,
     }))
     

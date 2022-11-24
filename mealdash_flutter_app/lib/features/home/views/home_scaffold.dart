@@ -102,7 +102,7 @@ class LogoutButton extends StatelessWidget {
       });
     } else if (authVMWatch.isLoggingOutError) {
       SchedulerBinding.instance.addPostFrameCallback((_) {
-        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        ScaffoldMessenger.of(context).clearMaterialBanners();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(authVMWatch.logoutErrorMessage!),

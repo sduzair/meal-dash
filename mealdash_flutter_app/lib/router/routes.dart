@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mealdash_app/features/authentication/repository/verify_email_service.dart';
 import 'package:mealdash_app/features/authentication/view_models/auth_view_model.dart';
+import 'package:mealdash_app/features/authentication/view_models/verify_email_view_model.dart';
 import 'package:mealdash_app/features/authentication/views/login/login_screen.dart';
 import 'package:mealdash_app/features/authentication/views/signup/signup_screen.dart';
 import 'package:mealdash_app/features/authentication/views/signup/signup_screen2.dart';
+import 'package:mealdash_app/features/authentication/views/verification/verify_email_screen.dart';
 import 'package:mealdash_app/features/authentication/views/welcome/welcome_screen.dart';
 import 'package:mealdash_app/features/mealplans/views/mealplans_screen.dart';
 import 'package:mealdash_app/features/meals/repository/meal_service.dart';
@@ -27,7 +30,7 @@ class MyRouter {
   MyRouter(this.userAuthViewModel);
 
   late final router = GoRouter(
-    // navigatorKey: _rootNavigatorKey,
+    navigatorKey: _rootNavigatorKey,
     refreshListenable: userAuthViewModel,
     debugLogDiagnostics: true,
     restorationScopeId: 'sadfasf',
@@ -69,6 +72,25 @@ class MyRouter {
             ),
           ),
         ],
+      ),
+      GoRoute(
+        name: constants.signupEmailVerificationRouteName,
+        path: '/verify-email',
+        builder: (context, state) => MultiProvider(
+          providers: [
+            ChangeNotifierProvider<VerifyEmailViewModel>(
+              create: (_) => VerifyEmailViewModel(
+                verifyEmailService: getIt.get<VerifyEmailService>(),
+              ),
+            ),
+          ],
+          child: const VerifyEmailScreen(
+            // TODO: to get email two possible ways
+            // TODO: 1- pass email from signup screen to shared preferences to here
+            // TODO: 2- pass email from login screen when user unverified to shared preferences to here
+            userEmail: "todo@asdf.com",
+          ),
+        ),
       ),
       // GoRoute(
       //   name: constants.signupRouteName,
@@ -172,7 +194,7 @@ class MyRouter {
           ),
         ],
         builder: (context, state, child) => HomeScaffoldWithBottomNav(
-          // key: _shellNavigatorKey,
+          key: _shellNavigatorKey,
           child: child,
         ),
         pageBuilder: (context, state, child) => NoTransitionPage<void>(
@@ -192,8 +214,13 @@ class MyRouter {
           !(state.subloc == state.namedLocation(constants.signupRouteName)) &&
           !(state.subloc ==
               state.namedLocation(constants.signupStep2RouteName)) &&
-          !(state.subloc == state.namedLocation(constants.welcomeRouteName))) {
-        print('redirecting to welcome screen as user is not logged in');
+          !(state.subloc == state.namedLocation(constants.welcomeRouteName)) &&
+          !(state.subloc ==
+              state
+                  .namedLocation(constants.signupEmailVerificationRouteName))) {
+        print(
+          'redirecting to welcome screen as user is not logged in or not logging in',
+        );
         print(state.subloc);
         return state.namedLocation(constants.welcomeRouteName);
       } else {

@@ -86,7 +86,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             onSaved: (email) {
                               context
                                   .read<UserAuthViewModel>()
-                                  .userSignUpModel
+                                  .userSignUpDTO
                                   .email = email;
                             },
                             validator: (email) {
@@ -109,7 +109,7 @@ class _SignupScreenState extends State<SignupScreen> {
                               onSaved: (username) {
                                 context
                                     .read<UserAuthViewModel>()
-                                    .userSignUpModel
+                                    .userSignUpDTO
                                     .username = username;
                               },
                               validator: (username) {
@@ -135,7 +135,7 @@ class _SignupScreenState extends State<SignupScreen> {
                               onSaved: (password) {
                                 context
                                     .read<UserAuthViewModel>()
-                                    .userSignUpModel
+                                    .userSignUpDTO
                                     .password = password;
                               },
                               validator: (value) {

@@ -4,6 +4,7 @@ const bool isTestingMealAdd = false;
 const bool isTestingSignUp = true;
 const bool isTestingLogin = true;
 const bool isTestUserLoggedIn = false;
+const bool isTestingEmailVerification = false;
 const bool clearCookies = true;
 
 // KEY CONSTANTS
@@ -15,6 +16,7 @@ const String welcomeRouteName = 'welcome';
 const String loginRouteName = 'login';
 const String signupRouteName = 'signup';
 const String signupStep2RouteName = 'signupStep2';
+const String signupEmailVerificationRouteName = 'signupEmailVerification';
 
 // maintain the order of the tabs in FoodVendorHome - Scaffold - IndexedStack and BottomNavigationBar
 enum HomeNavTabRouteNames { home, orders, mealplans, meals }

@@ -73,6 +73,10 @@ class MyApp extends StatelessWidget {
           lazy: false,
           create: (BuildContext createContext) => MyRouter(userAuthViewModel),
         ),
+        ChangeNotifierProvider<SnackbarMessageProvider>(
+          lazy: false,
+          create: (BuildContext createContext) => SnackbarMessageProvider(),
+        ),
       ],
       child: Builder(
         builder: (BuildContext context) {
@@ -154,4 +158,39 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
+}
+
+class SnackbarMessageProvider with ChangeNotifier {
+  SnackbarMessageType _snackbarMessage = SnackbarMessageType.reset();
+
+  SnackbarMessageType get snackbarMessage => _snackbarMessage;
+
+  set snackbarMessage(SnackbarMessageType snackbarMessageType) {
+    _snackbarMessage = snackbarMessageType;
+  }
+
+  void resetSnackbarMessage() {
+    _snackbarMessage = SnackbarMessageType.reset();
+  }
+}
+
+class SnackbarMessageType {
+  late final String message;
+  late final bool showMessage;
+  late final Color color;
+  late final IconData icon;
+
+  SnackbarMessageType.reset({
+    this.message = '',
+    this.showMessage = false,
+    this.color = Colors.green,
+    this.icon = Icons.check,
+  });
+
+  SnackbarMessageType.set({
+    required this.message,
+    required this.showMessage,
+    this.color = Colors.green,
+    this.icon = Icons.check,
+  });
 }

@@ -25,6 +25,7 @@ class _LoginFormState extends State<LoginForm> {
       child: Column(
         children: [
           TextFormField(
+            initialValue: context.read<UserAuthViewModel>().userLoginDTO.email,
             onSaved: (email) {
               context.read<UserAuthViewModel>().userLoginDTO.email = email!;
             },
@@ -49,6 +50,8 @@ class _LoginFormState extends State<LoginForm> {
             padding:
                 const EdgeInsets.symmetric(vertical: constants.defaultPadding),
             child: TextFormField(
+              initialValue:
+                  context.read<UserAuthViewModel>().userLoginDTO.password,
               onSaved: (newValue) {
                 context.read<UserAuthViewModel>().userLoginDTO.password =
                     newValue!;

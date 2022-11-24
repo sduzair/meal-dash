@@ -25,12 +25,13 @@ class MealDTO {
   });
 
   MealDTO.initializeDummyVals()
-      : mealTitle = 'test',
-        mealShortDescription = 'test',
-        mealLongDescription = 'test',
-        mealIngredients = ['test'],
+      : mealTitle = 'Hyderabadi Biryani',
+        mealShortDescription = 'Taste of Hyderabad',
+        mealLongDescription =
+            'Delicious Hyderabadi Biryani with a hint of spices and a lot of love',
+        mealIngredients = ['Rice', 'Chicken', 'Spices', 'Love'],
         mealCalories = 765,
-        mealQuantity = 10;
+        mealQuantity = 200;
 
   MealDTO.empty();
 
@@ -46,7 +47,9 @@ class MealDTO {
 
 @JsonSerializable()
 class MealDTOWithId extends MealDTO {
-  String mealId;
+  @JsonKey(name: 'meal_id')
+  int mealId;
+  String imagePath;
 
   MealDTOWithId({
     required this.mealId,
@@ -57,6 +60,7 @@ class MealDTOWithId extends MealDTO {
     required super.mealCalories,
     required super.mealQuantity,
     required super.mealQuantityUnit,
+    required this.imagePath,
   });
 
   factory MealDTOWithId.fromJson(Map<String, dynamic> json) =>
@@ -64,6 +68,8 @@ class MealDTOWithId extends MealDTO {
 
   @override
   Map<String, dynamic> toJson() => _$MealDTOWithIdToJson(this);
+
+  String get imagePathParsed => imagePath.split('/').last;
 }
 
 enum MealQuantityUnit { oz, ml }

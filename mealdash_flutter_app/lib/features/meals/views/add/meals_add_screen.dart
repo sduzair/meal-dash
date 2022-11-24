@@ -10,6 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mealdash_app/components/custombuttons.dart';
 import 'package:mealdash_app/features/meals/dtos/meal_dto.dart';
 import 'package:mealdash_app/features/meals/view_models/meal_add_view_model.dart';
+import 'package:mealdash_app/main.dart';
 import 'package:mealdash_app/utils/constants.dart' as constants;
 import 'package:provider/provider.dart';
 import 'package:material_tag_editor/tag_editor.dart';
@@ -57,6 +58,8 @@ class _MealAddScreenState extends State<MealAddScreen> {
                 children: <Widget>[
                   const SizedBox(height: constants.defaultMargin),
                   TextFormField(
+                    initialValue:
+                        context.read<MealAddViewModel>().mealDTO.mealTitle,
                     restorationId: 'mealName',
                     decoration: const InputDecoration(
                       prefixIcon: Icon(Icons.fastfood),
@@ -80,6 +83,10 @@ class _MealAddScreenState extends State<MealAddScreen> {
                   ),
                   const SizedBox(height: constants.defaultMargin),
                   TextFormField(
+                    initialValue: context
+                        .read<MealAddViewModel>()
+                        .mealDTO
+                        .mealShortDescription,
                     decoration: const InputDecoration(
                       prefixIcon: Icon(Icons.description),
                       hintText: 'What is the short description of the meal?',
@@ -102,6 +109,10 @@ class _MealAddScreenState extends State<MealAddScreen> {
                   ),
                   const SizedBox(height: constants.defaultMargin),
                   TextFormField(
+                    initialValue: context
+                        .read<MealAddViewModel>()
+                        .mealDTO
+                        .mealLongDescription,
                     decoration: const InputDecoration(
                       prefixIcon: Icon(Icons.description),
                       hintText: 'What is the long description of the meal?',
@@ -147,6 +158,7 @@ class _MealAddScreenState extends State<MealAddScreen> {
                   // ),
                   const SizedBox(height: constants.defaultMargin),
                   // form for taking arrat of ingredients as input
+                  //TODO: initialize the ingredients list with dummy vals (testing)
                   const IngredientsChipsTextField(),
                   const SizedBox(height: constants.defaultMargin),
                   // input for meal weight in ounces or milliliters (double) (dropdown) (ounces by default)
@@ -155,6 +167,8 @@ class _MealAddScreenState extends State<MealAddScreen> {
                       Flexible(
                         flex: 4,
                         child: TextFormField(
+                          initialValue:
+                              "${context.read<MealAddViewModel>().mealDTO.mealQuantity ?? context.read<MealAddViewModel>().mealDTO.mealQuantity.toString()}",
                           decoration: const InputDecoration(
                             prefixIcon: Icon(Icons.fastfood),
                             hintText: 'What is the quantity of the meal?',
@@ -183,6 +197,8 @@ class _MealAddScreenState extends State<MealAddScreen> {
                   const SizedBox(height: constants.defaultMargin),
                   // optional input for meal calories with a unit of calories (double)
                   TextFormField(
+                    initialValue:
+                        "${context.read<MealAddViewModel>().mealDTO.mealCalories ?? context.read<MealAddViewModel>().mealDTO.mealCalories.toString()}",
                     decoration: const InputDecoration(
                       prefixIcon: Icon(Icons.whatshot),
                       hintText: 'What is the calorie count of the meal?',
@@ -345,7 +361,7 @@ class IngredientsChipsTextField extends StatelessWidget {
           ),
           child: Chip(
             // labelPaddin: const EdgeInsets.only(left: 8.0),
-            backgroundColor: Theme.of(context).chipTheme.selectedColor,
+            backgroundColor: Theme.of(context).colorScheme.secondary,
             label: Text(
               context.read<IngredientsProviderAdd>().ingredients[index],
               textScaleFactor: 1.1,
@@ -420,6 +436,11 @@ class AddMealSubmitButtonText extends StatelessWidget {
     if (mealAddVM.isAddingMeal) {
       return const CircularProgressIndicator();
     } else if (mealAddVM.isAddingMealSuccess) {
+      context.read<SnackbarMessageProvider>().snackbarMessage =
+          SnackbarMessageType.set(
+        message: 'Meal added successfully!',
+        showMessage: true,
+      );
       //TODO: SEE IF REQUIRED TO RESET ADD MEAL VIEW MODEL STATE
       SchedulerBinding.instance.addPostFrameCallback((_) {
         GoRouter.of(context).goNamed(constants.HomeNavTabRouteNames.meals.name);

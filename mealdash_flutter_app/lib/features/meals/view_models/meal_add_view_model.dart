@@ -101,8 +101,15 @@ class MealAddViewModel with ChangeNotifier, DiagnosticableTreeMixin {
   }
 }
 
-class IngredientsProviderAdd extends ChangeNotifier {
-  final List<String> _ingredients = [];
+class IngredientsProviderAdd with ChangeNotifier {
+  MealAddViewModel? mealAddViewModel;
+  List<String> _ingredients = [];
+
+  void update(MealAddViewModel mealAddViewModel) {
+    this.mealAddViewModel = mealAddViewModel;
+    _ingredients = mealAddViewModel.mealDTO.mealIngredients;
+  }
+
   List<String> get ingredients => _ingredients;
 
   void addIngredient(String ingredient) {

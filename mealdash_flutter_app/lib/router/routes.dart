@@ -152,8 +152,16 @@ class MyRouter {
                               mealService: getIt.get<MealService>(),
                             ),
                           ),
-                          ChangeNotifierProvider(
+                          ChangeNotifierProxyProvider<MealAddViewModel,
+                              IngredientsProviderAdd>(
                             create: (context) => IngredientsProviderAdd(),
+                            update: (
+                              context,
+                              mealAddViewModel,
+                              ingredientsProviderAdd,
+                            ) =>
+                                ingredientsProviderAdd!
+                                  ..update(mealAddViewModel),
                           ),
                         ],
                         child: const MealAddScreen(),
@@ -169,7 +177,7 @@ class MyRouter {
                           )
                         ],
                         child: MealsEditScreen(
-                          mealId: state.params['id'] as String,
+                          mealId: int.parse(state.params['id']!),
                         ),
                       ),
                     ),

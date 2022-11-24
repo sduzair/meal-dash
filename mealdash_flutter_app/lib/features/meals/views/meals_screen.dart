@@ -41,6 +41,7 @@ class MealsFutureBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('MealsFutureBuilder.build()');
     if (context.watch<UserAuthViewModel>().showLoggingInSuccessPopup) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         ScaffoldMessenger.of(context).hideCurrentSnackBar();
@@ -55,6 +56,20 @@ class MealsFutureBuilder extends StatelessWidget {
       context.read<UserAuthViewModel>().resetLoginState();
     }
     // TODO: SHOW MEAL ADDED SUCCESSFULLY SNACKBAR
+    if (context.read<SnackbarMessageProvider>().snackbarMessage.showMessage) {
+      print('showing snack bar');
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              context.read<SnackbarMessageProvider>().snackbarMessage.message,
+            ),
+          ),
+        );
+      });
+      context.read<SnackbarMessageProvider>().resetSnackbarMessage();
+    }
     return FutureBuilder<List<MealDTOWithId>?>(
       // future: MealService.getMeals(),
       future: getIt<MealService>().fetchMeals(),
@@ -71,11 +86,11 @@ class MealsFutureBuilder extends StatelessWidget {
                   leading: AspectRatio(
                     aspectRatio: 6.0 / 5.0,
                     child: Container(
-                      decoration: const BoxDecoration(
-                        color: Color(0xff7c94b6),
+                      decoration: BoxDecoration(
+                        color: const Color(0xff7c94b6),
                         image: DecorationImage(
                           image: NetworkImage(
-                            'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl-2.jpg',
+                            "${constants.apiBaseUrl}/${snapshot.data![index].imagePathParsed}",
                           ),
                           fit: BoxFit.cover,
                         ),
@@ -92,7 +107,7 @@ class MealsFutureBuilder extends StatelessWidget {
                       } else if (value == 'Edit') {
                         GoRouter.of(context).goNamed(
                           constants.mealsEditRouteName,
-                          params: {'id': snapshot.data![index].mealId},
+                          params: {'id': "${snapshot.data![index].mealId}"},
                         );
                       } else if (value == 'Delete') {
                         // MealService.deleteMeal(snapshot.data![index].id!);

@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:material_tag_editor/tag_editor.dart';
 
 class MealsEditScreen extends StatefulWidget {
-  final String mealId;
+  final int mealId;
   const MealsEditScreen({Key? key, required this.mealId}) : super(key: key);
 
   @override

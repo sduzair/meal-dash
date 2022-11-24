@@ -62,9 +62,10 @@ unlink(findMeal.imagePath, (err) => {
   }
 
   //fetchAllMealByVender fetch meal by user id
-  public async fetchAllMealsByVendor(vendor_id: number, vendor_name: string): Promise<Meal> {
+  public async fetchAllMealsByVendor(vendor_id: number, vendor_name: string): Promise<Meal[]> {
+    
     if (isEmpty(vendor_id)) throw new HttpException(400, 'meal Id is empty');
-    const findMeals: Meal = await MealEntity.findOne({ where: { vendor_id: vendor_id } });
+    const findMeals: Meal[] = await MealEntity.find({ where: { vendor_id: vendor_id } });
     if (!findMeals) throw new HttpException(409, `No meal data found for this vendor name: ${vendor_name}`);
 
     return findMeals;

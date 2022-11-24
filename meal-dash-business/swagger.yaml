@@ -298,18 +298,6 @@ paths:
         500:
           description: 'Server Error'
 
-# [GET] meal
-  /meals/all:
-    get:
-      tags:
-      - meal
-      summary: Find all meals by vender
-      responses:
-        200:
-          description: 'OK'
-        500:
-          description: 'Server Error'    
-
 # [GET] meal/id
   /meals/{id}:
     get:

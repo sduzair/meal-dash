@@ -78,8 +78,8 @@ class MealController {
       const user = req.user;
       const vendorId = user.user_id;
       const vendorName = user.user_login;
-      const findOneMealData: Meal = await this.mealService.fetchAllMealsByVendor(vendorId, vendorName);
-      res.status(200).json({ data: findOneMealData, message: 'findOne' });
+      const findAllMeals: Meal[] = await this.mealService.fetchAllMealsByVendor(vendorId, vendorName);
+      res.status(200).json({ data: findAllMeals, message: 'findAll' });
     } catch (error) {
       next(error);
     }

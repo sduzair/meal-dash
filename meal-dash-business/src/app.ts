@@ -9,7 +9,7 @@ import compression from 'compression';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJSDoc from 'swagger-jsdoc';
 import { createConnection } from 'typeorm';
-import { NODE_ENV, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS, UPLOAD_PATH } from '@config';
+import { NODE_ENV, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS, UPLOAD_PATH, printEnv } from '@config';
 import { dbConnection } from '@databases';
 import { Routes } from '@interfaces/routes.interface';
 import errorMiddleware from '@middlewares/error.middleware';
@@ -39,6 +39,7 @@ class App {
       logger.info(`======= ENV: ${this.env} =======`);
       logger.info(`🚀 App listening on the port ${this.port}`);
       logger.info(`=================================`);
+      printEnv()
     });
   }
 
@@ -59,11 +60,11 @@ class App {
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(cookieParser());
-    this.app.use(express.static( UPLOAD_PATH));
+    this.app.use(express.static( __dirname +UPLOAD_PATH));
     this.app.use("/meals/add-meal",formidableMiddleware({
       multiples: true,
       encoding: 'utf-8',
-      uploadDir: UPLOAD_PATH,
+      uploadDir: __dirname + UPLOAD_PATH,
       keepExtensions: true,
     }))
     

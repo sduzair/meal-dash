@@ -36,11 +36,11 @@
   // add meal
   {
  
-    "mealTitle": "meal123",
-    "mealShortDescription": "string1",
-    "mealLongDescription": "string1",
-    "mealIngredients": ["vad"],
+    "mealTitle": "Fish&Chips",
+    "mealShortDescription": "Fish and Chips",
+    "mealLongDescription": "Fish and Chips extra",
+    "mealIngredients": ["Fish", "Potato"],
     "mealQuantity": 2,
-    "mealQuantityUnit": "string1",
-    "mealCalories":23
+    "mealQuantityUnit": "lbs",
+    "mealCalories":2300
 }

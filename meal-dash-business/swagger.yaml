@@ -277,9 +277,10 @@ paths:
       parameters:
       - name: mealdata
         in: formData
-        description: meal Data
+        description: Add Meal Data with image
         required: true
         type: string
+        example: '{"mealTitle":"Fish&Chips","mealShortDescription":"Fish and Chips","mealLongDescription":"Fish and Chips extra","mealIngredients":["Fish","Potato"],"mealQuantity":2,"mealQuantityUnit":"lbs","mealCalories":2300}'
         # schema:
         #   $ref: '#/definitions/meal'
       - name: image
@@ -387,39 +388,51 @@ definitions:
       user_login:
         type: string
         description: user login name
+        example: 'userrresr'
       user_email:
         type: string
         description: user Email
+        example: 'azeez.wp+mealdash1000@gmail.com'
       user_password:
         type: string
         description: user Password
+        example: 'azeez.wp+mealdash1000'
       first_name:
         type: string
         description: user first name
+        example: 'azeez'
       last_name:
         type: string
-        description: user last name  
+        description: user last name 
+        example: 'ahmad'
       phone:
         type: string
         description: user Phone
+        example: '1234567890'
       user_type:
         type: string
         description: user Type
+        example: 'vender'
       address1:
         type: string
         description: user Address1
+        example: '636, Montpelier Drive'
       address2:
         type: string
         description: user Address2
+        example: ''
       city:
         type: string
         description: user City
+        example: 'Waterloo'
       state:
         type: string
         description: user State
+        example: 'ON'
       postal:
         type: string
         description: user Postal
+        example: 'N2T 0B3'
 
   user_login_dto:
     type: object

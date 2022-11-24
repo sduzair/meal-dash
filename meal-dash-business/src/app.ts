@@ -60,11 +60,11 @@ class App {
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(cookieParser());
-    this.app.use(express.static( UPLOAD_PATH));
+    this.app.use(express.static( __dirname +UPLOAD_PATH));
     this.app.use("/meals/add-meal",formidableMiddleware({
       multiples: true,
       encoding: 'utf-8',
-      uploadDir: UPLOAD_PATH,
+      uploadDir: __dirname + UPLOAD_PATH,
       keepExtensions: true,
     }))
     

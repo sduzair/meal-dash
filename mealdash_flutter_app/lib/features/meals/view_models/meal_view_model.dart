@@ -15,7 +15,7 @@ class MealAddViewModel with ChangeNotifier, DiagnosticableTreeMixin {
             ? MealDTO.initializeDummyVals()
             : MealDTO.empty();
 
-  File? image;
+  File? imageFile;
 
   final MealDTO _mealDTO;
 
@@ -43,7 +43,8 @@ class MealAddViewModel with ChangeNotifier, DiagnosticableTreeMixin {
     _isAddingMeal = true;
     notifyListeners();
     try {
-      await mealService.addMeal(_mealDTO);
+      await mealService.addMeal(_mealDTO,
+          imageFile!); //* ensure imageFile is not null and this is validated on the meal_add_screen.dart
       _isAddingMealSuccess = true;
       _showAddingMealSuccessPopup = true;
     } on DioError catch (e) {

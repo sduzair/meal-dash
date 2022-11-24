@@ -138,6 +138,16 @@ class MyApp extends StatelessWidget {
                 ),
                 deleteIconColor: theme.colorScheme.onPrimary,
               ),
+              bottomSheetTheme: theme.bottomSheetTheme.copyWith(
+                // backgroundColor: theme.colorScheme.primaryContainer,
+                elevation: constants.defaultElevation,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(16),
+                    topRight: Radius.circular(16),
+                  ),
+                ),
+              ),
             ),
           );
         },

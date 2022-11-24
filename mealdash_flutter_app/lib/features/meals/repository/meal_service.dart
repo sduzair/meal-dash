@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:mealdash_app/features/meals/dtos/meal_dto.dart';
 import 'package:mealdash_app/service_locator.dart';
@@ -163,10 +165,22 @@ class MealService {
     return meals.firstWhere((meal) => meal.mealId == mealId);
   }
 
-  Future<Response> addMeal(MealDTO meal) async {
+  Future<Response> addMeal(MealDTO meal, File imageFile) async {
     final Response response = await dioClient.dio.post(
-      '/meal',
-      data: meal.toJson(),
+      '/meals/add-meal',
+      options: Options(
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      ),
+      data: FormData.fromMap({
+        'mealdata': meal.toJson(),
+        'image': await MultipartFile.fromFile(
+          imageFile.path,
+          filename: imageFile.path.split('/').last,
+        ),
+      }),
+
     );
     return response;
   }

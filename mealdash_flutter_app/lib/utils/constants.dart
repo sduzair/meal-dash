@@ -1,6 +1,6 @@
 // DEV CONSTANTS
 
-const bool isTestingMealAdd = false;
+const bool isTestingMealAdd = true; // add meal image
 const bool isTestingSignUp = true;
 const bool isTestingLogin = true;
 const bool isTestUserLoggedIn = false;

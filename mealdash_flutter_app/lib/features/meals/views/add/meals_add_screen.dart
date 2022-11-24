@@ -211,35 +211,70 @@ class _MealAddScreenState extends State<MealAddScreen> {
   }
 }
 
-class ImageWidget extends StatelessWidget {
+class ImageWidget extends StatefulWidget {
   const ImageWidget({
     Key? key,
   }) : super(key: key);
 
   @override
+  State<ImageWidget> createState() => _ImageWidgetState();
+}
+
+class _ImageWidgetState extends State<ImageWidget> {
+  File? _imageFile;
+
+  void setImageFile(File imageFile) {
+    debugPrint('imageFile: $imageFile');
+    context.read<MealAddViewModel>().imageFile = imageFile;
+    setState(() {
+      _imageFile = imageFile;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     print('ImageWidget build');
     // final imageFile = context.watch<MealViewModel>().image;
-    File? imageFile;
     return Material(
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(constants.borderRadius)),
       ),
       child: InkWell(
-        onTap: () => _showPhotoPickerOptionsBottomModal(context),
-        child: imageFile == null
+        onTap: () => _showPhotoPickerOptionsBottomModal(context, setImageFile),
+        child: _imageFile == null
             ? const ImagePlaceholderWidget()
-            : Ink(
-                height: 200,
-                width: 200 * (6 / 5),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(constants.borderRadius),
-                  image: DecorationImage(
-                    image: FileImage(imageFile),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
+            : SelectedAndCroppedImageWidget(imageFile: _imageFile),
+      ),
+    );
+  }
+}
+
+class SelectedAndCroppedImageWidget extends StatelessWidget {
+  const SelectedAndCroppedImageWidget({
+    Key? key,
+    required this.imageFile,
+  }) : super(key: key);
+
+  final File? imageFile;
+
+  @override
+  Widget build(BuildContext context) {
+    return DottedBorder(
+      borderType: BorderType.RRect,
+      radius: const Radius.circular(constants.borderRadius),
+      dashPattern: const [5, 5],
+      strokeCap: StrokeCap.round,
+      padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+      child: Ink(
+        height: 200,
+        width: 200 * (6 / 5),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(constants.borderRadius),
+          image: DecorationImage(
+            image: FileImage(imageFile!),
+            fit: BoxFit.cover,
+          ),
+        ),
       ),
     );
   }
@@ -458,7 +493,10 @@ enum ImageState {
   cropped,
 }
 
-void _showPhotoPickerOptionsBottomModal(BuildContext context) {
+void _showPhotoPickerOptionsBottomModal(
+  BuildContext context,
+  void Function(File imageFile) setImage,
+) {
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
@@ -482,6 +520,7 @@ void _showPhotoPickerOptionsBottomModal(BuildContext context) {
               const Divider(
                 indent: 50,
                 endIndent: 50,
+                thickness: 5,
               ),
               const SizedBox(height: constants.defaultMargin),
               const Text(
@@ -497,7 +536,12 @@ void _showPhotoPickerOptionsBottomModal(BuildContext context) {
                 children: [
                   GestureDetector(
                     onTap: () async {
-                      // await _pickImage(ImageSource.camera, context);
+                      // set state to picked
+                      final imageFile =
+                          await _pickImage(ImageSource.camera, context);
+                      if (imageFile != null) {
+                        setImage(imageFile);
+                      }
                     },
                     child: Column(
                       children: const [
@@ -542,11 +586,12 @@ Future<File?> _pickImage(ImageSource source, BuildContext context) async {
     image = (await ImagePicker().pickImage(source: source))!;
     if (image == null) return null;
     img = File(image.path);
-    img = await _cropImage(imageFile: img);
+    // img = await _cropImage(imageFile: img);
   } on PlatformException catch (e) {
     print(e);
   } finally {
-    Navigator.of(context).pop();
+    // Navigator.of(context).pop();
+    // GoRouter.of(context).goNamed(constants.mealsAddRouteName);
   }
   return img;
 }

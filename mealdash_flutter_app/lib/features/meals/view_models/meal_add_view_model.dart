@@ -44,7 +44,8 @@ class MealAddViewModel with ChangeNotifier, DiagnosticableTreeMixin {
     notifyListeners();
     try {
       await mealService.addMeal(_mealDTO,
-          imageFile!); //* ensure imageFile is not null and this is validated on the meal_add_screen.dart
+        imageFile!,
+      ); //* ensure imageFile is not null and this is validated on the meal_add_screen.dart
       _isAddingMealSuccess = true;
       _showAddingMealSuccessPopup = true;
     } on DioError catch (e) {
@@ -63,6 +64,14 @@ class MealAddViewModel with ChangeNotifier, DiagnosticableTreeMixin {
     _addMealErrorMessage = null;
     _showAddingMealSuccessPopup = false;
     notifyListeners();
+  }
+
+  resetAddMealState() {
+    _isAddingMeal = false;
+    _isAddingMealError = false;
+    _isAddingMealSuccess = false;
+    _addMealErrorMessage = null;
+    _showAddingMealSuccessPopup = false;
   }
 
   @override

@@ -124,7 +124,7 @@ class DioExceptions implements Exception {
             'message'] ??
             'Conflict'; // LOIGN PAGE: INCORRECT PASSWORD OR EMAIL NOT FOUND
       case 500:
-        return 'Internal server error';
+        return error['message'] ?? 'Internal server error';
       case 502:
         return 'Bad gateway';
       default:

@@ -17,13 +17,13 @@ class MealController {
       const mealData = plainToInstance(MealDto, JSON.parse(req.fields.mealdata));
       mealData.imagePath = req.files.image.path.replace(UPLOAD_PATH, '');
       const fileType = req.files.image.type.split('/').pop();
-      if (fileType == 'jpg' || fileType == 'png' || fileType == 'jpeg') {
+      // if (fileType == 'jpg' || fileType == 'png' || fileType == 'jpeg') {
         const user = req.user;
         const createMealData: Meal = await this.mealService.createMeal(mealData, user.user_id);
         res.status(201).json({ data: createMealData, message: 'created' });
-      } else {
-        throw new HttpException(415, 'Incorrect file type');
-      }
+      // } else {
+        // throw new HttpException(415, 'Incorrect file type');
+      // }
     } catch (error) {
       next(error);
     }

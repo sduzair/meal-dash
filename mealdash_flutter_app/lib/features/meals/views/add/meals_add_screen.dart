@@ -2,13 +2,14 @@ import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mealdash_app/components/custombuttons.dart';
 import 'package:mealdash_app/features/meals/dtos/meal_dto.dart';
-import 'package:mealdash_app/features/meals/view_models/meal_view_model.dart';
+import 'package:mealdash_app/features/meals/view_models/meal_add_view_model.dart';
 import 'package:mealdash_app/utils/constants.dart' as constants;
 import 'package:provider/provider.dart';
 import 'package:material_tag_editor/tag_editor.dart';
@@ -376,14 +377,6 @@ class AddMealSubmitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print('AddMealSubmitButton build');
-    final mealAddVMWatch = context.watch<MealAddViewModel>();
-    // WHEN THE FORM IS SUBMITTED SUCCESSFULLY GO BACK TO MEALS NAVIGATION BAR PAGE AND RESET THE STATE OF THE FORM IN THE VIEW MODEL
-    if (mealAddVMWatch.isAddingMealSuccess) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        GoRouter.of(context).goNamed(constants.HomeNavTabRouteNames.meals.name);
-      });
-      context.read<MealAddViewModel>().resetAddMealStateAndNotifyListeners();
-    }
     final formKey = Form.of(context);
     return CustomElevatedButton(
       child: const AddMealSubmitButtonText(),
@@ -427,6 +420,10 @@ class AddMealSubmitButtonText extends StatelessWidget {
     if (mealAddVM.isAddingMeal) {
       return const CircularProgressIndicator();
     } else if (mealAddVM.isAddingMealSuccess) {
+      //TODO: SEE IF REQUIRED TO RESET ADD MEAL VIEW MODEL STATE
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        GoRouter.of(context).goNamed(constants.HomeNavTabRouteNames.meals.name);
+      });
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: const [
@@ -437,6 +434,36 @@ class AddMealSubmitButtonText extends StatelessWidget {
       );
     } else if (mealAddVM.isAddingMealError) {
       // return error message with icon button to retry adding meal
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        ScaffoldMessenger.of(context).clearMaterialBanners();
+        ScaffoldMessenger.of(context).showMaterialBanner(
+          MaterialBanner(
+            content: Text(
+              mealAddVM.addMealErrorMessage!,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onErrorContainer,
+              ),
+            ),
+            backgroundColor: Theme.of(context).colorScheme.errorContainer,
+            leading: Icon(
+              Icons.error,
+              color: Theme.of(context).colorScheme.error,
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
+                  context
+                      .read<MealAddViewModel>()
+                      .resetAddMealStateAndNotifyListeners();
+                },
+                child: const Text('Ok'),
+              ),
+            ],
+          ),
+        );
+        context.read<MealAddViewModel>().resetAddMealState();
+      });
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: const [
@@ -478,7 +505,7 @@ class ImagePlaceholderWidget extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(constants.borderRadius),
           image: const DecorationImage(
-            image: AssetImage('assets/images/image_placeholder.png'),
+            image: AssetImage(constants.mealsAddScreenImagePlaceholder),
             fit: BoxFit.cover,
           ),
         ),

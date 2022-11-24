@@ -22,7 +22,7 @@ class UserLoginDTO {
         password = 'asdf';
 
   UserLoginDTO.testUserLoginDTO()
-      : email = "asdsk@ldjf.com",
+      : email = "captasdf65sdfgsdfg4ddddddddddddsh12@gmail.com",
         password = "asdf";
 
   UserLoginDTO.empty();

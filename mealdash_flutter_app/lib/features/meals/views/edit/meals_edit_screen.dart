@@ -7,7 +7,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mealdash_app/features/meals/dtos/meal_dto.dart';
 import 'package:mealdash_app/features/meals/repository/meal_service.dart';
-import 'package:mealdash_app/features/meals/view_models/meal_view_model.dart';
+import 'package:mealdash_app/features/meals/view_models/meal_add_view_model.dart';
 import 'package:mealdash_app/utils/constants.dart' as constants;
 import 'package:provider/provider.dart';
 import 'package:material_tag_editor/tag_editor.dart';

@@ -10,7 +10,7 @@ import 'package:mealdash_app/features/authentication/views/verification/verify_e
 import 'package:mealdash_app/features/authentication/views/welcome/welcome_screen.dart';
 import 'package:mealdash_app/features/mealplans/views/mealplans_screen.dart';
 import 'package:mealdash_app/features/meals/repository/meal_service.dart';
-import 'package:mealdash_app/features/meals/view_models/meal_view_model.dart';
+import 'package:mealdash_app/features/meals/view_models/meal_add_view_model.dart';
 import 'package:mealdash_app/features/home/views/home_scaffold.dart';
 import 'package:mealdash_app/features/meals/views/meals_screen.dart';
 import 'package:mealdash_app/features/meals/views/add/meals_add_screen.dart';
@@ -134,16 +134,7 @@ class MyRouter {
             rootRoute: ShellRoute(
               pageBuilder: (context, state, child) => MaterialPage<void>(
                 key: state.pageKey,
-                child: MultiProvider(
-                  providers: [
-                    ChangeNotifierProvider<MealAddViewModel>(
-                      create: (_) => MealAddViewModel(
-                        mealService: getIt.get<MealService>(),
-                      ),
-                    ),
-                  ],
-                  child: child,
-                ),
+                child: child,
               ),
               routes: <RouteBase>[
                 GoRoute(
@@ -156,9 +147,14 @@ class MyRouter {
                       path: 'add',
                       builder: (context, state) => MultiProvider(
                         providers: [
+                          ChangeNotifierProvider<MealAddViewModel>(
+                            create: (_) => MealAddViewModel(
+                              mealService: getIt.get<MealService>(),
+                            ),
+                          ),
                           ChangeNotifierProvider(
                             create: (context) => IngredientsProviderAdd(),
-                          )
+                          ),
                         ],
                         child: const MealAddScreen(),
                       ),

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -166,15 +167,21 @@ class MealService {
   }
 
   Future<Response> addMeal(MealDTO meal, File imageFile) async {
+    final String cookieHeader = (await dioClient.cookieJar.loadForRequest(
+      Uri.parse('${Endpoints.baseUrl}/login'),
+    ))
+        .map((e) => e.toString())
+        .join('; ');
     final Response response = await dioClient.dio.post(
       '/meals/add-meal',
       options: Options(
         headers: {
+          'Cookie': cookieHeader,
           'Content-Type': 'multipart/form-data',
         },
       ),
       data: FormData.fromMap({
-        'mealdata': meal.toJson(),
+        'mealdata': jsonEncode(meal.toJson()),
         'image': await MultipartFile.fromFile(
           imageFile.path,
           filename: imageFile.path.split('/').last,

@@ -13,11 +13,7 @@ const fs = require('fs');
 class MealService extends Repository<MealEntity> {
   public async createMeal(MealData: MealDto, user_id: number): Promise<Meal> {
     //TODO: (omkar) pls don't hardcode the directory path
-    if(!fs.existsSync('./../uploads')){
-      fs.mkdirSync('./../uploads',function (err, data) {
-        if(err) console.log('Some error in making folder',err);
-      });
-    }
+   
     if (isEmpty(MealData)) throw new HttpException(400, 'MealData is empty');
     const createMealData: Meal = await MealEntity.create({ ...MealData, vendor_id: user_id }).save();
     return createMealData;

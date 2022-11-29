@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { compare, hash } from 'bcrypt';
 import { sign } from 'jsonwebtoken';
 import { EntityRepository, Repository, Transaction } from 'typeorm';
@@ -14,7 +13,7 @@ import MailService from '@/helper/email.helper';
 import { GOOGLE_API_KEY } from '@config';
 import { createClient } from "@google/maps";
 import { UpdateRadiusDto } from '@/dtos/radius.dto';
-import { VerifyUserDto } from '@/dtos/verifyuser.dto';
+import { TokenNotVerifiedException } from '@/exceptions/TokenNotVerifiedException';
 const googleMapsClient = createClient({
   key: GOOGLE_API_KEY,
   Promise: Promise
@@ -23,7 +22,7 @@ const googleMapsClient = createClient({
 @EntityRepository()
 class AuthService extends Repository<UserEntity> {
 
-  public async signup(userData: CreateUserDto): Promise<User> {
+  public async signup(userData: CreateUserDto): Promise<{ cookie: string; createdUserData: User }> {
     if (isEmpty(userData)) throw new HttpException(400, "userData is empty");
     const findUser: User = await UserEntity.findOne({ where: { user_email: userData.user_email } });
     if (findUser) throw new HttpException(409, `This email ${userData.user_email} already exists`);
@@ -31,11 +30,13 @@ class AuthService extends Repository<UserEntity> {
     const location = await this.getLatLng(userData);
     const hashedPassword = await hash(userData.user_password, 10);
     let security_code = Math.floor(100000 + Math.random() * 900000);
-    const createUserData: User = await UserEntity.create({ ...userData, user_activation_code: security_code, user_password: hashedPassword, ...location }).save();
-    MailService.getInstance().sendMail(createUserData);
-    createUserData.user_password = undefined;
-    createUserData.user_activation_code= undefined;
-    return createUserData;
+    const createdUserData: User = await UserEntity.create({ ...userData, user_activation_code: security_code, user_password: hashedPassword, ...location }).save();
+    MailService.getInstance().sendMail(createdUserData);
+    const tokenData = this.createToken(createdUserData);
+    const cookie = this.createCookie(tokenData);
+    createdUserData.user_password = undefined;
+    createdUserData.user_activation_code= undefined;
+    return { cookie, createdUserData };
   }
 
   public async login(userData: LoginUserDto): Promise<{ cookie: string; findUser: User }> {
@@ -44,7 +45,12 @@ class AuthService extends Repository<UserEntity> {
     const findUser: User = await UserEntity.findOne({ where: { user_email: userData.user_email } });
     if (!findUser) throw new HttpException(409, `This email ${userData.user_email} was not found`);
 
-    if(!findUser.user_status) throw new HttpException(403, `This email ${userData.user_email} is not verified`);
+    if(!findUser.user_status){
+      //Setting up the temprory token
+      const tokenData = this.createToken(findUser);
+      const cookie = this.createCookie(tokenData);
+      throw new TokenNotVerifiedException(403, `This email ${userData.user_email} is not verified`, cookie);
+    } 
 
     const isPasswordMatching: boolean = await compare(userData.user_password, findUser.user_password);
     if (!isPasswordMatching) throw new HttpException(409, "Password not matching");
@@ -75,6 +81,7 @@ class AuthService extends Repository<UserEntity> {
 
     return { expiresIn, token: sign(dataStoredInToken, secretKey, { expiresIn }) };
   }
+
   private getLatLng = (userData: CreateUserDto): Promise<{lat:number, lng: number, formattedAddress: string}> => {
     let address: string;
         address += isEmpty(userData.address1) ? "": userData.address1 +" ";
@@ -112,19 +119,19 @@ class AuthService extends Repository<UserEntity> {
 
     await UserEntity.update(findUser.user_id, { vender_radius: updateRadiusDto.vender_radius });
 
-    const updateUser: User = await UserEntity.findOne({ where: { user_id: findUser.user_id } });//TODO change interface to user
+    const updateUser: User = await UserEntity.findOne({ where: { user_id: findUser.user_id } });
     updateUser.user_password = undefined;
     updateUser.user_activation_code= undefined;
     return updateUser;
   }
 
   //updateUser update user by id
-  public async verifyUser(verifyUserDto: VerifyUserDto): Promise<User> {
+  public async verifyUser(verifyUserDto: User, user_activation_code: number): Promise<User> {
     if (isEmpty(verifyUserDto)) throw new HttpException(400, "verifyUserDto is empty");
 
     const user_found: User = await UserEntity.findOne({ where: { user_id: verifyUserDto.user_id, user_login: verifyUserDto.user_login} });
     if (!user_found) throw new HttpException(409, "User doesn't exist");
-    if(user_found.user_activation_code != verifyUserDto.user_activation_code) throw new HttpException(409, "User activation code is not correct");
+    if(user_found.user_activation_code != user_activation_code) throw new HttpException(409, "User activation code is not correct");
 
     await UserEntity.update(user_found.user_id, { user_status: true });
 

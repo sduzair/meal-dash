@@ -8,23 +8,22 @@ import { plainToInstance } from 'class-transformer';
 import { UpdateMealDto } from '@/dtos/updatemeal.dto';
 import { HttpException } from '@/exceptions/HttpException';
 import { UPLOAD_PATH } from '@/config';
+import { USER_ROLES } from '@/utils/util';
 
 class MealController {
   public mealService = new MealService();
 
   public createMealPlan = async (req: RequestWithUserAndFile, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const mealData = plainToInstance(MealDto, JSON.parse(req.fields.mealdata));
-      mealData.imagePath = req.files.image.path.replace(UPLOAD_PATH, '');
-      const fileType = req.files.image.type.split('/').pop();
-      //TODO: (omkar) I have commented this code because it prevented me from uploading the image for some reason
-      // if (fileType == 'jpg' || fileType == 'png' || fileType == 'jpeg') {
+      if (req.user_role && req.user_role === USER_ROLES.API_ACCESS) {
+        const mealData = plainToInstance(MealDto, JSON.parse(req.fields.mealdata));
+        mealData.imagePath = req.files.image.path.replace(UPLOAD_PATH, '');
         const user = req.user;
         const createMealData: Meal = await this.mealService.createMeal(mealData, user.user_id);
         res.status(201).json({ data: createMealData, message: 'created' });
-      // } else {
-        // throw new HttpException(415, 'Incorrect file type');
-      // }
+      } else {
+        throw new HttpException(403, 'Unauthorized access');
+      }
     } catch (error) {
       next(error);
     }
@@ -32,9 +31,12 @@ class MealController {
 
   public fetchMeals = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const ftechAllMealsData: Meal[] = await this.mealService.fetchAllMeal();
-
-      res.status(200).json({ data: ftechAllMealsData, message: 'findAll' });
+      if (req.user_role && req.user_role === USER_ROLES.API_ACCESS) {
+        const ftechAllMealsData: Meal[] = await this.mealService.fetchAllMeal();
+        res.status(200).json({ data: ftechAllMealsData, message: 'findAll' });
+      } else {
+        throw new HttpException(403, 'Unauthorized access');
+      }
     } catch (error) {
       next(error);
     }
@@ -42,9 +44,13 @@ class MealController {
 
   public fetchMealById = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const mealId = Number(req.params.id);
-      const findOneMealData: Meal = await this.mealService.fetchMealById(mealId);
-      res.status(200).json({ data: findOneMealData, message: 'findOne' });
+      if (req.user_role && req.user_role === USER_ROLES.API_ACCESS) {
+        const mealId = Number(req.params.id);
+        const findOneMealData: Meal = await this.mealService.fetchMealById(mealId);
+        res.status(200).json({ data: findOneMealData, message: 'findOne' });
+      } else {
+        throw new HttpException(403, 'Unauthorized access');
+      }
     } catch (error) {
       next(error);
     }
@@ -53,11 +59,15 @@ class MealController {
 
   public updateMeal = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const meal_id = Number(req.params.meal_id);
-      const mealData: UpdateMealDto = req.body;
-      const updateUserData: Meal = await this.mealService.updateMeal(meal_id, mealData);
+      if (req.user_role && req.user_role === USER_ROLES.API_ACCESS) {
+        const meal_id = Number(req.params.meal_id);
+        const mealData: UpdateMealDto = req.body;
+        const updateUserData: Meal = await this.mealService.updateMeal(meal_id, mealData);
 
-      res.status(200).json({ data: updateUserData, message: 'updated' });
+        res.status(200).json({ data: updateUserData, message: 'updated' });
+      } else {
+        throw new HttpException(403, 'Unauthorized access');
+      }
     } catch (error) {
       next(error);
     }
@@ -65,10 +75,14 @@ class MealController {
 
   public deleteMeal = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const mealId = Number(req.params.meal_id);
-      const deleteMealData: Meal = await this.mealService.deleteMeal(mealId);
+      if (req.user_role && req.user_role === USER_ROLES.API_ACCESS) {
+        const mealId = Number(req.params.meal_id);
+        const deleteMealData: Meal = await this.mealService.deleteMeal(mealId);
 
-      res.status(200).json({ data: deleteMealData, message: 'meal deleted' });
+        res.status(200).json({ data: deleteMealData, message: 'meal deleted' });
+      } else {
+        throw new HttpException(403, 'Unauthorized access');
+      }
     } catch (error) {
       next(error);
     }
@@ -76,11 +90,15 @@ class MealController {
 
   public fetchAllMealsByVendor = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const user = req.user;
-      const vendorId = user.user_id;
-      const vendorName = user.user_login;
-      const findAllMeals: Meal[] = await this.mealService.fetchAllMealsByVendor(vendorId, vendorName);
-      res.status(200).json({ data: findAllMeals, message: 'findAll' });
+      if (req.user_role && req.user_role === USER_ROLES.API_ACCESS) {
+        const user = req.user;
+        const vendorId = user.user_id;
+        const vendorName = user.user_login;
+        const findAllMeals: Meal[] = await this.mealService.fetchAllMealsByVendor(vendorId, vendorName);
+        res.status(200).json({ data: findAllMeals, message: 'findAll' });
+      } else {
+        throw new HttpException(403, 'Unauthorized access');
+      }
     } catch (error) {
       next(error);
     }

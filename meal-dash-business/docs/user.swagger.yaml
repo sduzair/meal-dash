@@ -314,19 +314,11 @@ definitions:
   verify_user:
     type: object
     required:
-        - user_id
-        - user_login
         - user_activation_code
     properties:
-      user_id:
-        type: number
-        description: user id
-      user_login:
-        type: string
-        description: username
       user_activation_code:
         type: number
-        description: vender radius      
+        description: One time security code      
 schemes:
  - https
  - http

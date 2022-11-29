@@ -6,6 +6,7 @@ import { LoginUserDto } from '@/dtos/loginuser.dto';
 import { CreateUserDto } from '@/dtos/createusers.dto';
 import { VerifyUserDto } from '@/dtos/verifyuser.dto';
 import { UpdateRadiusDto } from '@/dtos/radius.dto';
+import { TokenNotVerifiedException } from '@/exceptions/TokenNotVerifiedException';
 
 // AuthController class
 class AuthController {
@@ -15,9 +16,9 @@ class AuthController {
   public signUp = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const userData: CreateUserDto = req.body;
-      const signUpUserData: User = await this.authService.signup(userData);
-
-      res.status(201).json({ data: signUpUserData, message: 'signup' });
+      const { cookie, createdUserData } = await this.authService.signup(userData);
+      res.setHeader('Set-Cookie', [cookie]);
+      res.status(201).json({ data: createdUserData, message: 'signup' });
     } catch (error) {
       next(error);
     }
@@ -31,8 +32,15 @@ class AuthController {
 
       res.setHeader('Set-Cookie', [cookie]);
       res.status(200).json({ data: findUser, message: 'login' });
-    } catch (error) {
-      next(error);
+    }
+    // On HttpException add cookie header to response
+    catch (error) {
+      if (error instanceof TokenNotVerifiedException) {
+        res.setHeader('Set-Cookie', [error.cookie]);
+        next(error);
+      } else {
+        next(error);
+      }
     }
   };
 
@@ -54,7 +62,6 @@ class AuthController {
     try {
       const userData: UpdateRadiusDto = req.body;
       const updateUserData: User = await this.authService.updateVenderRadius(userData);
-
       res.status(200).json({ data: updateUserData, message: 'Vender delivery radius has been updated' });
     } catch (error) {
       next(error);
@@ -62,11 +69,12 @@ class AuthController {
   };
 
   //updateVenderRadius method to update a user by id
-  public verifyUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  public verifyUser = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const userData: VerifyUserDto = req.body;
-      const updateUserData: User = await this.authService.verifyUser(userData);
-
+      const userData: User = req.user;
+      const { user_activation_code } = req.body;
+      const updateUserData: User = await this.authService.verifyUser(userData, user_activation_code);
+      res.setHeader('Set-Cookie', ['Authorization=; Max-age=0']);
       res.status(200).json({ data: updateUserData, message: 'User has been verified' });
     } catch (error) {
       next(error);

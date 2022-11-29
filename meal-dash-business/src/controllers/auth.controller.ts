@@ -7,6 +7,8 @@ import { CreateUserDto } from '@/dtos/createusers.dto';
 import { VerifyUserDto } from '@/dtos/verifyuser.dto';
 import { UpdateRadiusDto } from '@/dtos/radius.dto';
 import { TokenNotVerifiedException } from '@/exceptions/TokenNotVerifiedException';
+import { HttpException } from '@/exceptions/HttpException';
+import { USER_ROLES } from '@/utils/util';
 
 // AuthController class
 class AuthController {
@@ -71,11 +73,16 @@ class AuthController {
   //updateVenderRadius method to update a user by id
   public verifyUser = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const userData: User = req.user;
-      const { user_activation_code } = req.body;
-      const updateUserData: User = await this.authService.verifyUser(userData, user_activation_code);
-      res.setHeader('Set-Cookie', ['Authorization=; Max-age=0']);
-      res.status(200).json({ data: updateUserData, message: 'User has been verified' });
+      if (req.user_role && req.user_role === USER_ROLES.TEMP_ACCESS) {
+        const userData: User = req.user;
+        const { user_activation_code } = req.body;
+        const updateUserData: User = await this.authService.verifyUser(userData, user_activation_code);
+        res.setHeader('Set-Cookie', ['Authorization=; Max-age=0']);
+        res.status(200).json({ data: updateUserData, message: 'User has been verified' });
+      } else {
+        throw new HttpException(403, 'Unauthorized access');
+      }
+
     } catch (error) {
       next(error);
     }

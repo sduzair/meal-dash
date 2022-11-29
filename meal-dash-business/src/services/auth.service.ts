@@ -9,7 +9,6 @@ import { DataStoredInToken, TokenData } from '@interfaces/auth.interface';
 import { User } from '@interfaces/users.interface';
 import { isEmpty } from '@utils/util';
 import { LoginUserDto } from '@/dtos/loginuser.dto';
-import { VenderDto } from '@/dtos/vender.dto';
 import { CreateUserDto } from '@/dtos/createusers.dto';
 import MailService from '@/helper/email.helper';
 import { GOOGLE_API_KEY } from '@config';

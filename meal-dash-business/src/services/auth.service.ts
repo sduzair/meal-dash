@@ -6,7 +6,7 @@ import { UserEntity } from '@entities/users.entity';
 import { HttpException } from '@exceptions/HttpException';
 import { DataStoredInToken, TokenData } from '@interfaces/auth.interface';
 import { User } from '@interfaces/users.interface';
-import { isEmpty } from '@utils/util';
+import { isEmpty, USER_ROLES } from '@utils/util';
 import { LoginUserDto } from '@/dtos/loginuser.dto';
 import { CreateUserDto } from '@/dtos/createusers.dto';
 import MailService from '@/helper/email.helper';
@@ -32,7 +32,7 @@ class AuthService extends Repository<UserEntity> {
     let security_code = Math.floor(100000 + Math.random() * 900000);
     const createdUserData: User = await UserEntity.create({ ...userData, user_activation_code: security_code, user_password: hashedPassword, ...location }).save();
     MailService.getInstance().sendMail(createdUserData);
-    const tokenData = this.createToken(createdUserData);
+    const tokenData = this.createToken(createdUserData, USER_ROLES.TEMP_ACCESS);
     const cookie = this.createCookie(tokenData);
     createdUserData.user_password = undefined;
     createdUserData.user_activation_code= undefined;
@@ -47,7 +47,7 @@ class AuthService extends Repository<UserEntity> {
 
     if(!findUser.user_status){
       //Setting up the temprory token
-      const tokenData = this.createToken(findUser);
+      const tokenData = this.createToken(findUser, USER_ROLES.TEMP_ACCESS);
       const cookie = this.createCookie(tokenData);
       throw new TokenNotVerifiedException(403, `This email ${userData.user_email} is not verified`, cookie);
     } 
@@ -55,7 +55,7 @@ class AuthService extends Repository<UserEntity> {
     const isPasswordMatching: boolean = await compare(userData.user_password, findUser.user_password);
     if (!isPasswordMatching) throw new HttpException(409, "Password not matching");
 
-    const tokenData = this.createToken(findUser);
+    const tokenData = this.createToken(findUser, USER_ROLES.API_ACCESS);
     const cookie = this.createCookie(tokenData);
 
     findUser.user_password = undefined;
@@ -74,8 +74,8 @@ class AuthService extends Repository<UserEntity> {
     return findUser;
   }
 
-  public createToken(user: User): TokenData {
-    const dataStoredInToken: DataStoredInToken = { user_id: user.user_id };
+  public createToken(user: User, user_role: string): TokenData {
+    const dataStoredInToken: DataStoredInToken = { user_id: user.user_id, user_role };
     const secretKey: string = SECRET_KEY;
     const expiresIn: number = 60 * 60;
 

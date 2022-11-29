@@ -1,0 +1,332 @@
+tags:
+- name: User
+  description: User API
+- name: Authentication
+  description: User authentication API
+paths:
+# [POST] sign up user
+  /signup:
+    post:
+      tags:
+      - Authentication
+      summary: sign-up
+      parameters:
+      - name: body
+        in: body
+        description: user Data
+        required: true
+        schema:
+          $ref: '#/definitions/users'
+      responses:
+        201:
+          description: 'Created'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+# [POST] sign in user
+  /login:
+    post:
+      tags:
+      - Authentication
+      summary: login-in
+      parameters:
+      - name: body
+        in: body
+        description: user Data
+        required: true
+        schema:
+          $ref: '#/definitions/user_login_dto'
+      responses:
+        201:
+          description: 'Created'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+  # [POST] sign in user
+  /logout:
+    post:
+      tags:
+      - Authentication
+      summary: logout
+      security:
+        - basicAuth: []
+      responses:
+        201:
+          description: 'Created'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+  # [PUT] Update Vender Radius
+  /update-radius:
+    put:
+      tags:
+      - Authentication
+      summary: vender radius update 
+      parameters:
+      - name: body
+        in: body
+        description: user Data
+        required: true
+        schema:
+          $ref: '#/definitions/update_radius'
+      responses:
+        201:
+          description: 'Created'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+  # [PUT] Update Vender Radius
+  /verify-user:
+    put:
+      tags:
+      - Authentication
+      summary: verify user by security code
+      parameters:
+      - name: body
+        in: body
+        description: user Data
+        required: true
+        schema:
+          $ref: '#/definitions/verify_user'
+      responses:
+        201:
+          description: 'Created'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'               
+# [GET] users
+  /users:
+    get:
+      tags:
+      - User
+      summary: Find All Users
+      responses:
+        200:
+          description: 'OK'
+        500:
+          description: 'Server Error'
+
+# [POST] users
+    post:
+      tags:
+      - User
+      summary: Add User
+      parameters:
+      - name: body
+        in: body
+        description: user Data
+        required: true
+        schema:
+          $ref: '#/definitions/users'
+      responses:
+        201:
+          description: 'Created'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+# [GET] users/id
+  /users/{id}:
+    get:
+      tags:
+      - User
+      summary: Find User By Id
+      parameters:
+      - name: id
+        in: path
+        description: User Id
+        required: true
+        type: integer
+      responses:
+        200:
+          description: 'OK'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+# [PUT] users/id
+    put:
+      tags:
+      - User
+      summary: Update User By Id
+      parameters:
+      - name: id
+        in: path
+        description: user Id
+        required: true
+        type: integer
+      - name: body
+        in: body
+        description: user Data
+        required: true
+        schema:
+          $ref: '#/definitions/users'
+      responses:
+        200:
+          description: 'OK'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+# [DELETE] users/id
+    delete:
+      tags:
+      - User
+      summary: Delete User By Id
+      parameters:
+      - name: id
+        in: path
+        description: user Id
+        required: true
+        type: integer
+      responses:
+        200:
+          description: 'OK'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+
+definitions:
+  users:
+    type: object
+    required:
+        - user_login
+        - user_email
+        - user_password
+        - first_name
+        - last_name
+        - phone
+        - user_type
+        - address1
+        - address2
+        - city
+        - state
+        - postal
+    properties:
+      user_login:
+        type: string
+        description: user login name
+        example: 'userrresr'
+      user_email:
+        type: string
+        description: user Email
+        example: 'azeez.wp+mealdash1000@gmail.com'
+      user_password:
+        type: string
+        description: user Password
+        example: 'azeez.wp+mealdash1000'
+      first_name:
+        type: string
+        description: user first name
+        example: 'azeez'
+      last_name:
+        type: string
+        description: user last name 
+        example: 'ahmad'
+      phone:
+        type: string
+        description: user Phone
+        example: '1234567890'
+      user_type:
+        type: string
+        description: user Type
+        example: 'vender'
+      address1:
+        type: string
+        description: user Address1
+        example: '636, Montpelier Drive'
+      address2:
+        type: string
+        description: user Address2
+        example: ''
+      city:
+        type: string
+        description: user City
+        example: 'Waterloo'
+      state:
+        type: string
+        description: user State
+        example: 'ON'
+      postal:
+        type: string
+        description: user Postal
+        example: 'N2T 0B3'
+
+  user_login_dto:
+    type: object
+    required:
+        # - user_login
+        - user_email
+        - user_password
+    properties:
+      # user_login:
+      #   type: string
+      #   description: user login name
+      user_email:
+        type: string
+        description: user Email
+        example: 'bossman@meal-dash.com'
+      user_password:
+        type: string
+        description: user Password
+        example: 'bossman'
+
+  update_radius:
+    type: object
+    required:
+        - user_id
+        - user_login
+        - vender_radius
+    properties:
+      user_id:
+        type: number
+        description: user id
+      user_login:
+        type: string
+        description: username
+      vender_radius:
+        type: number
+        description: vender radius
+
+  verify_user:
+    type: object
+    required:
+        - user_id
+        - user_login
+        - user_activation_code
+    properties:
+      user_id:
+        type: number
+        description: user id
+      user_login:
+        type: string
+        description: username
+      user_activation_code:
+        type: number
+        description: vender radius      
+schemes:
+ - https
+ - http

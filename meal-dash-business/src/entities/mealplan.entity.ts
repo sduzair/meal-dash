@@ -23,6 +23,10 @@ export class MealPlanEntity extends BaseEntity{
   @IsNotEmpty()
   mealplan_description: string;
 
+  @Column({type:"json"})
+  @IsNotEmpty()
+  meal_ids: number[];
+
   @Column()
   @IsNotEmpty()
   is_active: boolean;

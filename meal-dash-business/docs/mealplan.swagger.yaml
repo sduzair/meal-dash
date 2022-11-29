@@ -1,0 +1,69 @@
+paths:
+# [GET] /mealplans
+  /mealplans:
+    get:
+      summary: Get all meal plans
+      description: Get all meal plans
+      operationId: getMealPlans
+      tags:
+        - MealPlan
+      responses:
+        201:
+          description: 'Created'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+# [POST] insert mean plan
+  /mealplans/add:
+    post:
+      tags:
+      - MealPlan
+      summary: Add meal plan
+      parameters:
+      - name: body
+        in: body
+        description: meal Data
+        required: true
+        schema:
+          $ref: '#/definitions/createmealplan'
+      responses:
+        201:
+          description: 'Created'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+# definitions
+definitions:
+  createmealplan:
+    type: object
+    required:
+        - mealplan_recurrence
+        - mealplan_title
+        - mealplan_description
+        - is_active
+        - meal_ids
+    properties:
+      mealplan_recurrence:
+        type: string
+        description: meal plan recurrence
+      mealplan_title:
+        type: string
+        description: meal plan title
+      mealplan_description:
+        type: string
+        description: meal plan description
+      is_active:
+        type: boolean
+        description: meal plan is active
+      meal_ids:
+        type: array
+        description: meal ids
+        items:
+          type: integer
+          example: 1  

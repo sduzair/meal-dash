@@ -24,7 +24,7 @@ export class MealDto {
   @IsString()
   public mealQuantityUnit: string;
 
-  public image: string;
+  public image?: string;
   public imagePath: string;
 
 }

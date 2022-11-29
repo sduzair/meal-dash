@@ -7,7 +7,7 @@ import { Router } from "express";
 
 // MealPlanRoute class to handle all the routes for meal plans
 export default class MealPlanRoute implements Routes {
-    public path = '/mealplan';
+    public path = '/mealplans';
     public router = Router();
     public mealplanController = new MealPlanController();
 
@@ -16,7 +16,9 @@ export default class MealPlanRoute implements Routes {
     }
 
     private initializeRoutes() {
-        this.router.post(`${this.path}/add-mealplan`, authMiddleware, validationMiddleware(CreateMealPlanDto, 'body'), 
+        this.router.get(`${this.path}`, authMiddleware, this.mealplanController.getMealPlans);
+
+        this.router.post(`${this.path}/add`, authMiddleware, validationMiddleware(CreateMealPlanDto, 'body'), 
         this.mealplanController.addMealPlan);
     }
 }

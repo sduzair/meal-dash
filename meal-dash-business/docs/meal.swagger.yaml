@@ -1,0 +1,153 @@
+tags:
+- name: Meal
+  description: Meal API
+
+paths:
+  # [GET] meals
+  /meals:
+    get:
+      tags:
+      - Meal
+      summary: Find All Meals
+      responses:
+        200:
+          description: 'OK'
+        500:
+          description: 'Server Error'
+    
+# [POST] meal
+  /meals/add-meal:
+    post:
+      tags:
+      - Meal
+      summary: Add meal
+      consumes:
+        - multipart/form-Data
+      parameters:
+      - name: mealdata
+        in: formData
+        description: Add Meal Data with image
+        required: true
+        type: string
+        example: '{"mealTitle":"Fish&Chips","mealShortDescription":"Fish and Chips","mealLongDescription":"Fish and Chips extra","mealIngredients":["Fish","Potato"],"mealQuantity":2,"mealQuantityUnit":"lbs","mealCalories":2300}'
+        # schema:
+        #   $ref: '#/definitions/meal'
+      - name: image
+        in: formData
+        description: meal image
+        required: true
+        type: file
+        
+      responses:
+        201:
+          description: 'Created'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+# [GET] meal/id
+  /meals/{id}:
+    get:
+      tags:
+      - Meal
+      summary: Find Meal By Id
+      parameters:
+      - name: id
+        in: path
+        description: Meal Id
+        required: true
+        type: integer
+      responses:
+        200:
+          description: 'OK'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+          # [PUT] meals/id
+    put:
+      tags:
+      - Meal
+      summary: Update Meal By Id
+      parameters:
+      - name: id
+        in: path
+        description: meal Id
+        required: true
+        type: integer
+      - name: body
+        in: body
+        description: meal Data
+        required: true
+        schema:
+          $ref: '#/definitions/meal'
+      responses:
+        200:
+          description: 'OK'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+# [DELETE] meals/id
+    delete:
+      tags:
+      - Meal
+      summary: Delete Meal By Id
+      parameters:
+      - name: id
+        in: path
+        description: meal Id
+        required: true
+        type: integer
+      responses:
+        200:
+          description: 'OK'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+definitions:
+    meals:
+    type: object
+    required:
+          - mealTitle
+          - mealShortDescription
+          - mealLongDescription
+          - mealIngredients
+          - mealQuantity
+          - mealQuantityUnit
+    properties:
+      mealTitle:
+        type: string
+        description: Meal item title
+      mealShortDescription:
+        type: string
+        description: Meal item short Description
+      mealLongDescription:
+        type: string
+        description: Meal item long Description
+      mealIngredients:
+        type: array
+        items:
+          type: string
+        description: Meal item ingredients
+      mealCalories:
+        type: number
+        description: Meal item calories
+      mealQuantity:
+        type: number
+        description: Meal item quantity
+      mealQuantityUnit:
+        type: string
+        description: Meal item quantity unit
+schemes:
+ - https
+ - http

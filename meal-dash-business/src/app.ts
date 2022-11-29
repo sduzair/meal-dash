@@ -85,7 +85,7 @@ class App {
           description: 'With our application we want to create a platform that offers tiffin/meal prep plans that are healthy and delivered to the doorstep of our customers. Customers would be able to select from a wide range of meal plans and subscribe to them. Food service vendors can advertise their meal plans that are composed of multiple containerized and portioned meals which are delivered on a weekly basis to their customers. 🎉🎊🎈🎈',
         },
       },
-      apis: ['swagger.yaml'],
+      apis: ['./docs/user.swagger.yaml', './docs/mealplan.swagger.yaml', './docs/meal.swagger.yaml', './docs/subscription.swagger.yaml'],
     };
 
     const specs = swaggerJSDoc(options);

@@ -17,3 +17,8 @@ export const isEmpty = (value: string | number | object): boolean => {
     return false;
   }
 };
+
+export const USER_ROLES = {
+  API_ACCESS: 'api_access_only',
+  TEMP_ACCESS: 'temp_access_only',
+} 

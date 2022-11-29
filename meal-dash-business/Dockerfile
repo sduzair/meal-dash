@@ -11,7 +11,8 @@ RUN npm run build
 FROM node:14.14.0-alpine3.12 as production
 ENV NODE_ENV=development
 WORKDIR /usr/src/app
-COPY ["package.json", "package-lock.json*", "npm-shrinkwrap.json*", "swagger.yaml", "./"]
+COPY ["package.json", "package-lock.json*", "npm-shrinkwrap.json*", "docs", "./"]
+COPY ["docs", "./docs"]
 RUN npm install --production --silent 
 COPY --from=development /usr/src/app/dist ./dist
 EXPOSE 3000

@@ -15,6 +15,7 @@ import { Routes } from '@interfaces/routes.interface';
 import errorMiddleware from '@middlewares/error.middleware';
 import { logger, stream } from '@utils/logger';
 import formidableMiddleware from 'express-formidable';
+import { dirname } from 'path';
 
 class App {
   public app: express.Application;
@@ -85,9 +86,10 @@ class App {
           description: 'With our application we want to create a platform that offers tiffin/meal prep plans that are healthy and delivered to the doorstep of our customers. Customers would be able to select from a wide range of meal plans and subscribe to them. Food service vendors can advertise their meal plans that are composed of multiple containerized and portioned meals which are delivered on a weekly basis to their customers. 🎉🎊🎈🎈',
         },
       },
-      apis: ['./docs/user.swagger.yaml', './docs/mealplan.swagger.yaml', './docs/meal.swagger.yaml', './docs/subscription.swagger.yaml'],
+      apis: [__dirname+'/../docs/user.swagger.yaml', __dirname+'/../docs/mealplan.swagger.yaml', __dirname+'/../docs/meal.swagger.yaml', __dirname+'/../docs/subscription.swagger.yaml'],
     };
 
+    logger.info(__dirname);
     const specs = swaggerJSDoc(options);
     this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
   }

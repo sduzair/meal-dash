@@ -39,7 +39,7 @@ class App {
       logger.info(`======= ENV: ${this.env} =======`);
       logger.info(`🚀 App listening on the port ${this.port}`);
       logger.info(`=================================`);
-      printEnv()
+      ///printEnv()
     });
   }
 

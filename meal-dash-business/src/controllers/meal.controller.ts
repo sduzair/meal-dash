@@ -18,6 +18,8 @@ class MealController {
       if (req.user_role && req.user_role === USER_ROLES.API_ACCESS) {
         const mealData = plainToInstance(MealDto, JSON.parse(req.fields.mealdata));
         mealData.imagePath = req.files.image.path.replace(UPLOAD_PATH, '');
+        var parts = req.files.image.path.replace(UPLOAD_PATH, '').split("/");
+        mealData.imagePath = parts[parts.length - 1]; 
         const user = req.user;
         const createMealData: Meal = await this.mealService.createMeal(mealData, user.user_id);
         res.status(201).json({ data: createMealData, message: 'created' });

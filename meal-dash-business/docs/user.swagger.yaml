@@ -249,7 +249,7 @@ definitions:
       phone:
         type: string
         description: user Phone
-        example: '1234567890'
+        example: '+12268997890'
       user_type:
         type: string
         description: user Type

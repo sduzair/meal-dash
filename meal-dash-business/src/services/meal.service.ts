@@ -48,12 +48,7 @@ class MealService extends Repository<MealEntity> {
 
     const findMeal: Meal = await MealEntity.findOne({ where: { meal_id: meal_id } });
     if (!findMeal) throw new HttpException(409, "Meal doesn't exist");
-    console.log(findMeal.imagePath)
-    
-unlink(findMeal.imagePath, (err) => {
-  if (err) throw err;
-  console.log('successfully deleted /tmp/hello');
-});
+
     await MealEntity.delete({ meal_id: meal_id });
     return findMeal;
   }

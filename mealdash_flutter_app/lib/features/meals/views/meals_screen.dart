@@ -36,8 +36,20 @@ class MealsScreen extends StatelessWidget {
   }
 }
 
-class MealsFutureBuilder extends StatelessWidget {
+class MealsFutureBuilder extends StatefulWidget {
   const MealsFutureBuilder({Key? key}) : super(key: key);
+
+  @override
+  State<MealsFutureBuilder> createState() => _MealsFutureBuilderState();
+}
+
+class _MealsFutureBuilderState extends State<MealsFutureBuilder> {
+  Future<List<MealDTOWithId>>? getMeals;
+  @override
+  void initState() {
+    super.initState();
+    getMeals = getIt<MealService>().fetchMeals();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,153 +84,176 @@ class MealsFutureBuilder extends StatelessWidget {
     }
     return FutureBuilder<List<MealDTOWithId>?>(
       // future: MealService.getMeals(),
-      future: getIt<MealService>().fetchMeals(),
+      future: getMeals,
       builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          return ListView.builder(
-            itemCount: snapshot.data!.length,
-            itemBuilder: (context, index) {
-              return Card(
-                child: ListTile(
-                  visualDensity:
-                      const VisualDensity(horizontal: 0, vertical: 4),
-                  isThreeLine: true,
-                  leading: AspectRatio(
-                    aspectRatio: 6.0 / 5.0,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: const Color(0xff7c94b6),
-                        image: DecorationImage(
-                          image: NetworkImage(
-                            "${constants.apiBaseUrl}/${snapshot.data![index].imagePathParsed}",
-                          ),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                  ),
-                  title: Text(snapshot.data![index].mealTitle!),
-                  subtitle: Text(snapshot.data![index].mealShortDescription!),
-                  trailing: PopupMenuButton<String>(
-                    onSelected: (String value) {
-                      if (value == 'Details') {
-                        GoRouter.of(context)
-                            .goNamed(constants.mealsDetailRouteName);
-                      } else if (value == 'Edit') {
-                        GoRouter.of(context).goNamed(
-                          constants.mealsEditRouteName,
-                          params: {'id': "${snapshot.data![index].mealId}"},
-                        );
-                      } else if (value == 'Delete') {
-                        // MealService.deleteMeal(snapshot.data![index].id!);
-                        // setState(() {});
-                      }
-                    },
-                    itemBuilder: (BuildContext context) {
-                      return <PopupMenuEntry<String>>[
-                        PopupMenuItem<String>(
-                          value: 'Details',
-                          child: Row(
-                            children: const [
-                              Icon(Icons.info, color: Colors.black),
-                              SizedBox(width: constants.defaultPaddingXSmall),
-                              Text('Details'),
-                            ],
-                          ),
-                        ),
-                        PopupMenuItem<String>(
-                          value: 'Edit',
-                          child: Row(
-                            children: const [
-                              Icon(Icons.edit, color: Colors.blue),
-                              SizedBox(width: constants.defaultPaddingXSmall),
-                              Text('Edit'),
-                            ],
-                          ),
-                        ),
-                        PopupMenuItem<String>(
-                          value: 'Delete',
-                          child: Row(
-                            children: const [
-                              Icon(Icons.delete, color: Colors.red),
-                              SizedBox(width: constants.defaultPaddingXSmall),
-                              Text('Delete'),
-                            ],
-                          ),
-                        ),
-                      ];
-                    },
-                  ),
-                  // trailing: DropdownButton<String>(
-                  //   // selectedItemBuilder: (BuildContext context) {
-                  //   //   return snapshot.data!.map((MealModelWithId meal) {
-                  //   //     return Text(meal.mealQuantity.toString());
-                  //   //   }).toList();
-                  //   // },
-                  //   underline: Container(height: 0),
-                  //   icon: const Icon(Icons.more_vert),
-                  //   items: <String>['Details', 'Edit', 'Delete']
-                  //       .map((String value) {
-                  //     return DropdownMenuItem<String>(
-                  //       value: value,
-                  //       child: Text(value),
-                  //     );
-                  //   }).toList(),
-                  //   onChanged: (String? value) {
-                  //     if (value == 'Details') {
-                  //       GoRouter.of(context).goNamed(
-                  //         constants.mealsDetailRouteName,
-                  //         params: {'id': snapshot.data![index].mealId},
-                  //       );
-                  //     } else if (value == 'Edit') {
-                  //       GoRouter.of(context).goNamed(
-                  //         constants.mealsEditRouteName,
-                  //         params: {'id': snapshot.data![index].mealId},
-                  //       );
-                  //     } else if (value == 'Delete') {
-                  //       // MealService.deleteMeal(snapshot.data![index].id!);
-                  //       // setState(() {});
-                  //     }
-                  //   },
-                  // ),
-                ),
-              );
-              // return Card(
-              //   child: CustomListItemTwo(
-              //     thumbnail: Container(
-              //       decoration: const BoxDecoration(
-              //         color: Color(0xff7c94b6),
-              //         image: DecorationImage(
-              //           image: NetworkImage(
-              //               'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl-2.jpg'),
-              //           fit: BoxFit.cover,
-              //         ),
-              //         // border: Border.all(
-              //         //   width: 8,
-              //         // ),
-              //         // borderRadius: BorderRadius.circular(12),
-              //       ),
-              //     ),
-              //     title: snapshot.data![index].mealTitle!,
-              //     subtitle: snapshot.data![index].mealShortDescription!,
-              //     author: 'author',
-              //     publishDate: 'publishDate',
-              //     readDuration: 'readDuration',
-              //   ),
-              // );
-            },
-          );
-        } else if (snapshot.hasError) {
-          return const Text('Error');
-        } else {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
+        return RefreshIndicator(
+          onRefresh: _pullRefresh,
+          child: _listView(snapshot),
+        );
       },
     );
   }
+
+  Widget _listView(
+    AsyncSnapshot<List<MealDTOWithId>?> snapshot,
+  ) {
+    if (snapshot.hasData) {
+      return ListView.builder(
+        itemCount: snapshot.data!.length,
+        itemBuilder: (context, index) {
+          return Card(
+            child: ListTile(
+              visualDensity: const VisualDensity(horizontal: 0, vertical: 4),
+              isThreeLine: true,
+              leading: AspectRatio(
+                aspectRatio: 6.0 / 5.0,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: const Color(0xff7c94b6),
+                    image: DecorationImage(
+                      image: NetworkImage(
+                        "${constants.apiBaseUrl}/${snapshot.data![index].imagePathParsed}",
+                      ),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              ),
+              title: Text(snapshot.data![index].mealTitle!),
+              subtitle: Text(snapshot.data![index].mealShortDescription!),
+              trailing: PopupMenuButton<String>(
+                onSelected: (String value) {
+                  if (value == 'Details') {
+                    GoRouter.of(context)
+                        .goNamed(constants.mealsDetailRouteName);
+                  } else if (value == 'Edit') {
+                    GoRouter.of(context).goNamed(
+                      constants.mealsEditRouteName,
+                      params: {'id': "${snapshot.data![index].mealId}"},
+                    );
+                  } else if (value == 'Delete') {
+                    getIt<MealService>()
+                        .deleteMeal(snapshot.data![index].mealId);
+                    ScaffoldMessenger.of(context).clearSnackBars();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Meal deleted'),
+                      ),
+                    );
+                    setState(() {});
+                  }
+                },
+                itemBuilder: (BuildContext context) {
+                  return <PopupMenuEntry<String>>[
+                    PopupMenuItem<String>(
+                      value: 'Details',
+                      child: Row(
+                        children: const [
+                          Icon(Icons.info, color: Colors.black),
+                          SizedBox(width: constants.defaultPaddingXSmall),
+                          Text('Details'),
+                        ],
+                      ),
+                    ),
+                    PopupMenuItem<String>(
+                      value: 'Edit',
+                      child: Row(
+                        children: const [
+                          Icon(Icons.edit, color: Colors.blue),
+                          SizedBox(width: constants.defaultPaddingXSmall),
+                          Text('Edit'),
+                        ],
+                      ),
+                    ),
+                    PopupMenuItem<String>(
+                      value: 'Delete',
+                      child: Row(
+                        children: const [
+                          Icon(Icons.delete, color: Colors.red),
+                          SizedBox(width: constants.defaultPaddingXSmall),
+                          Text('Delete'),
+                        ],
+                      ),
+                    ),
+                  ];
+                },
+              ),
+              // trailing: DropdownButton<String>(
+              //   // selectedItemBuilder: (BuildContext context) {
+              //   //   return snapshot.data!.map((MealModelWithId meal) {
+              //   //     return Text(meal.mealQuantity.toString());
+              //   //   }).toList();
+              //   // },
+              //   underline: Container(height: 0),
+              //   icon: const Icon(Icons.more_vert),
+              //   items: <String>['Details', 'Edit', 'Delete']
+              //       .map((String value) {
+              //     return DropdownMenuItem<String>(
+              //       value: value,
+              //       child: Text(value),
+              //     );
+              //   }).toList(),
+              //   onChanged: (String? value) {
+              //     if (value == 'Details') {
+              //       GoRouter.of(context).goNamed(
+              //         constants.mealsDetailRouteName,
+              //         params: {'id': snapshot.data![index].mealId},
+              //       );
+              //     } else if (value == 'Edit') {
+              //       GoRouter.of(context).goNamed(
+              //         constants.mealsEditRouteName,
+              //         params: {'id': snapshot.data![index].mealId},
+              //       );
+              //     } else if (value == 'Delete') {
+              //       // MealService.deleteMeal(snapshot.data![index].id!);
+              //       // setState(() {});
+              //     }
+              //   },
+              // ),
+            ),
+          );
+          // return Card(
+          //   child: CustomListItemTwo(
+          //     thumbnail: Container(
+          //       decoration: const BoxDecoration(
+          //         color: Color(0xff7c94b6),
+          //         image: DecorationImage(
+          //           image: NetworkImage(
+          //               'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl-2.jpg'),
+          //           fit: BoxFit.cover,
+          //         ),
+          //         // border: Border.all(
+          //         //   width: 8,
+          //         // ),
+          //         // borderRadius: BorderRadius.circular(12),
+          //       ),
+          //     ),
+          //     title: snapshot.data![index].mealTitle!,
+          //     subtitle: snapshot.data![index].mealShortDescription!,
+          //     author: 'author',
+          //     publishDate: 'publishDate',
+          //     readDuration: 'readDuration',
+          //   ),
+          // );
+        },
+      );
+    } else if (snapshot.hasError) {
+      return const Text('Error');
+    } else {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+  }
+
+  Future<void> _pullRefresh() async {
+    ScaffoldMessenger.of(context).clearSnackBars();
+    setState(() {
+      getMeals = getIt<MealService>().fetchMeals();
+    });
+  }
 }
+
 
 // class MoreOptions extends StatelessWidget {
 //   const MoreOptions({Key? key}) : super(key: key);

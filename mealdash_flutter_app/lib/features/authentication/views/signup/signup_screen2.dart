@@ -264,7 +264,8 @@ class SubmitButton extends StatelessWidget {
     final userAuthVMWatch = context.watch<UserAuthViewModel>();
     if (userAuthVMWatch.isSigningUpSuccess) {
       SchedulerBinding.instance.addPostFrameCallback((_) {
-        GoRouter.of(context).goNamed(constants.loginRouteName);
+        GoRouter.of(context)
+            .goNamed(constants.signupEmailVerificationRouteName);
       });
       // * THIS IS DONE AFTER SIGNUP SUCCESS SNACKBAR IS SHOWN ON LOGIN PAGE
       // context.read<UserAuthViewModel>().resetSignUpStateAndNotifyListeners();
@@ -279,12 +280,6 @@ class SubmitButton extends StatelessWidget {
           ),
         ),
         onPressed: () {
-          if (constants.isTestingEmailVerification) {
-            GoRouter.of(context)
-                .goNamed(constants.signupEmailVerificationRouteName);
-            return;
-          }
-
           if (context.read<UserAuthViewModel>().isSigningUp ||
               context.read<UserAuthViewModel>().isSigningUpSuccess) {
             return;

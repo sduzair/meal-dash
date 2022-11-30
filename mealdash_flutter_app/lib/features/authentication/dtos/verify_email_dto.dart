@@ -12,7 +12,7 @@ class VerifyEmailDTO {
     required this.activationCode,
   });
 
-  VerifyEmailDTO.initializeDummyVals() : activationCode = 999999;
+  VerifyEmailDTO.initializeDummyVals() : activationCode = 676991;
 
   VerifyEmailDTO.empty();
 

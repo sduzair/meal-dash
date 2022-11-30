@@ -9,6 +9,13 @@ class AuthService {
   const AuthService({required this.dioClient});
 
   Future<Response> signUp(UserSignUpDTO userSignUpDTO) async {
+    // clear cookies in /login and /signup before signing up a new user to avoid cookie conflicts with previous users
+    // directly may not exist if user is logging in for the first time throwing an error
+    try {
+      await dioClient.cookieJar.deleteAll();
+    } catch (e) {
+      print(e);
+    }
     final Response response = await dioClient.dio.post(
       '/signup',
       data: userSignUpDTO.toJson(),
@@ -17,6 +24,14 @@ class AuthService {
   }
 
   Future<Response> login(UserLoginDTO userLoginDTO) async {
+    // clear cookies in /login and /signup before logging in a new user to avoid cookie conflicts with previous users
+    // directly may not exist if user is logging in for the first time throwing an error
+    try {
+      await dioClient.cookieJar.deleteAll();
+    } catch (e) {
+      print(e);
+    }
+
     final Response response = await dioClient.dio.post(
       '/login',
       data: userLoginDTO.toJson(),
@@ -25,11 +40,16 @@ class AuthService {
   }
 
   Future<Response> logout() async {
+
     final String cookieHeader = (await dioClient.cookieJar.loadForRequest(
       Uri.parse('${Endpoints.baseUrl}/login'),
     ))
         .map((e) => e.toString())
         .join('; ');
+
+    // clear cookies in /login and /signup before logging out a user to avoid cookie conflicts with previous users
+    await dioClient.cookieJar.deleteAll();
+
     final Response response = await dioClient.dio.post(
       '/logout',
       options: Options(

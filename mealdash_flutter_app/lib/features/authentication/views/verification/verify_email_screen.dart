@@ -146,7 +146,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                           length: 6,
                           // blinkWhenObscuring: true,a
                           animationType: AnimationType.fade,
-                          validator: (v) {                          
+                          validator: (v) {
                             if (v!.length < 6) {
                               return "Please enter a valid code";
                             } else {
@@ -314,6 +314,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                         formKey: formKey,
                         errorController: errorController!,
                         setStateHasError: setStateHasError,
+                        widgetUserEmail: widget.userEmail,
                       )
                     ],
                   ),
@@ -331,12 +332,14 @@ class EmailVerificationButton extends StatelessWidget {
   final GlobalKey<FormState> formKey;
   final StreamController<ErrorAnimationType> errorController;
   final void Function(bool) setStateHasError;
+  final String widgetUserEmail;
 
   const EmailVerificationButton({
     Key? key,
     required this.formKey,
     required this.errorController,
     required this.setStateHasError,
+    required this.widgetUserEmail,
   }) : super(key: key);
 
   @override
@@ -368,17 +371,22 @@ class EmailVerificationButton extends StatelessWidget {
           context.read<VerifyEmailViewModel>().verifyEmail();
         }
       },
-      child: TextEmailVerificationButton(setStateHasError: setStateHasError),
+      child: TextEmailVerificationButton(
+        setStateHasError: setStateHasError,
+        widgetUserEmail: widgetUserEmail,
+      ),
     );
   }
 }
 
 class TextEmailVerificationButton extends StatelessWidget {
   final void Function(bool) setStateHasError;
+  final String widgetUserEmail;
 
   const TextEmailVerificationButton({
     Key? key,
     required this.setStateHasError,
+    required this.widgetUserEmail,
   }) : super(key: key);
 
   @override
@@ -386,12 +394,26 @@ class TextEmailVerificationButton extends StatelessWidget {
     final verifyEmailViewModel = context.watch<VerifyEmailViewModel>();
     if (verifyEmailViewModel.isVerifyngEmail) {
       return const CircularProgressIndicator(
+        strokeWidth: 2,
         color: Colors.white,
       );
     } else if (verifyEmailViewModel.isVerifyingEmailSuccess) {
       // TODO: TRY TO DISPOSE THE VIEW MODEL IF POSSIBLE
       context.read<VerifyEmailViewModel>().resetVerifyEmailState();
-      GoRouter.of(context).goNamed(constants.loginRouteName);
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        GoRouter.of(context).goNamed(constants.loginRouteName);
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                'Signup successful for $widgetUserEmail!',
+              ),
+            ),
+          );
+        });
+        // SchedulerBinding.instance.add
+      });
       return const Icon(
         Icons.check,
         color: Colors.white,

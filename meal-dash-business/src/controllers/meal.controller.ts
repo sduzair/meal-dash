@@ -48,7 +48,8 @@ class MealController {
     try {
       if (req.user_role && req.user_role === USER_ROLES.API_ACCESS) {
         const mealId = Number(req.params.id);
-        const findOneMealData: Meal = await this.mealService.fetchMealById(mealId);
+        const vendor_id= req.user.user_id;
+        const findOneMealData: Meal = await this.mealService.fetchMealById(vendor_id, mealId);
         res.status(200).json({ data: findOneMealData, message: 'findOne' });
       } else {
         throw new HttpException(403, 'Unauthorized access');
@@ -64,7 +65,8 @@ class MealController {
       if (req.user_role && req.user_role === USER_ROLES.API_ACCESS) {
         const meal_id = Number(req.params.meal_id);
         const mealData: UpdateMealDto = req.body;
-        const updateUserData: Meal = await this.mealService.updateMeal(meal_id, mealData);
+        const vendor_id= req.user.user_id;
+        const updateUserData: Meal = await this.mealService.updateMeal(vendor_id, meal_id, mealData);
 
         res.status(200).json({ data: updateUserData, message: 'updated' });
       } else {
@@ -79,8 +81,8 @@ class MealController {
     try {
       if (req.user_role && req.user_role === USER_ROLES.API_ACCESS) {
         const mealId = Number(req.params.meal_id);
-        const deleteMealData: Meal = await this.mealService.deleteMeal(mealId);
-
+        const vendor_id= req.user.user_id;
+        const deleteMealData: Meal = await this.mealService.deleteMeal(vendor_id, mealId);
         res.status(200).json({ data: deleteMealData, message: 'meal deleted' });
       } else {
         throw new HttpException(403, 'Unauthorized access');

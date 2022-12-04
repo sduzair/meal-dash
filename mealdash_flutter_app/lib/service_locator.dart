@@ -25,6 +25,9 @@ class DioClient {
         PersistCookieJar(storage: FileStorage('${appDocDir.path}/.cookies/'));
     // TESTING ENVIRONMENT
     constants.clearCookies ? cookieJar.deleteAll() : null;
+    // print the cookies to the console for debugging purposes only (not for production)
+    printCookiesInPersistentCookieJarToConsole();
+
     // final cookieJar = CookieJar();
     dio = Dio()
       ..interceptors.add(CookieManager(cookieJar))
@@ -45,6 +48,11 @@ class DioClient {
               print('401 error intercepted');
               // getit UserauthViewModel and logout user shared prefs
               getIt<UserAuthViewModel>().logoutUnauthorized();
+            } else if (e.response?.statusCode == 403) {
+              // redirect to login page
+              print('403 error intercepted');
+              // getit UserauthViewModel and logout user shared prefs
+              getIt<UserAuthViewModel>().logoutUnauthorized();
             }
             return handler.next(e);
           },
@@ -54,6 +62,30 @@ class DioClient {
       ..options.connectTimeout = Endpoints.connectionTimeout
       ..options.receiveTimeout = Endpoints.receiveTimeout
       ..options.responseType = ResponseType.json;
+  }
+
+  void printCookiesInPersistentCookieJarToConsole() {
+    print('cookies in persistent cookie jar:');
+    cookieJar.loadForRequest(Uri.parse('${Endpoints.baseUrl}/login')).then(
+      (cookies) {
+        print('cookies /login: $cookies');
+        print(cookies.toString());
+      },
+    );
+    cookieJar.loadForRequest(Uri.parse('${Endpoints.baseUrl}/signup')).then(
+      (cookies) {
+        print('cookies /signup: $cookies');
+        print(cookies.toString());
+      },
+    );
+    cookieJar
+        .loadForRequest(Uri.parse('${Endpoints.baseUrl}/verify-user'))
+        .then(
+      (cookies) {
+        print('cookies /verify-user: $cookies');
+        print(cookies.toString());
+      },
+    );
   }
 }
 

@@ -131,10 +131,12 @@ class MyRouter {
           ),
           ShellRouteBranch(
             defaultLocation: '/meals',
+            navigatorKey: _mealsNavigatorKey,
             rootRoute: ShellRoute(
               pageBuilder: (context, state, child) => MaterialPage<void>(
                 key: state.pageKey,
                 child: child,
+                maintainState: false,
               ),
               routes: <RouteBase>[
                 GoRoute(

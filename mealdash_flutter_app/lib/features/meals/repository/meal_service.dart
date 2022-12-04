@@ -104,16 +104,13 @@ class MealService {
     ))
         .map((e) => e.toString())
         .join('; ');
-    final Response response = await dioClient.dio.post(
+    final Response response = await dioClient.dio.delete(
       '/meals/$mealId',
       options: Options(
         headers: {
           'Cookie': cookieHeader,
         },
       ),
-      data: {
-        'mealId': mealId,
-      },
     );
     return response;
   }

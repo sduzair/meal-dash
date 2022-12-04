@@ -401,6 +401,15 @@ class AddMealSubmitButton extends StatelessWidget {
             context.read<MealAddViewModel>().isAddingMealSuccess) {
           return;
         }
+        if (context.read<MealAddViewModel>().imageFile == null) {
+          ScaffoldMessenger.of(context).clearSnackBars();
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Please add an image'),
+            ),
+          );
+          return;
+        }
         // IF TESTING MEAL ADD WITH DUMMY DATA AND NO IMAGE THEM SKIP VALIDATION
         if (constants.isTestingMealAdd) {
           context.read<MealAddViewModel>().addMeal();
@@ -444,6 +453,12 @@ class AddMealSubmitButtonText extends StatelessWidget {
       //TODO: SEE IF REQUIRED TO RESET ADD MEAL VIEW MODEL STATE
       SchedulerBinding.instance.addPostFrameCallback((_) {
         GoRouter.of(context).goNamed(constants.HomeNavTabRouteNames.meals.name);
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Meal added successfully! Refresh to see changes'),
+          ),
+        );
       });
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,

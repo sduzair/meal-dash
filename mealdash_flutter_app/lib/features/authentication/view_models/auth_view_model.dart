@@ -152,7 +152,8 @@ class UserAuthViewModel with ChangeNotifier, DiagnosticableTreeMixin {
     try {
       await authService.signUp(_userSignUpDTO);
       _isSigningUpSuccess = true;
-      _showSignupSuccessPopup = true;
+      //* SIGNUP SUCCESSFUL AFTER VERIFICATION
+      _showSignupSuccessPopup = false;
     } on DioError catch (e) {
       _isSigningUpError = true;
       _signUpErrorMessage = DioExceptions.fromDioError(e).message;

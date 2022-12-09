@@ -1,11 +1,12 @@
 // DEV CONSTANTS
 
-const bool isTestingMealAdd = true; // add meal image
-const bool isTestingSignUp = true;
+const bool isTestingMealAdd = false; // add meal image
+const bool isTestingSignUp = false;
 const bool isTestingLogin = true;
 const bool isTestUserLoggedIn = false;
 const bool isTestingEmailVerification = false;
-const bool clearCookies = true;
+const bool clearCookies = false;
+const bool clearSharedPrefs = false;
 
 // KEY CONSTANTS
 const String loggedinKey = 'LoggedIn';
@@ -28,10 +29,11 @@ const String mealsAddRouteName = 'mealsAdd';
 const String mealsEditRouteName = 'mealsEdit';
 const String mealsDetailRouteName = 'mealsDetail';
 
-const String apiUrl = 'http://10.0.2.2';
+// const String apiUrl = 'http://10.0.2.2';
 // const String apiUrl = 'http://localhost';
-const String apiPort = '3000';
-const String apiBaseUrl = '$apiUrl:$apiPort';
+// const String apiPort = '3000';
+// const String apiBaseUrl = '$apiUrl:$apiPort';
+const String apiBaseUrl = 'https://meal-dash-business.azurewebsites.net';
 
 const String mealsAddScreenImagePlaceholder =
     'assets/images/image_placeholder.png';

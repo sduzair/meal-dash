@@ -372,6 +372,7 @@ class TextSignUpButton extends StatelessWidget {
       });
       return const Text("SIGNUP ERROR TRY AGAIN");
     } else if (authVMWatch.isSigningUpSuccess) {
+      ScaffoldMessenger.of(context).clearMaterialBanners();
       return const SizedBox(
         height: 20,
         width: 20,

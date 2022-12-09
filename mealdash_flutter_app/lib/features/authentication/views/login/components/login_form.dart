@@ -195,6 +195,7 @@ class TextUserLoginButton extends StatelessWidget {
       });
       return const Text("LOGIN");
     } else if (authVMWatch.isLoggingInSuccess) {
+      ScaffoldMessenger.of(context).clearMaterialBanners();
       SchedulerBinding.instance.addPostFrameCallback((_) {
         // * RESETTING LOGIN STATE ON MEALS HOME PAGE WITHOUT NOTIFIYING LISTENERS AS ROUTING IS GETTING INTERFERED WHEN NOTIFIYING LISTENERS
         GoRouter.of(context).goNamed(constants.HomeNavTabRouteNames.meals.name);

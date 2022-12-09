@@ -398,6 +398,7 @@ class TextEmailVerificationButton extends StatelessWidget {
         color: Colors.white,
       );
     } else if (verifyEmailViewModel.isVerifyingEmailSuccess) {
+      ScaffoldMessenger.of(context).clearMaterialBanners();
       // TODO: TRY TO DISPOSE THE VIEW MODEL IF POSSIBLE
       context.read<VerifyEmailViewModel>().resetVerifyEmailState();
       SchedulerBinding.instance.addPostFrameCallback((_) {

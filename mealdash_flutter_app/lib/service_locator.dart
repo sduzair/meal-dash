@@ -47,12 +47,12 @@ class DioClient {
               // redirect to login page
               print('401 error intercepted');
               // getit UserauthViewModel and logout user shared prefs
-              getIt<UserAuthViewModel>().logoutUnauthorized();
+              getIt<UserAuthViewModel>().logoutUnauthorizedAndNotifyListeners();
             } else if (e.response?.statusCode == 403) {
               // redirect to login page
               print('403 error intercepted');
               // getit UserauthViewModel and logout user shared prefs
-              getIt<UserAuthViewModel>().logoutUnauthorized();
+              getIt<UserAuthViewModel>().logoutUnauthorizedAndNotifyListeners();
             }
             return handler.next(e);
           },
@@ -68,13 +68,13 @@ class DioClient {
     print('cookies in persistent cookie jar:');
     cookieJar.loadForRequest(Uri.parse('${Endpoints.baseUrl}/login')).then(
       (cookies) {
-        print('cookies /login: $cookies');
+        print('cookies /login:');
         print(cookies.toString());
       },
     );
     cookieJar.loadForRequest(Uri.parse('${Endpoints.baseUrl}/signup')).then(
       (cookies) {
-        print('cookies /signup: $cookies');
+        print('cookies /signup:');
         print(cookies.toString());
       },
     );
@@ -82,7 +82,7 @@ class DioClient {
         .loadForRequest(Uri.parse('${Endpoints.baseUrl}/verify-user'))
         .then(
       (cookies) {
-        print('cookies /verify-user: $cookies');
+        print('cookies /verify-user:');
         print(cookies.toString());
       },
     );
@@ -93,7 +93,7 @@ class Endpoints {
   Endpoints._();
 
   // base url
-  static const String baseUrl = "${constants.apiUrl}:${constants.apiPort}";
+  static const String baseUrl = constants.apiBaseUrl;
 
   // receiveTimeout
   static const int receiveTimeout = 15000;
@@ -104,6 +104,7 @@ class Endpoints {
 
 class DioExceptions implements Exception {
   late String message;
+
   /// status code exists only when exception is raised by server response
   int? statusCode;
 
@@ -152,8 +153,7 @@ class DioExceptions implements Exception {
       case 404:
         return error['message'] ?? 'Not found';
       case 409:
-        return error[
-            'message'] ??
+        return error['message'] ??
             'Conflict'; // LOIGN PAGE: INCORRECT PASSWORD OR EMAIL NOT FOUND
       case 500:
         return error['message'] ?? 'Internal server error';

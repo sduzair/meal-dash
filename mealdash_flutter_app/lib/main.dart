@@ -33,16 +33,26 @@ Future<void> main() async {
   getIt.registerSingleton<VerifyEmailService>(
     VerifyEmailService(dioClient: getIt<DioClient>()),
   );
+  constants.clearSharedPrefs
+      ? await getIt.get<SharedPreferences>().clear()
+      : null;
+  // print the shared prefs to the console for debugging purposes only (not for production)
+  getIt.get<SharedPreferences>().getKeys().forEach((key) {
+    print('key: $key, value: ${getIt.get<SharedPreferences>().get(key)}');
+  });
   getIt.registerSingleton<UserAuthViewModel>(
     UserAuthViewModel(
       prefs: getIt<SharedPreferences>(),
       authService: getIt<AuthService>(),
+      isLoggedIn:
+          getIt.get<SharedPreferences>().getBool(constants.loggedinKey) ??
+              false,
     ),
   );
   constants.isTestUserLoggedIn
       ? await getIt.get<UserAuthViewModel>().loginTestUser()
-      : await getIt.get<UserAuthViewModel>().logoutUnauthorized();
-  getIt.get<UserAuthViewModel>().checkLoggedIn();
+      : null;
+
 
   // load the theme data
   final themeStr = await rootBundle.loadString('assets/appainter_theme.json');

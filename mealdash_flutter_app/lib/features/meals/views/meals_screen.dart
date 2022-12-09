@@ -124,13 +124,13 @@ class _MealsFutureBuilderState extends State<MealsFutureBuilder> {
               trailing: PopupMenuButton<String>(
                 onSelected: (String value) {
                   if (value == 'Details') {
-                    GoRouter.of(context)
-                        .goNamed(constants.mealsDetailRouteName);
+                    // GoRouter.of(context)
+                    //     .goNamed(constants.mealsDetailRouteName);
                   } else if (value == 'Edit') {
-                    GoRouter.of(context).goNamed(
-                      constants.mealsEditRouteName,
-                      params: {'id': "${snapshot.data![index].mealId}"},
-                    );
+                    // GoRouter.of(context).goNamed(
+                    //   constants.mealsEditRouteName,
+                    //   params: {'id': "${snapshot.data![index].mealId}"},
+                    // );
                   } else if (value == 'Delete') {
                     getIt<MealService>()
                         .deleteMeal(snapshot.data![index].mealId);

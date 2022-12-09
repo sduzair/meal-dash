@@ -12,42 +12,43 @@ class UserAuthViewModel with ChangeNotifier, DiagnosticableTreeMixin {
   final AuthService authService;
   final SharedPreferences prefs;
 
-  UserAuthViewModel({required this.prefs, required this.authService})
+  UserAuthViewModel({
+    required this.prefs,
+    required this.authService,
+    required this.isLoggedIn,
+  })
       : _userLoginDTO = constants.isTestingLogin
             ? UserLoginDTO.initializeDummyVals()
             : UserLoginDTO.empty(),
         _userSignUpDTO = constants.isTestingSignUp
             ? UserSignUpDTO.initializeDummyVals()
-            : UserSignUpDTO.empty() {
-    _isLoggedIn = prefs.getBool(constants.loggedinKey) ?? false;
-  }
+            : UserSignUpDTO.empty();
 
   //  LOGIN TEST USER
   Future<void> loginTestUser() async {
     print('loginTestUser() called');
     try {
       await authService.login(UserLoginDTO.testUserLoginDTO());
-      _isLoggedIn = true;
+      isLoggedIn = true;
       notifyListeners();
-      _setIsLoggedinSharedPrefsAndNotifyListeners(true);
+      _setIsLoggedInStateInSharedPrefsAsync(true);
     } on DioError catch (e) {
       print('Test user login failed: ${e.message}');
     }
   }
 
-  bool _isLoggedIn = false;
-  bool get isLoggedIn => _isLoggedIn;
+  bool isLoggedIn = false;
 
-  Future<void> _setIsLoggedinSharedPrefsAndNotifyListeners(bool value) async {
-    _isLoggedIn = value;
+  Future<void> _setIsLoggedInStateInSharedPrefsAsync(bool value) async {
+    isLoggedIn = value;
     await prefs.setBool(constants.loggedinKey, value);
-    notifyListeners();
   }
 
-  void checkLoggedIn() {
-    _isLoggedIn = prefs.getBool(constants.loggedinKey) ?? false;
-    notifyListeners();
-  }
+  // void checkLoggedInStateInSharedPrefsAndNotifyListeners() {
+  //   isLoggedIn = prefs.getBool(constants.loggedinKey) ?? false;
+  //   print('checkLoggedIn() called. isLoggedIn: $isLoggedIn');
+  //   notifyListeners();
+  // }
 
   // USER LOGIN METHODS
 
@@ -83,8 +84,8 @@ class UserAuthViewModel with ChangeNotifier, DiagnosticableTreeMixin {
       await authService.login(_userLoginDTO);
       _isLoggingInSuccess = true;
       _showLoggingInSuccessPopup = true;
-      _isLoggedIn = true;
-      await _setIsLoggedinSharedPrefsAndNotifyListeners(true);
+      isLoggedIn = true;
+      _setIsLoggedInStateInSharedPrefsAsync(true);
     } on DioError catch (e) {
       _isLoggingInError = true;
       _loginErrorMessage = DioExceptions.fromDioError(e).message;
@@ -213,8 +214,8 @@ class UserAuthViewModel with ChangeNotifier, DiagnosticableTreeMixin {
       await authService.logout();
       _isLoggingOutSuccess = true;
       _showLoggingOutSuccessPopup = true;
-      _isLoggedIn = false;
-      await _setIsLoggedinSharedPrefsAndNotifyListeners(false);
+      isLoggedIn = false;
+      _setIsLoggedInStateInSharedPrefsAsync(false);
     } on DioError catch (e) {
       _isLoggingOutError = true;
       _logoutErrorMessage = DioExceptions.fromDioError(e).message;
@@ -241,9 +242,10 @@ class UserAuthViewModel with ChangeNotifier, DiagnosticableTreeMixin {
     _showLoggingOutSuccessPopup = false;
   }
 
-  Future<void> logoutUnauthorized() async {
-    _isLoggedIn = false;
-    await _setIsLoggedinSharedPrefsAndNotifyListeners(false);
+  Future<void> logoutUnauthorizedAndNotifyListeners() async {
+    _setIsLoggedInStateInSharedPrefsAsync(false);
+    isLoggedIn = false;
+    notifyListeners();
   }
 
   @override

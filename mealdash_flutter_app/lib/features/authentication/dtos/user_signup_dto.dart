@@ -44,8 +44,8 @@ class UserSignUpDTO {
   });
 
   UserSignUpDTO.initializeDummyVals()
-      : username = 'uzDasdfsdsfgsdddddddddfgFGHr123456',
-        email = 'captasdf65sdfgsdfg4ddddddddddddsh123456@gmail.com',
+      : username = 'uzDasdfsdsfgsdddddddddfgFGHr1234567',
+        email = 'captasdf65sdfgsdfg4ddddddddddddsh1234567@gmail.com',
         password = 'asdf',
         firstName = 'asdf',
         lastName = 'asdf',

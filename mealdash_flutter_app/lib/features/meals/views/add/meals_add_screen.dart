@@ -167,8 +167,11 @@ class _MealAddScreenState extends State<MealAddScreen> {
                       Flexible(
                         flex: 4,
                         child: TextFormField(
-                          initialValue:
-                              "${context.read<MealAddViewModel>().mealDTO.mealQuantity ?? context.read<MealAddViewModel>().mealDTO.mealQuantity.toString()}",
+                          initialValue: context
+                              .read<MealAddViewModel>()
+                              .mealDTO
+                              .mealQuantity
+                              ?.toString(),
                           decoration: const InputDecoration(
                             prefixIcon: Icon(Icons.fastfood),
                             hintText: 'What is the quantity of the meal?',
@@ -197,8 +200,11 @@ class _MealAddScreenState extends State<MealAddScreen> {
                   const SizedBox(height: constants.defaultMargin),
                   // optional input for meal calories with a unit of calories (double)
                   TextFormField(
-                    initialValue:
-                        "${context.read<MealAddViewModel>().mealDTO.mealCalories ?? context.read<MealAddViewModel>().mealDTO.mealCalories.toString()}",
+                    initialValue: context
+                        .read<MealAddViewModel>()
+                        .mealDTO
+                        .mealCalories
+                        ?.toString(),
                     decoration: const InputDecoration(
                       prefixIcon: Icon(Icons.whatshot),
                       hintText: 'What is the calorie count of the meal?',
@@ -445,6 +451,7 @@ class AddMealSubmitButtonText extends StatelessWidget {
     if (mealAddVM.isAddingMeal) {
       return const CircularProgressIndicator();
     } else if (mealAddVM.isAddingMealSuccess) {
+      ScaffoldMessenger.of(context).clearMaterialBanners();
       context.read<SnackbarMessageProvider>().snackbarMessage =
           SnackbarMessageType.set(
         message: 'Meal added successfully!',

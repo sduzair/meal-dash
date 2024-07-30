@@ -15,6 +15,10 @@
 
 With our application we want to create a platform that offers tiffin/meal prep plans that are healthy and delivered to the doorstep of our customers. Customers would be able to select from a wide range of meal plans and subscribe to them. Food service vendors can advertise their meal plans that are composed of multiple containerized and portioned meals which are delivered on a weekly basis to their customers. :tada::confetti_ball::balloon::balloon:
 
+### Access High Fidelity Design Artifacts
+
+For a collection of high fidelity design artifacts, you can access the following link: [Design Artifacts](https://drive.google.com/drive/folders/1EwSZhCbas7fdJRBVDqD3nb9ZPF2Aexnc?usp=drive_link)
+
 ### Built With
 
 This section lists the major frameworks/libraries used to bootstrap the project.
